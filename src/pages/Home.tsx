@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -6,8 +5,22 @@ import SectionDivider from "@/components/SectionDivider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
-  MapPin, Calendar, Wifi, Utensils, Pool, Building, Home as HomeIcon, 
-  Power, Horse, TennisBall, IceCream, Music, Trees, Car 
+  SwimmingPool, 
+  House, 
+  Activity,  // Replacing TennisBall
+  Power, 
+  Building, 
+  Home as HomeIcon, 
+  Utensils, 
+  MapPin, 
+  Calendar, 
+  Trees, 
+  Car,
+  Wifi, 
+  Horse, 
+  TennisBall, 
+  IceCream, 
+  Music
 } from "lucide-react";
 import {
   Carousel,
@@ -38,7 +51,7 @@ const Home = () => {
       title: "Resort-Style Pool",
       description: "Our vintage-inspired pool offers the perfect place to cool off and relax with plenty of lounge seating and mountain views.",
       image: "/placeholder.svg",
-      icon: <Pool size={24} />
+      icon: <SwimmingPool size={24} />
     },
     {
       title: "Iconic Neon Signs",
@@ -68,10 +81,10 @@ const Home = () => {
 
   // Things to do with icons
   const thingsToDo = [
-    { activity: "Take a refreshing dip in our resort-style swimming pool", icon: <Pool size={24} className="text-rvblue" /> },
-    { activity: "Challenge friends to a pickleball match on our dedicated court", icon: <TennisBall size={24} className="text-rvblue" /> },
-    { activity: "Explore nearby horse trails with your equine companions", icon: <Horse size={24} className="text-rvblue" /> },
-    { activity: "Enjoy live music events on select weekend evenings", icon: <Music size={24} className="text-rvblue" /> },
+    { activity: "Take a refreshing dip in our resort-style swimming pool", icon: <SwimmingPool size={24} className="text-rvblue" /> },
+    { activity: "Challenge friends to a pickleball match", icon: <Activity size={24} className="text-rvblue" /> },
+    { activity: "Explore nearby horse trails with your equine companions", icon: <House size={24} className="text-rvblue" /> },
+    { activity: "Enjoy live music events on select weekend evenings", icon: <Music size={24} className="text-rvblue" },
     { activity: "Savor burgers and shakes at our Gulf Burgers Restaurant", icon: <Utensils size={24} className="text-rvblue" /> },
     { activity: "Experience our outdoor movie nights under the stars", icon: <IceCream size={24} className="text-rvblue" /> },
     { activity: "Take scenic drives through the nearby Palo Pinto Mountains", icon: <Car size={24} className="text-rvblue" /> }
@@ -80,7 +93,7 @@ const Home = () => {
   // Local attractions
   const localAttractions = [
     { name: "Palo Pinto Mountains State Park", distance: "15 min", icon: <Trees size={20} /> },
-    { name: "Lake Leon", distance: "20 min", icon: <Pool size={20} /> },
+    { name: "Lake Leon", distance: "20 min", icon: <SwimmingPool size={20} /> },
     { name: "Stephenville", distance: "30 min", icon: <MapPin size={20} /> },
     { name: "Ranger Drive-In Theater", distance: "5 min", icon: <Car size={20} /> },
     { name: "Ranger Airport", distance: "10 min", icon: <MapPin size={20} /> },
