@@ -5,6 +5,7 @@ import SectionDivider from "@/components/SectionDivider";
 import TestimonialCard from "@/components/TestimonialCard";
 import AmenityCard from "@/components/AmenityCard";
 import { MapPin, Wifi, Utensils, Waves, Dog, ShowerHead } from "lucide-react";
+
 const Home = () => {
   const testimonials = [{
     quote: "Our family had the most wonderful time at Lone Ranger RV Park. The facilities were immaculate and the staff went above and beyond.",
@@ -32,8 +33,8 @@ const Home = () => {
         
         <div className="relative z-10 section-container text-white">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-display mb-6">
-            Adventure Awaits at<br />
-            <span className="text-rvyellow">Lone Ranger</span>
+            Stay at Lone Ranger RV Park<br />
+            <span className="text-rvyellow">Near Palo Pinto Mountains & Stephenville, TX</span>
           </h1>
           <p className="text-xl md:text-2xl max-w-2xl mb-8">
             Experience the perfect blend of nostalgic charm and modern comfort at our retro Americana-inspired RV park and lodge.
@@ -42,7 +43,6 @@ const Home = () => {
             <Link to="/reservations" className="btn-primary">
               Book Your Stay
             </Link>
-            
           </div>
         </div>
       </section>
