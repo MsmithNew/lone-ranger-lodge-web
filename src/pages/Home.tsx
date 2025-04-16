@@ -5,7 +5,7 @@ import Layout from "@/components/Layout";
 import SectionDivider from "@/components/SectionDivider";
 import TestimonialCard from "@/components/TestimonialCard";
 import AmenityCard from "@/components/AmenityCard";
-import { MapPin, Wifi, Utensils, Waves, Dog, ShowerHead, Home as HomeIcon, Power, Building, House, TennisBall, IceCream } from "lucide-react";
+import { MapPin, Wifi, Utensils, Waves, Dog, ShowerHead, Home as HomeIcon, Power, Building, House, Activity, IceCream } from "lucide-react";
 
 const Home = () => {
   const testimonials = [{
@@ -61,7 +61,7 @@ const Home = () => {
               <span>Gulf Burgers Restaurant Overlooking the Pool</span>
             </li>
             <li className="flex items-center gap-2">
-              <TennisBall size={20} className="text-rvyellow" />
+              <Activity size={20} className="text-rvyellow" />
               <span>Pickleball Court</span>
             </li>
             <li className="flex items-center gap-2">
