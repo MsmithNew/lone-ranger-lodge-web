@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
@@ -42,7 +43,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center overflow-x-auto whitespace-nowrap">
+          <nav className="hidden md:flex items-center">
             <div className="flex items-center space-x-3">
               {/* Home (first item) */}
               <Link
@@ -162,8 +163,8 @@ const Navbar = () => {
                 About
                 <ChevronDown className="h-4 w-4" />
               </CollapsibleTrigger>
-              <CollapsibleContent className="pl-4 max-h-[200px]">
-                <div className="space-y-1">
+              <CollapsibleContent>
+                <div className="pl-4 space-y-1">
                   {aboutSubItems.map((subItem) => (
                     <Link
                       key={subItem.name}
