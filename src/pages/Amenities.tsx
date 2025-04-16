@@ -1,11 +1,10 @@
-
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
 import AmenityCard from "@/components/AmenityCard";
 import ImageGallery from "@/components/ImageGallery";
 import { 
-  Wifi, Pool, UtensilsCrossed, Dog, ShowerHead, Waypoints,
+  Wifi, SwimmingPool, UtensilsCrossed, Dog, ShowerHead, Waypoints,
   Dumbbell, Car, Tent, Baby, TreePine, Coffee 
 } from "lucide-react";
 
@@ -45,7 +44,7 @@ const Amenities = () => {
   
   const recreationAmenities = [
     {
-      icon: <Pool size={36} />,
+      icon: <SwimmingPool size={36} />,
       title: "Swimming Pool",
       description: "Heated pool with lounge area, splash pad for kids, and seasonal poolside service."
     },
