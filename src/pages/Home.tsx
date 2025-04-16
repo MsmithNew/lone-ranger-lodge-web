@@ -5,10 +5,23 @@ import Layout from "@/components/Layout";
 import SectionDivider from "@/components/SectionDivider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import ImageGallery from "@/components/ImageGallery";
-import { MapPin, Calendar } from "lucide-react";
+import { 
+  MapPin, Calendar, Wifi, Utensils, Pool, Building, Home as HomeIcon, 
+  Power, Horse, TennisBall, IceCream, Music, Trees, Car 
+} from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Home = () => {
+  const isMobile = useIsMobile();
+  
   // Sample gallery images - replace with actual images when available
   const galleryImages = [
     { src: "/placeholder.svg", alt: "Resort-Style Swimming Pool" },
@@ -24,49 +37,54 @@ const Home = () => {
     {
       title: "Resort-Style Pool",
       description: "Our vintage-inspired pool offers the perfect place to cool off and relax with plenty of lounge seating and mountain views.",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      icon: <Pool size={24} />
     },
     {
       title: "Iconic Neon Signs",
       description: "Experience the glow of authentic restored neon signs throughout the property that light up the Texas night sky.",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      icon: <Power size={24} />
     },
     {
       title: "Historic Lodges",
       description: "Stay in our fully renovated 1930s lodges, combining authentic vintage charm with modern comforts and amenities.",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      icon: <Building size={24} />
     },
     {
       title: "Horse Hotel",
       description: "Traveling with equine companions? Our specialized facilities include comfortable stalls and dedicated RV hookups nearby.",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      icon: <Horse size={24} />
     },
     {
       title: "Food & Drinks",
       description: "From Gulf Burgers Restaurant to our vintage Texaco Station candy shop, enjoy delicious meals and treats without leaving the park.",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      icon: <Utensils size={24} />
     }
+  ];
+
+  // Things to do with icons
+  const thingsToDo = [
+    { activity: "Take a refreshing dip in our resort-style swimming pool", icon: <Pool size={24} className="text-rvblue" /> },
+    { activity: "Challenge friends to a pickleball match on our dedicated court", icon: <TennisBall size={24} className="text-rvblue" /> },
+    { activity: "Explore nearby horse trails with your equine companions", icon: <Horse size={24} className="text-rvblue" /> },
+    { activity: "Enjoy live music events on select weekend evenings", icon: <Music size={24} className="text-rvblue" /> },
+    { activity: "Savor burgers and shakes at our Gulf Burgers Restaurant", icon: <Utensils size={24} className="text-rvblue" /> },
+    { activity: "Experience our outdoor movie nights under the stars", icon: <IceCream size={24} className="text-rvblue" /> },
+    { activity: "Take scenic drives through the nearby Palo Pinto Mountains", icon: <Car size={24} className="text-rvblue" /> }
   ];
 
   // Local attractions
   const localAttractions = [
-    { name: "Palo Pinto Mountains State Park", distance: "15 min" },
-    { name: "Lake Leon", distance: "20 min" },
-    { name: "Stephenville", distance: "30 min" },
-    { name: "Ranger Drive-In Theater", distance: "5 min" },
-    { name: "Ranger Airport", distance: "10 min" },
-    { name: "Local Rodeo Arenas", distance: "25 min" }
-  ];
-
-  // Things to do
-  const thingsToDo = [
-    "Take a refreshing dip in our resort-style swimming pool",
-    "Challenge friends to a pickleball match on our dedicated court",
-    "Explore nearby horse trails with your equine companions",
-    "Enjoy live music events on select weekend evenings",
-    "Savor burgers and shakes at our Gulf Burgers Restaurant",
-    "Experience our outdoor movie nights under the stars",
-    "Take scenic drives through the nearby Palo Pinto Mountains"
+    { name: "Palo Pinto Mountains State Park", distance: "15 min", icon: <Trees size={20} /> },
+    { name: "Lake Leon", distance: "20 min", icon: <Pool size={20} /> },
+    { name: "Stephenville", distance: "30 min", icon: <MapPin size={20} /> },
+    { name: "Ranger Drive-In Theater", distance: "5 min", icon: <Car size={20} /> },
+    { name: "Ranger Airport", distance: "10 min", icon: <MapPin size={20} /> },
+    { name: "Local Rodeo Arenas", distance: "25 min", icon: <Horse size={20} /> }
   ];
 
   return (
@@ -133,7 +151,28 @@ const Home = () => {
           Vintage neon, scenic mountain views, and modern comfort come together to create an unforgettable stay.
         </p>
         
-        <ImageGallery images={galleryImages} />
+        <Carousel className="w-full max-w-5xl mx-auto">
+          <CarouselContent>
+            {galleryImages.map((image, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <div className="p-1">
+                  <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <img 
+                      src={image.src} 
+                      alt={image.alt} 
+                      className="w-full h-64 object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  </div>
+                  <p className="text-center mt-2 text-sm text-gray-600">{image.alt}</p>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="flex justify-center mt-4">
+            <CarouselPrevious className="relative static left-0 right-auto translate-y-0 mr-2" />
+            <CarouselNext className="relative static left-auto right-0 translate-y-0" />
+          </div>
+        </Carousel>
       </section>
 
       <SectionDivider />
@@ -154,7 +193,7 @@ const Home = () => {
               {thingsToDo.map((activity, index) => (
                 <li key={index} className="flex items-start">
                   <span className="inline-block bg-rvyellow text-rvmaroon rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 font-bold">{index + 1}</span>
-                  <span>{activity}</span>
+                  <span>{activity.activity}</span>
                 </li>
               ))}
             </ul>
