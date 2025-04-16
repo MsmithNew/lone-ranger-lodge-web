@@ -5,7 +5,7 @@ import Layout from "@/components/Layout";
 import SectionDivider from "@/components/SectionDivider";
 import TestimonialCard from "@/components/TestimonialCard";
 import AmenityCard from "@/components/AmenityCard";
-import { MapPin, Wifi, Utensils, Waves, Dog, ShowerHead } from "lucide-react";
+import { MapPin, Wifi, Utensils, Waves, Dog, ShowerHead, Home, Power, Building, Horse, Tennis, IceCream } from "lucide-react";
 
 const Home = () => {
   const testimonials = [{
@@ -39,9 +39,40 @@ const Home = () => {
           <h2 className="text-2xl md:text-3xl text-rvyellow mb-8">
             Near Palo Pinto Mountains & Stephenville, TX
           </h2>
-          <p className="text-xl md:text-2xl max-w-2xl mb-8">
-            Experience the perfect blend of nostalgic charm and modern comfort at our retro Americana-inspired RV park and lodge.
-          </p>
+          <ul className="text-xl max-w-2xl mb-8 space-y-3">
+            <li className="flex items-center gap-2">
+              <Waves size={20} className="text-rvyellow" />
+              <span>Resort-Style Swimming Pool</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <Building size={20} className="text-rvyellow" />
+              <span>Historic Lodges from the 1930s</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <Power size={20} className="text-rvyellow" />
+              <span>Full RV Hookups</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <Horse size={20} className="text-rvyellow" />
+              <span>Horse Hotel with Stalls & Hookups</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <Utensils size={20} className="text-rvyellow" />
+              <span>Gulf Burgers Restaurant Overlooking the Pool</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <Tennis size={20} className="text-rvyellow" />
+              <span>Pickleball Court</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <IceCream size={20} className="text-rvyellow" />
+              <span>Candy & Ice Cream Shop in a Vintage Texaco Station</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <Wifi size={20} className="text-rvyellow" />
+              <span>Free High-Speed Wi-Fi</span>
+            </li>
+          </ul>
           <div className="flex flex-wrap gap-4">
             <Link to="/reservations" className="btn-primary">
               Book Your Stay
