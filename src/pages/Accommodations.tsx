@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   ParkingCircle, 
   Droplets, 
-  TablePicnic, 
+  Salad, 
   Wifi, 
   Dog, 
   Warehouse,
@@ -24,7 +24,7 @@ const Accommodations = () => {
   const rvFeatures = [
     { text: "Full hookups (water, electric, sewer)", icon: <Droplets className="text-rvblue" size={18} /> },
     { text: "Pull-through and back-in options", icon: <ParkingCircle className="text-rvblue" size={18} /> },
-    { text: "Picnic table at every site", icon: <TablePicnic className="text-rvblue" size={18} /> },
+    { text: "Picnic table at every site", icon: <Salad className="text-rvblue" size={18} /> },
     { text: "Free high-speed Wi-Fi", icon: <Wifi className="text-rvblue" size={18} /> },
     { text: "Access to pool, laundry, and restrooms", icon: <ShowerHead className="text-rvblue" size={18} /> },
     { text: "Pet-friendly with nearby dog park", icon: <Dog className="text-rvblue" size={18} /> },
