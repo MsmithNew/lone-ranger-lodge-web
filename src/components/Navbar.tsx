@@ -28,9 +28,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="font-display text-2xl text-rvred">Lone Ranger</span>
-              <span className="ml-2 font-display text-lg text-rvblue">RV Park & Lodge</span>
+            <Link to="/" className="flex-shrink-0 flex items-center space-x-2">
+              <span className="font-display text-2xl text-rvred px-2 py-1">Lone Ranger</span>
+              <span className="font-display text-lg text-rvblue px-2 py-1">RV Park & Lodge</span>
             </Link>
           </div>
 
@@ -41,16 +41,16 @@ const Navbar = () => {
                 key={item.name}
                 to={item.path}
                 className={cn(
-                  "text-sm font-medium py-2 border-b-2 transition-colors duration-200",
+                  "text-sm font-medium py-2 px-3 border-b-2 transition-colors duration-200 rounded-md",
                   location.pathname === item.path
                     ? "border-rvred text-rvmaroon"
-                    : "border-transparent text-gray-600 hover:text-rvmaroon hover:border-rvyellow"
+                    : "border-transparent text-gray-600 hover:text-rvmaroon hover:border-rvyellow hover:bg-rvyellow/10"
                 )}
               >
                 {item.name}
               </Link>
             ))}
-            <Link to="/reservations" className="btn-primary text-sm">
+            <Link to="/reservations" className="btn-primary text-sm ml-4">
               Book Now
             </Link>
           </nav>
@@ -76,7 +76,7 @@ const Navbar = () => {
                 key={item.name}
                 to={item.path}
                 className={cn(
-                  "block px-3 py-2 rounded-md text-base font-medium",
+                  "block px-4 py-3 rounded-md text-base font-medium",
                   location.pathname === item.path
                     ? "bg-rvyellow/10 text-rvmaroon"
                     : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
@@ -88,7 +88,7 @@ const Navbar = () => {
             ))}
             <Link 
               to="/reservations" 
-              className="block px-3 py-2 mt-4 btn-primary text-center"
+              className="block px-4 py-3 mt-4 btn-primary text-center"
               onClick={() => setIsOpen(false)}
             >
               Book Now
@@ -101,3 +101,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
