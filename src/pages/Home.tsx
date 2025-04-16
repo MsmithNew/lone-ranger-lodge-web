@@ -5,39 +5,28 @@ import SectionDivider from "@/components/SectionDivider";
 import TestimonialCard from "@/components/TestimonialCard";
 import AmenityCard from "@/components/AmenityCard";
 import { MapPin, Wifi, Utensils, Waves, Dog, ShowerHead } from "lucide-react";
-
 const Home = () => {
-  const testimonials = [
-    {
-      quote: "Our family had the most wonderful time at Lone Ranger RV Park. The facilities were immaculate and the staff went above and beyond.",
-      author: "Sarah Johnson",
-      location: "Denver, CO",
-      rating: 5
-    },
-    {
-      quote: "The vintage atmosphere combined with modern amenities made for a perfect getaway. We can't wait to come back next summer!",
-      author: "Mike and Kelly Thomas",
-      location: "Portland, OR",
-      rating: 5
-    },
-    {
-      quote: "Best RV park we've stayed at in our 10 years on the road. The community feel and activities were outstanding.",
-      author: "Robert Miller",
-      location: "Austin, TX",
-      rating: 4
-    }
-  ];
-
-  return (
-    <Layout>
+  const testimonials = [{
+    quote: "Our family had the most wonderful time at Lone Ranger RV Park. The facilities were immaculate and the staff went above and beyond.",
+    author: "Sarah Johnson",
+    location: "Denver, CO",
+    rating: 5
+  }, {
+    quote: "The vintage atmosphere combined with modern amenities made for a perfect getaway. We can't wait to come back next summer!",
+    author: "Mike and Kelly Thomas",
+    location: "Portland, OR",
+    rating: 5
+  }, {
+    quote: "Best RV park we've stayed at in our 10 years on the road. The community feel and activities were outstanding.",
+    author: "Robert Miller",
+    location: "Austin, TX",
+    rating: 4
+  }];
+  return <Layout>
       {/* Hero Section */}
       <section className="relative h-[80vh] min-h-[550px] flex items-center">
         <div className="absolute inset-0 z-0">
-          <img
-            src="/placeholder.svg"
-            alt="Lone Ranger RV Park"
-            className="w-full h-full object-cover"
-          />
+          <img src="/placeholder.svg" alt="Lone Ranger RV Park" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
         
@@ -53,9 +42,7 @@ const Home = () => {
             <Link to="/reservations" className="btn-primary">
               Book Your Stay
             </Link>
-            <Link to="/accommodations" className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white font-semibold py-3 px-6 rounded-md transition-all duration-300">
-              Explore Accommodations
-            </Link>
+            
           </div>
         </div>
       </section>
@@ -64,28 +51,15 @@ const Home = () => {
       <section className="section-container">
         <div className="flex flex-col md:flex-row gap-10 items-center">
           <div className="md:w-1/2">
-            <h2 className="section-title">Welcome to Lone Ranger RV Park & Lodge</h2>
-            <p className="text-gray-600 mb-6">
-              Nestled in the heart of Wilderness County, Lone Ranger RV Park & Lodge 
-              offers a unique camping experience that combines the nostalgia of 
-              classic Americana with all the comforts of modern amenities.
-            </p>
-            <p className="text-gray-600 mb-6">
-              Whether you're traveling in your RV, looking for a cozy cabin, or 
-              want to experience our vintage airstream trailers, we have the 
-              perfect accommodation for your adventure. Our friendly staff is 
-              dedicated to making your stay memorable.
-            </p>
+            <h2 className="section-title">A Retro Americana RV Park Experience in Ranger, TX</h2>
+            <p className="text-gray-600 mb-6">Located just off SH-Loop 254 in Ranger, Texas, and minutes from the new Palo Pinto Mountains State Park, Lone Ranger RV Park & Lodge offers a unique stay packed with vintage charm and modern comfort. Whether you're RVing, tent camping, or staying in a fully renovated 1930s lodge, you'll find everything you need for a relaxing escape near Stephenville, Eastland, and Lake Leon.</p>
+            
             <Link to="/about" className="btn-secondary">
               Learn More About Us
             </Link>
           </div>
           <div className="md:w-1/2 rounded-lg overflow-hidden shadow-xl">
-            <img
-              src="/placeholder.svg"
-              alt="Lone Ranger RV Park & Lodge"
-              className="w-full h-full object-cover"
-            />
+            <img src="/placeholder.svg" alt="Lone Ranger RV Park & Lodge" className="w-full h-full object-cover" />
           </div>
         </div>
       </section>
@@ -102,36 +76,12 @@ const Home = () => {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AmenityCard
-            icon={<Wifi size={32} />}
-            title="High-Speed WiFi"
-            description="Stay connected with complimentary high-speed internet throughout the property."
-          />
-          <AmenityCard
-            icon={<Waves size={32} />}
-            title="Swimming Pool"
-            description="Cool off in our vintage-inspired pool with plenty of lounge space and a splash area for kids."
-          />
-          <AmenityCard
-            icon={<Utensils size={32} />}
-            title="On-site Diner"
-            description="Enjoy classic American comfort food at our 50's style diner open for breakfast and dinner."
-          />
-          <AmenityCard
-            icon={<MapPin size={32} />}
-            title="Central Location"
-            description="Perfectly situated for exploring local attractions, hiking trails, and historical sites."
-          />
-          <AmenityCard
-            icon={<ShowerHead size={32} />}
-            title="Modern Bathhouses"
-            description="Spotlessly clean facilities with hot showers, private changing areas, and laundry services."
-          />
-          <AmenityCard
-            icon={<Dog size={32} />}
-            title="Pet Friendly"
-            description="Bring your furry friends along! We offer dedicated pet areas and walking trails."
-          />
+          <AmenityCard icon={<Wifi size={32} />} title="High-Speed WiFi" description="Stay connected with complimentary high-speed internet throughout the property." />
+          <AmenityCard icon={<Waves size={32} />} title="Swimming Pool" description="Cool off in our vintage-inspired pool with plenty of lounge space and a splash area for kids." />
+          <AmenityCard icon={<Utensils size={32} />} title="On-site Diner" description="Enjoy classic American comfort food at our 50's style diner open for breakfast and dinner." />
+          <AmenityCard icon={<MapPin size={32} />} title="Central Location" description="Perfectly situated for exploring local attractions, hiking trails, and historical sites." />
+          <AmenityCard icon={<ShowerHead size={32} />} title="Modern Bathhouses" description="Spotlessly clean facilities with hot showers, private changing areas, and laundry services." />
+          <AmenityCard icon={<Dog size={32} />} title="Pet Friendly" description="Bring your furry friends along! We offer dedicated pet areas and walking trails." />
         </div>
         
         <div className="text-center mt-10">
@@ -155,11 +105,7 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="card group">
             <div className="relative overflow-hidden h-64">
-              <img
-                src="/placeholder.svg"
-                alt="RV Sites"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+              <img src="/placeholder.svg" alt="RV Sites" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                 <div className="p-6 text-white">
                   <h3 className="text-xl font-display mb-1">RV Sites</h3>
@@ -171,11 +117,7 @@ const Home = () => {
           
           <div className="card group">
             <div className="relative overflow-hidden h-64">
-              <img
-                src="/placeholder.svg"
-                alt="Cozy Cabins"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+              <img src="/placeholder.svg" alt="Cozy Cabins" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                 <div className="p-6 text-white">
                   <h3 className="text-xl font-display mb-1">Cozy Cabins</h3>
@@ -187,11 +129,7 @@ const Home = () => {
           
           <div className="card group">
             <div className="relative overflow-hidden h-64">
-              <img
-                src="/placeholder.svg"
-                alt="Vintage Trailers"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+              <img src="/placeholder.svg" alt="Vintage Trailers" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                 <div className="p-6 text-white">
                   <h3 className="text-xl font-display mb-1">Vintage Trailers</h3>
@@ -221,15 +159,7 @@ const Home = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <TestimonialCard
-              key={index}
-              quote={testimonial.quote}
-              author={testimonial.author}
-              location={testimonial.location}
-              rating={testimonial.rating}
-            />
-          ))}
+          {testimonials.map((testimonial, index) => <TestimonialCard key={index} quote={testimonial.quote} author={testimonial.author} location={testimonial.location} rating={testimonial.rating} />)}
         </div>
       </section>
 
@@ -245,8 +175,6 @@ const Home = () => {
           </Link>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Home;
