@@ -9,8 +9,8 @@ import {
   Waves, 
   Building, 
   Power, 
-  Horse, 
-  TennisBall,
+  Warehouse, 
+  PlayIcon,
   Dog,
   Music,
   Utensils,
@@ -26,8 +26,8 @@ const About = () => {
     { name: "Resort-Style Swimming Pool", icon: <Waves size={24} className="text-rvblue" /> },
     { name: "Historic 1930s Lodges", icon: <Building size={24} className="text-rvblue" /> },
     { name: "Full RV Hookups", icon: <Power size={24} className="text-rvblue" /> },
-    { name: "Horse Hotel with Stalls", icon: <Horse size={24} className="text-rvblue" /> },
-    { name: "Pickleball Court", icon: <TennisBall size={24} className="text-rvblue" /> },
+    { name: "Horse Hotel with Stalls", icon: <Warehouse size={24} className="text-rvblue" /> },
+    { name: "Pickleball Court", icon: <PlayIcon size={24} className="text-rvblue" /> },
     { name: "Dog Park", icon: <Dog size={24} className="text-rvblue" /> },
     { name: "Live Music on Weekends", icon: <Music size={24} className="text-rvblue" /> },
     { name: "Gulf Burgers Restaurant", icon: <Utensils size={24} className="text-rvblue" /> },
@@ -48,7 +48,7 @@ const About = () => {
     {
       title: "Horse Hotel",
       description: "RV sites with additional horse stalls — perfect for trail riders and rodeo travelers.",
-      icon: <Horse size={40} className="text-rvyellow" />,
+      icon: <Warehouse size={40} className="text-rvyellow" />,
       imageUrl: "/placeholder.svg"
     },
     {
