@@ -2,230 +2,183 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
-import AccommodationCard from "@/components/AccommodationCard";
 import { Link } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
+import { 
+  ParkingCircle, 
+  Droplets, 
+  TablePicnic, 
+  Wifi, 
+  Dog, 
+  Warehouse,
+  Building, 
+  Coffee,
+  ArrowRight,
+  Bed,
+  ShowerHead,
+  Thermometer
+} from "lucide-react";
 
 const Accommodations = () => {
-  const rvSites = [
-    {
-      title: "Premium Pull-Through Sites",
-      description: "Our most spacious RV sites with easy access and extra amenities.",
-      imageUrl: "/placeholder.svg",
-      price: "From $45/night",
-      features: [
-        "Full hookups (50/30/20 amp)",
-        "Extra-wide concrete pad",
-        "Fire ring and picnic table",
-        "Cable TV and Wi-Fi included",
-        "Seasonal flower planters"
-      ],
-      link: "#"
-    },
-    {
-      title: "Standard Back-In Sites",
-      description: "Comfortable RV sites with all the essentials for a great stay.",
-      imageUrl: "/placeholder.svg",
-      price: "From $35/night",
-      features: [
-        "Full hookups (30/20 amp)",
-        "Gravel pad with patio area",
-        "Fire ring and picnic table",
-        "Wi-Fi included",
-        "Close to bathhouse"
-      ],
-      link: "#"
-    },
-    {
-      title: "Riverside Sites",
-      description: "Premium locations along the scenic riverside with beautiful views.",
-      imageUrl: "/placeholder.svg",
-      price: "From $50/night",
-      features: [
-        "Full hookups (50/30/20 amp)",
-        "Direct river access",
-        "Extra-large site area",
-        "Private fishing spot",
-        "Enhanced privacy landscaping"
-      ],
-      link: "#"
-    }
+  // RV site features with icons
+  const rvFeatures = [
+    { text: "Full hookups (water, electric, sewer)", icon: <Droplets className="text-rvblue" size={18} /> },
+    { text: "Pull-through and back-in options", icon: <ParkingCircle className="text-rvblue" size={18} /> },
+    { text: "Picnic table at every site", icon: <TablePicnic className="text-rvblue" size={18} /> },
+    { text: "Free high-speed Wi-Fi", icon: <Wifi className="text-rvblue" size={18} /> },
+    { text: "Access to pool, laundry, and restrooms", icon: <ShowerHead className="text-rvblue" size={18} /> },
+    { text: "Pet-friendly with nearby dog park", icon: <Dog className="text-rvblue" size={18} /> },
+    { text: "Walking distance to Gulf Burgers and Pickleball", icon: <ArrowRight className="text-rvblue" size={18} /> }
   ];
 
-  const cabins = [
-    {
-      title: "Deluxe Family Cabin",
-      description: "Spacious cabin perfect for families, with separate bedroom and full amenities.",
-      imageUrl: "/placeholder.svg",
-      price: "From $125/night",
-      features: [
-        "Sleeps up to 6 people",
-        "Full kitchen",
-        "Bathroom with shower",
-        "TV and Wi-Fi",
-        "Screened porch with seating"
-      ],
-      link: "#"
-    },
-    {
-      title: "Cozy Couple's Cabin",
-      description: "Romantic cabin ideal for couples looking for a quiet getaway.",
-      imageUrl: "/placeholder.svg",
-      price: "From $95/night",
-      features: [
-        "Queen bed and day bed",
-        "Kitchenette",
-        "Bathroom with shower",
-        "TV and Wi-Fi",
-        "Private deck with views"
-      ],
-      link: "#"
-    }
+  // Horse hotel features with icons
+  const horseFeatures = [
+    { text: "Full RV hookups", icon: <Droplets className="text-rvblue" size={18} /> },
+    { text: "Individual shaded horse stalls", icon: <Warehouse className="text-rvblue" size={18} /> },
+    { text: "Easy pull-through access", icon: <ParkingCircle className="text-rvblue" size={18} /> },
+    { text: "Water and electric for trailers", icon: <Droplets className="text-rvblue" size={18} /> },
+    { text: "Quick trail access to Palo Pinto", icon: <ArrowRight className="text-rvblue" size={18} /> },
+    { text: "Access to restrooms and pool", icon: <ShowerHead className="text-rvblue" size={18} /> },
+    { text: "Quiet area near pasture views", icon: <ArrowRight className="text-rvblue" size={18} /> }
   ];
 
-  const uniqueStays = [
-    {
-      title: "Vintage Airstream",
-      description: "Authentically restored 1960s Airstream trailer with modern comforts.",
-      imageUrl: "/placeholder.svg",
-      price: "From $110/night",
-      features: [
-        "Queen bed and convertible dining area",
-        "Retro kitchenette with microwave",
-        "Small bathroom with shower",
-        "Air conditioning and heating",
-        "Private outdoor seating area"
-      ],
-      link: "#"
-    },
-    {
-      title: "Covered Wagon Experience",
-      description: "Sleep under the stars in our covered wagon for a true pioneer experience with modern comforts.",
-      imageUrl: "/placeholder.svg",
-      price: "From $85/night",
-      features: [
-        "Queen bed and two bunk beds",
-        "Electric lights and outlets",
-        "Outdoor cooking area",
-        "Access to nearby bathhouse",
-        "Picnic table and fire ring"
-      ],
-      link: "#"
-    }
+  // Lodge features with icons
+  const lodgeFeatures = [
+    { text: "Queen bed and private bathroom", icon: <Bed className="text-rvblue" size={18} /> },
+    { text: "Air conditioning and heating", icon: <Thermometer className="text-rvblue" size={18} /> },
+    { text: "Retro-style decor", icon: <Building className="text-rvblue" size={18} /> },
+    { text: "Mini-fridge, coffee maker, and essentials", icon: <Coffee className="text-rvblue" size={18} /> },
+    { text: "Private entrance and parking", icon: <ParkingCircle className="text-rvblue" size={18} /> },
+    { text: "Steps away from pool and restaurant", icon: <ArrowRight className="text-rvblue" size={18} /> }
   ];
 
   return (
     <Layout>
       <PageHeader
-        title="Accommodations"
-        description="From spacious RV sites to cozy cabins and unique lodging options, find the perfect stay for your next adventure."
+        title="Choose Your Stay in the Heart of Ranger, TX"
+        description="Whether you're rolling in with your rig, traveling with horses, or looking for a cozy lodge escape, Lone Ranger RV Park offers comfort, convenience, and retro charm just minutes from Palo Pinto Mountains State Park."
+        imageUrl="/placeholder.svg"
       />
       
-      {/* RV Sites */}
+      {/* RV Sites Section */}
       <section className="section-container">
-        <div className="text-center mb-10">
-          <h2 className="section-title">RV Sites</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Our well-maintained RV sites offer full hookups, spacious layouts, and easy access. Choose from pull-through, back-in, or premium riverside locations.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {rvSites.map((site, index) => (
-            <AccommodationCard
-              key={index}
-              title={site.title}
-              description={site.description}
-              imageUrl={site.imageUrl}
-              price={site.price}
-              features={site.features}
-              link={site.link}
-            />
-          ))}
-        </div>
-      </section>
-      
-      <SectionDivider />
-      
-      {/* Cabins */}
-      <section className="section-container bg-gray-50">
-        <div className="text-center mb-10">
-          <h2 className="section-title">Cozy Cabins</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Our rustic cabins blend vintage charm with modern amenities, providing a comfortable lodging option for those who prefer a roof over their heads.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {cabins.map((cabin, index) => (
-            <AccommodationCard
-              key={index}
-              title={cabin.title}
-              description={cabin.description}
-              imageUrl={cabin.imageUrl}
-              price={cabin.price}
-              features={cabin.features}
-              link={cabin.link}
-            />
-          ))}
-        </div>
-      </section>
-      
-      <SectionDivider />
-      
-      {/* Unique Stays */}
-      <section className="section-container">
-        <div className="text-center mb-10">
-          <h2 className="section-title">Unique Lodging Experiences</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            For a truly memorable stay, try one of our specialty accommodations that celebrate the spirit of vintage Americana.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {uniqueStays.map((stay, index) => (
-            <AccommodationCard
-              key={index}
-              title={stay.title}
-              description={stay.description}
-              imageUrl={stay.imageUrl}
-              price={stay.price}
-              features={stay.features}
-              link={stay.link}
-            />
-          ))}
-        </div>
-      </section>
-      
-      {/* Accessibility */}
-      <section className="section-container bg-rvblue/10">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="section-title text-center mb-6">Accessibility Information</h2>
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <p className="text-gray-600 mb-4">
-              Lone Ranger RV Park & Lodge is committed to providing accessible accommodations for all guests. We offer:
-            </p>
-            <ul className="list-disc pl-6 mb-4 text-gray-600 space-y-2">
-              <li>Accessible RV sites with paved pads and nearby parking</li>
-              <li>ADA-compliant restroom and shower facilities</li>
-              <li>One fully accessible cabin with ramp access and accessible bathroom</li>
-              <li>Paved pathways to main lodge and common areas</li>
-              <li>Service animals welcome throughout the property</li>
-            </ul>
-            <p className="text-gray-600">
-              If you have specific accessibility requirements, please contact us directly to ensure we can accommodate your needs.
-            </p>
+        <div className="max-w-6xl mx-auto">
+          <h2 className="section-title text-center mb-6">RV Sites</h2>
+          <div className="flex flex-col md:flex-row gap-8 items-center">
+            <div className="md:w-1/2">
+              <div className="rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="/placeholder.svg" 
+                  alt="RV sites at Lone Ranger RV Park" 
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+            </div>
+            <div className="md:w-1/2">
+              <p className="text-gray-700 mb-6">
+                Pull into one of our 18 RV sites designed for ease, shade, and a scenic stay.
+              </p>
+              <ul className="space-y-3">
+                {rvFeatures.map((feature, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="mt-0.5 flex-shrink-0">{feature.icon}</span>
+                    <span>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
       
-      {/* Booking CTA */}
-      <section className="section-container bg-rvmaroon text-white py-16">
-        <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-display mb-6">Ready to Book Your Stay?</h2>
-          <p className="text-xl max-w-2xl mx-auto mb-8">
-            Check availability and rates for your preferred accommodation options.
+      <SectionDivider />
+      
+      {/* Horse Hotel Section */}
+      <section className="section-container bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="section-title text-center mb-6">Horse Hotel</h2>
+          <div className="flex flex-col md:flex-row-reverse gap-8 items-center">
+            <div className="md:w-1/2">
+              <div className="rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="/placeholder.svg" 
+                  alt="Horse Hotel at Lone Ranger RV Park" 
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+            </div>
+            <div className="md:w-1/2">
+              <p className="text-gray-700 mb-6">
+                Bringing your horse along? Our Horse Hotel sites offer a unique stay with comfort for you and your companion.
+              </p>
+              <ul className="space-y-3">
+                {horseFeatures.map((feature, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="mt-0.5 flex-shrink-0">{feature.icon}</span>
+                    <span>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <SectionDivider />
+      
+      {/* Lodges Section */}
+      <section className="section-container">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="section-title text-center mb-6">Lodges</h2>
+          <div className="flex flex-col md:flex-row gap-8 items-center">
+            <div className="md:w-1/2">
+              <div className="rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="/placeholder.svg" 
+                  alt="Vintage lodges at Lone Ranger RV Park" 
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+            </div>
+            <div className="md:w-1/2">
+              <p className="text-gray-700 mb-6">
+                Stay in one of our four fully renovated 1930s lodges, where vintage charm meets modern comfort.
+              </p>
+              <ul className="space-y-3">
+                {lodgeFeatures.map((feature, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="mt-0.5 flex-shrink-0">{feature.icon}</span>
+                    <span>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <SectionDivider />
+      
+      {/* Final Banner Section - Location & Style Highlight */}
+      <section className="relative py-16">
+        <div className="absolute inset-0 bg-gradient-to-r from-rvmaroon to-rvblue opacity-90">
+          <img 
+            src="/placeholder.svg" 
+            alt="Scenic view of Lone Ranger RV Park" 
+            className="w-full h-full object-cover mix-blend-overlay" 
+          />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
+          <h2 className="text-3xl md:text-4xl font-display mb-4">
+            Stay in Ranger, Texas — where retro Americana meets the wide-open Texas sky.
+          </h2>
+          <p className="text-xl mb-8">
+            Just minutes from Palo Pinto Mountains State Park and packed with character, Lone Ranger RV Park is more than a place to sleep. It's a place to experience.
           </p>
-          <Link to="/reservations" className="btn-primary bg-rvyellow text-rvmaroon hover:bg-rvyellow/90">
+          <Link 
+            to="/reservations" 
+            className="bg-rvyellow text-rvmaroon hover:bg-rvyellow/90 font-semibold py-3 px-8 rounded-md transition-all duration-300 inline-block"
+          >
             Book Now
           </Link>
         </div>
