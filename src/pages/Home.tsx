@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -7,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   SwimmingPool, 
   House, 
-  Activity,  // Replacing TennisBall
+  Activity,
   Power, 
   Building, 
   Home as HomeIcon, 
