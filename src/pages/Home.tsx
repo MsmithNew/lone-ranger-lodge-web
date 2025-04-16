@@ -3,212 +3,294 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import SectionDivider from "@/components/SectionDivider";
-import TestimonialCard from "@/components/TestimonialCard";
-import AmenityCard from "@/components/AmenityCard";
-import { MapPin, Wifi, Utensils, Waves, Dog, ShowerHead, Home as HomeIcon, Power, Building, House, Activity, IceCream } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import ImageGallery from "@/components/ImageGallery";
+import { MapPin, Calendar } from "lucide-react";
 
 const Home = () => {
-  const testimonials = [{
-    quote: "Our family had the most wonderful time at Lone Ranger RV Park. The facilities were immaculate and the staff went above and beyond.",
-    author: "Sarah Johnson",
-    location: "Denver, CO",
-    rating: 5
-  }, {
-    quote: "The vintage atmosphere combined with modern amenities made for a perfect getaway. We can't wait to come back next summer!",
-    author: "Mike and Kelly Thomas",
-    location: "Portland, OR",
-    rating: 5
-  }, {
-    quote: "Best RV park we've stayed at in our 10 years on the road. The community feel and activities were outstanding.",
-    author: "Robert Miller",
-    location: "Austin, TX",
-    rating: 4
-  }];
-  return <Layout>
-      {/* Hero Section */}
-      <section className="relative h-[80vh] min-h-[550px] flex items-center">
+  // Sample gallery images - replace with actual images when available
+  const galleryImages = [
+    { src: "/placeholder.svg", alt: "Resort-Style Swimming Pool" },
+    { src: "/placeholder.svg", alt: "Historic Lodges from the 1930s" },
+    { src: "/placeholder.svg", alt: "Horse Hotel with Stalls & Hookups" },
+    { src: "/placeholder.svg", alt: "Vintage Neon Signs" },
+    { src: "/placeholder.svg", alt: "Candy & Ice Cream Shop in Texaco Station" },
+    { src: "/placeholder.svg", alt: "Palo Pinto Mountains" }
+  ];
+
+  // Featured amenities for grid cards
+  const featuredAmenities = [
+    {
+      title: "Resort-Style Pool",
+      description: "Our vintage-inspired pool offers the perfect place to cool off and relax with plenty of lounge seating and mountain views.",
+      image: "/placeholder.svg"
+    },
+    {
+      title: "Iconic Neon Signs",
+      description: "Experience the glow of authentic restored neon signs throughout the property that light up the Texas night sky.",
+      image: "/placeholder.svg"
+    },
+    {
+      title: "Historic Lodges",
+      description: "Stay in our fully renovated 1930s lodges, combining authentic vintage charm with modern comforts and amenities.",
+      image: "/placeholder.svg"
+    },
+    {
+      title: "Horse Hotel",
+      description: "Traveling with equine companions? Our specialized facilities include comfortable stalls and dedicated RV hookups nearby.",
+      image: "/placeholder.svg"
+    },
+    {
+      title: "Food & Drinks",
+      description: "From Gulf Burgers Restaurant to our vintage Texaco Station candy shop, enjoy delicious meals and treats without leaving the park.",
+      image: "/placeholder.svg"
+    }
+  ];
+
+  // Local attractions
+  const localAttractions = [
+    { name: "Palo Pinto Mountains State Park", distance: "15 min" },
+    { name: "Lake Leon", distance: "20 min" },
+    { name: "Stephenville", distance: "30 min" },
+    { name: "Ranger Drive-In Theater", distance: "5 min" },
+    { name: "Ranger Airport", distance: "10 min" },
+    { name: "Local Rodeo Arenas", distance: "25 min" }
+  ];
+
+  // Things to do
+  const thingsToDo = [
+    "Take a refreshing dip in our resort-style swimming pool",
+    "Challenge friends to a pickleball match on our dedicated court",
+    "Explore nearby horse trails with your equine companions",
+    "Enjoy live music events on select weekend evenings",
+    "Savor burgers and shakes at our Gulf Burgers Restaurant",
+    "Experience our outdoor movie nights under the stars",
+    "Take scenic drives through the nearby Palo Pinto Mountains"
+  ];
+
+  return (
+    <Layout>
+      {/* Hero Banner Section */}
+      <section className="relative h-[85vh] min-h-[600px] flex items-center">
         <div className="absolute inset-0 z-0">
           <img src="/placeholder.svg" alt="Lone Ranger RV Park" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-black/50"></div>
         </div>
         
         <div className="relative z-10 section-container text-white">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display mb-4">
-            Stay at Lone Ranger RV Park
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display mb-4 animate-fade-in">
+            Where the Spirit of the Road Lives On
           </h1>
-          <h2 className="text-2xl md:text-3xl text-rvyellow mb-8">
-            Near Palo Pinto Mountains & Stephenville, TX
+          <h2 className="text-2xl md:text-3xl text-rvyellow mb-8 animate-fade-in" style={{animationDelay: "0.2s"}}>
+            Just off Loop 254 in Ranger, Texas — minutes from Palo Pinto Mountains
           </h2>
-          <ul className="text-xl max-w-2xl mb-8 space-y-3">
-            <li className="flex items-center gap-2">
-              <Waves size={20} className="text-rvyellow" />
-              <span>Resort-Style Swimming Pool</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <Building size={20} className="text-rvyellow" />
-              <span>Historic Lodges from the 1930s</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <Power size={20} className="text-rvyellow" />
-              <span>Full RV Hookups</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <House size={20} className="text-rvyellow" />
-              <span>Horse Hotel with Stalls & Hookups</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <Utensils size={20} className="text-rvyellow" />
-              <span>Gulf Burgers Restaurant Overlooking the Pool</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <Activity size={20} className="text-rvyellow" />
-              <span>Pickleball Court</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <IceCream size={20} className="text-rvyellow" />
-              <span>Candy & Ice Cream Shop in a Vintage Texaco Station</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <Wifi size={20} className="text-rvyellow" />
-              <span>Free High-Speed Wi-Fi</span>
-            </li>
-          </ul>
-          <div className="flex flex-wrap gap-4">
-            <Link to="/reservations" className="btn-primary">
-              Book Your Stay
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Welcome Section */}
-      <section className="section-container">
-        <div className="flex flex-col md:flex-row gap-10 items-center">
-          <div className="md:w-1/2">
-            <h2 className="section-title">A Retro Americana RV Park Experience in Ranger, TX</h2>
-            <p className="text-gray-600 mb-6">Located just off SH-Loop 254 in Ranger, Texas, and minutes from the new Palo Pinto Mountains State Park, Lone Ranger RV Park & Lodge offers a unique stay packed with vintage charm and modern comfort. Whether you're RVing, tent camping, or staying in a fully renovated 1930s lodge, you'll find everything you need for a relaxing escape near Stephenville, Eastland, and Lake Leon.</p>
-            
-            <Link to="/about" className="btn-secondary">
-              Learn More About Us
-            </Link>
-          </div>
-          <div className="md:w-1/2 rounded-lg overflow-hidden shadow-xl">
-            <img src="/placeholder.svg" alt="Lone Ranger RV Park & Lodge" className="w-full h-full object-cover" />
-          </div>
-        </div>
-      </section>
-
-      <SectionDivider />
-
-      {/* Featured Amenities */}
-      <section className="section-container bg-gray-50">
-        <div className="text-center mb-12">
-          <h2 className="section-title">Featured Amenities</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            We pride ourselves on offering comprehensive facilities to make your stay comfortable and enjoyable.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AmenityCard icon={<Wifi size={32} />} title="High-Speed WiFi" description="Stay connected with complimentary high-speed internet throughout the property." />
-          <AmenityCard icon={<Waves size={32} />} title="Swimming Pool" description="Cool off in our vintage-inspired pool with plenty of lounge space and a splash area for kids." />
-          <AmenityCard icon={<Utensils size={32} />} title="On-site Diner" description="Enjoy classic American comfort food at our 50's style diner open for breakfast and dinner." />
-          <AmenityCard icon={<MapPin size={32} />} title="Central Location" description="Perfectly situated for exploring local attractions, hiking trails, and historical sites." />
-          <AmenityCard icon={<ShowerHead size={32} />} title="Modern Bathhouses" description="Spotlessly clean facilities with hot showers, private changing areas, and laundry services." />
-          <AmenityCard icon={<Dog size={32} />} title="Pet Friendly" description="Bring your furry friends along! We offer dedicated pet areas and walking trails." />
-        </div>
-        
-        <div className="text-center mt-10">
-          <Link to="/amenities" className="btn-secondary">
-            View All Amenities
-          </Link>
-        </div>
-      </section>
-
-      <SectionDivider />
-
-      {/* Accommodation Preview */}
-      <section className="section-container">
-        <div className="text-center mb-12">
-          <h2 className="section-title">Find Your Perfect Stay</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            From spacious RV sites to cozy cabins and unique vintage trailers, we have accommodations for every type of traveler.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="card group">
-            <div className="relative overflow-hidden h-64">
-              <img src="/placeholder.svg" alt="RV Sites" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                <div className="p-6 text-white">
-                  <h3 className="text-xl font-display mb-1">RV Sites</h3>
-                  <p className="text-sm">Full hookups with spacious pull-through options</p>
-                </div>
-              </div>
-            </div>
+          
+          <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg max-w-2xl mb-8 animate-fade-in" style={{animationDelay: "0.4s"}}>
+            <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 text-lg">
+              <li>Resort-Style Pool</li>
+              <li>Historic Lodges</li>
+              <li>Full Hookups</li>
+              <li>Horse Hotel</li>
+              <li>Gulf Burgers Restaurant</li>
+              <li>Pickleball Court</li>
+              <li>Candy & Ice Cream Shop</li>
+              <li>Free Wi-Fi</li>
+            </ul>
           </div>
           
-          <div className="card group">
-            <div className="relative overflow-hidden h-64">
-              <img src="/placeholder.svg" alt="Cozy Cabins" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                <div className="p-6 text-white">
-                  <h3 className="text-xl font-display mb-1">Cozy Cabins</h3>
-                  <p className="text-sm">Rustic charm with modern amenities</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="card group">
-            <div className="relative overflow-hidden h-64">
-              <img src="/placeholder.svg" alt="Vintage Trailers" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                <div className="p-6 text-white">
-                  <h3 className="text-xl font-display mb-1">Vintage Trailers</h3>
-                  <p className="text-sm">Unique retro accommodations for a nostalgic stay</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="text-center mt-10">
-          <Link to="/accommodations" className="btn-secondary">
-            Explore All Accommodations
-          </Link>
-        </div>
-      </section>
-
-      <SectionDivider />
-
-      {/* Testimonials */}
-      <section className="section-container bg-rvblue/5">
-        <div className="text-center mb-12">
-          <h2 className="section-title">What Our Guests Say</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Don't just take our word for it. Hear from our happy campers!
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => <TestimonialCard key={index} quote={testimonial.quote} author={testimonial.author} location={testimonial.location} rating={testimonial.rating} />)}
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="relative bg-rvmaroon text-white py-16">
-        <div className="section-container text-center">
-          <h2 className="text-3xl md:text-4xl font-display mb-6">Ready for Your Next Adventure?</h2>
-          <p className="text-xl max-w-2xl mx-auto mb-8">
-            Book your stay at Lone Ranger RV Park & Lodge today and experience the perfect blend of nostalgia and comfort.
-          </p>
-          <Link to="/reservations" className="btn-primary bg-rvyellow text-rvmaroon hover:bg-rvyellow/90">
+          <Link to="/reservations" className="btn-primary text-lg px-8 py-4 animate-fade-in" style={{animationDelay: "0.6s"}}>
             Book Your Stay Now
           </Link>
         </div>
       </section>
-    </Layout>;
+
+      {/* Section 1 - Welcome */}
+      <section className="section-container py-16 md:py-24">
+        <div className="flex flex-col md:flex-row gap-12 items-center">
+          <div className="md:w-1/2">
+            <h2 className="section-title text-4xl mb-6">Where History Meets Hospitality</h2>
+            <p className="text-xl text-gray-700 mb-8">
+              Step back in time at Lone Ranger RV Park & Lodge, where vintage neon signs illuminate your path and the spirit of classic Americana lives on. Nestled among scenic views of the Palo Pinto Mountains, our family-friendly park blends historic charm with modern amenities. Whether you're parking your RV, pitching a tent, or staying in one of our restored 1930s lodges, you'll experience Texas hospitality at its finest.
+            </p>
+            
+            <Link to="/reservations" className="btn-primary">
+              Book Now
+            </Link>
+          </div>
+          <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
+            <img src="/placeholder.svg" alt="Lone Ranger RV Park at sunset" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* Section 2 - Photo Gallery */}
+      <section className="section-container py-16 bg-gray-50">
+        <h2 className="section-title text-4xl text-center mb-10">Capture the Experience</h2>
+        <p className="text-xl text-gray-600 text-center max-w-3xl mx-auto mb-12">
+          Vintage neon, scenic mountain views, and modern comfort come together to create an unforgettable stay.
+        </p>
+        
+        <ImageGallery images={galleryImages} />
+      </section>
+
+      <SectionDivider />
+
+      {/* Section 3 - Things To Do */}
+      <section className="section-container py-16">
+        <div className="flex flex-col md:flex-row gap-12 items-center">
+          <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
+            <img src="/placeholder.svg" alt="Activities at Lone Ranger RV Park" className="w-full h-full object-cover" />
+          </div>
+          <div className="md:w-1/2">
+            <h2 className="section-title text-4xl mb-6">Things to Do</h2>
+            <p className="text-lg text-gray-700 mb-6">
+              Your adventure doesn't end when you park. Here's what awaits at Lone Ranger RV Park:
+            </p>
+            
+            <ul className="space-y-3 text-lg">
+              {thingsToDo.map((activity, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="inline-block bg-rvyellow text-rvmaroon rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 font-bold">{index + 1}</span>
+                  <span>{activity}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* Section 4 - What Awaits You */}
+      <section className="section-container py-16 bg-gray-50">
+        <h2 className="section-title text-4xl text-center mb-3">What Awaits You</h2>
+        <p className="text-xl text-gray-600 text-center max-w-3xl mx-auto mb-12">
+          Discover the unique features that make Lone Ranger RV Park a one-of-a-kind destination
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featuredAmenities.map((amenity, index) => (
+            <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div className="h-48 overflow-hidden">
+                <img 
+                  src={amenity.image} 
+                  alt={amenity.title} 
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                />
+              </div>
+              <CardContent className="p-6">
+                <h3 className="text-xl font-display mb-2 text-rvmaroon">{amenity.title}</h3>
+                <p className="text-gray-600">{amenity.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* Section 5 - RV Rules & Regulations */}
+      <section className="section-container py-16">
+        <div className="flex flex-col md:flex-row gap-12">
+          <div className="md:w-1/2">
+            <h2 className="section-title text-4xl mb-6">RV Rules & Regulations</h2>
+            <p className="text-lg text-gray-700 mb-6">
+              To ensure everyone enjoys their stay, we maintain the following policies:
+            </p>
+            
+            <ul className="space-y-4 text-lg">
+              <li className="flex items-start">
+                <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
+                <div>
+                  <span className="font-semibold">Check-in/out times:</span> Check-in is at 2:00 PM, and check-out is at 11:00 AM.
+                </div>
+              </li>
+              <li className="flex items-start">
+                <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
+                <div>
+                  <span className="font-semibold">Quiet hours:</span> 10:00 PM to 7:00 AM to ensure everyone gets their rest.
+                </div>
+              </li>
+              <li className="flex items-start">
+                <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
+                <div>
+                  <span className="font-semibold">Campfire policy:</span> Fires allowed in designated fire rings only. No fires during burn bans.
+                </div>
+              </li>
+              <li className="flex items-start">
+                <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
+                <div>
+                  <span className="font-semibold">Pets:</span> Welcome but must be leashed at all times. Please clean up after your pets.
+                </div>
+              </li>
+              <li className="flex items-start">
+                <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
+                <div>
+                  <span className="font-semibold">Wi-Fi:</span> Complimentary high-speed connection available throughout the property.
+                </div>
+              </li>
+            </ul>
+            
+            <Link to="/rules-faqs" className="btn-secondary mt-8 inline-block">
+              View All Rules & FAQs
+            </Link>
+          </div>
+          <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
+            <img src="/placeholder.svg" alt="RV campsite at Lone Ranger RV Park" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* Section 6 - Rest CTA Section */}
+      <section className="py-20 bg-rvmaroon text-white">
+        <div className="section-container text-center">
+          <h2 className="text-4xl md:text-5xl font-display mb-8">Rest Your Wheels Where History Feels Alive</h2>
+          <p className="text-xl max-w-3xl mx-auto mb-10">
+            Experience the perfect blend of vintage charm and modern comfort at Lone Ranger RV Park.
+          </p>
+          <Link to="/reservations" className="btn-primary bg-rvyellow text-rvmaroon hover:bg-rvyellow/90 text-lg px-8 py-4">
+            Book Your Getaway
+          </Link>
+        </div>
+      </section>
+
+      {/* Section 7 - Local Attractions */}
+      <section className="section-container py-16">
+        <h2 className="section-title text-4xl text-center mb-3">Explore the Area</h2>
+        <p className="text-xl text-gray-600 text-center max-w-3xl mx-auto mb-12">
+          Perfectly situated to experience the best of Texas
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {localAttractions.map((attraction, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-xl font-display text-rvmaroon">{attraction.name}</h3>
+                <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm font-medium flex items-center">
+                  <MapPin size={14} className="mr-1" />
+                  {attraction.distance}
+                </span>
+              </div>
+              <p className="text-gray-600">
+                Experience the natural beauty and local culture of the Ranger area.
+              </p>
+            </div>
+          ))}
+        </div>
+        
+        <div className="text-center mt-10">
+          <Link to="/activities" className="btn-secondary">
+            Discover More Attractions
+          </Link>
+        </div>
+      </section>
+    </Layout>
+  );
 };
+
 export default Home;
