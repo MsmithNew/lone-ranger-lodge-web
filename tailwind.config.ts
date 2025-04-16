@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                // Custom colors for Lone Ranger RV Park & Lodge
+                rvred: '#FF1F47',
+                rvblue: '#1FBEFF',
+                rvyellow: '#FFF41F',
+                rvolive: '#AAA54D',
+                rvmaroon: '#804F58',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,12 +91,27 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'fade-in': {
+                    '0%': {
+                        opacity: '0',
+                        transform: 'translateY(10px)'
+                    },
+                    '100%': {
+                        opacity: '1',
+                        transform: 'translateY(0)'
+                    }
+                },
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'fade-in': 'fade-in 0.5s ease-out forwards',
+			},
+            fontFamily: {
+                'display': ['"Alfa Slab One"', 'serif'],
+                'sans': ['"Inter"', 'sans-serif'],
+            }
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
