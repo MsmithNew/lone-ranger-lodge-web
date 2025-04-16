@@ -1,9 +1,10 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import SectionDivider from "@/components/SectionDivider";
 import TestimonialCard from "@/components/TestimonialCard";
 import AmenityCard from "@/components/AmenityCard";
-import { MapPin, Wifi, Utensils, Swimming, Dog, ShowerHead } from "lucide-react";
+import { MapPin, Wifi, Utensils, Waves, Dog, ShowerHead } from "lucide-react";
 
 const Home = () => {
   const testimonials = [
@@ -107,7 +108,7 @@ const Home = () => {
             description="Stay connected with complimentary high-speed internet throughout the property."
           />
           <AmenityCard
-            icon={<Swimming size={32} />}
+            icon={<Waves size={32} />}
             title="Swimming Pool"
             description="Cool off in our vintage-inspired pool with plenty of lounge space and a splash area for kids."
           />
