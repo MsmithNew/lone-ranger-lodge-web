@@ -1,60 +1,89 @@
 
+import React from 'react';
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
-import ImageGallery from "@/components/ImageGallery";
+import { Card, CardContent } from "@/components/ui/card";
+import { 
+  Waves, 
+  Building, 
+  Power, 
+  Horse, 
+  TennisBall,
+  Dog,
+  Music,
+  Utensils,
+  IceCream,
+  ShowerHead,
+  Sofa,
+  Wifi
+} from "lucide-react";
 
 const About = () => {
-  const teamMembers = [
-    {
-      name: "John Ranger",
-      role: "Owner & Manager",
-      bio: "With over 20 years in hospitality, John brings his passion for the great outdoors and vintage Americana to every aspect of Lone Ranger RV Park & Lodge.",
-      imageUrl: "/placeholder.svg"
-    },
-    {
-      name: "Sarah Martinez",
-      role: "Guest Services Director",
-      bio: "Sarah ensures every guest feels at home from the moment they arrive. Her attention to detail and warm personality make her a favorite among returning guests.",
-      imageUrl: "/placeholder.svg"
-    },
-    {
-      name: "Mike Johnson",
-      role: "Facilities Manager",
-      bio: "Mike keeps everything running smoothly. With his background in construction and landscaping, he maintains our grounds and amenities to the highest standards.",
-      imageUrl: "/placeholder.svg"
-    }
+  // Amenities with icons for display
+  const amenities = [
+    { name: "Resort-Style Swimming Pool", icon: <Waves size={24} className="text-rvblue" /> },
+    { name: "Historic 1930s Lodges", icon: <Building size={24} className="text-rvblue" /> },
+    { name: "Full RV Hookups", icon: <Power size={24} className="text-rvblue" /> },
+    { name: "Horse Hotel with Stalls", icon: <Horse size={24} className="text-rvblue" /> },
+    { name: "Pickleball Court", icon: <TennisBall size={24} className="text-rvblue" /> },
+    { name: "Dog Park", icon: <Dog size={24} className="text-rvblue" /> },
+    { name: "Live Music on Weekends", icon: <Music size={24} className="text-rvblue" /> },
+    { name: "Gulf Burgers Restaurant", icon: <Utensils size={24} className="text-rvblue" /> },
+    { name: "Candy & Ice Cream Shop", icon: <IceCream size={24} className="text-rvblue" /> },
+    { name: "Laundry + Shower Facilities", icon: <ShowerHead size={24} className="text-rvblue" /> },
+    { name: "Lounge with Pool Table", icon: <Sofa size={24} className="text-rvblue" /> },
+    { name: "Free Wi-Fi", icon: <Wifi size={24} className="text-rvblue" /> }
   ];
   
-  const historyImages = [
-    { src: "/placeholder.svg", alt: "Historic view of Lone Ranger RV Park 1970s" },
-    { src: "/placeholder.svg", alt: "Original lodge building 1960s" },
-    { src: "/placeholder.svg", alt: "Vintage camping at Lone Ranger 1980s" },
-    { src: "/placeholder.svg", alt: "Renovations in the 2000s" },
-    { src: "/placeholder.svg", alt: "Modern facilities today" },
-    { src: "/placeholder.svg", alt: "Expanded RV sites" }
+  // Accommodation types for the 3-card grid
+  const accommodations = [
+    {
+      title: "RV Sites",
+      description: "Spacious pull-through and back-in sites with full hookups and scenic views.",
+      icon: <Power size={40} className="text-rvyellow" />,
+      imageUrl: "/placeholder.svg"
+    },
+    {
+      title: "Horse Hotel",
+      description: "RV sites with additional horse stalls — perfect for trail riders and rodeo travelers.",
+      icon: <Horse size={40} className="text-rvyellow" />,
+      imageUrl: "/placeholder.svg"
+    },
+    {
+      title: "Lodges",
+      description: "Renovated 1930s cabins with vintage exteriors and modern interiors.",
+      icon: <Building size={40} className="text-rvyellow" />,
+      imageUrl: "/placeholder.svg"
+    }
   ];
 
   return (
     <Layout>
+      {/* Hero Banner */}
       <PageHeader
-        title="About Us"
-        description="Learn about our history, our mission, and the dedicated team that makes Lone Ranger RV Park & Lodge a special place."
+        title="Discover a One-of-a-Kind RV Destination in Ranger, TX"
+        description="Where vintage charm meets modern comfort in the heart of Texas"
+        imageUrl="/placeholder.svg"
+        className="pb-16"
       />
       
-      {/* Our Story */}
+      {/* Section 1 - Concept & History */}
       <section className="section-container">
         <div className="flex flex-col md:flex-row gap-10 items-center">
           <div className="md:w-1/2">
-            <h2 className="section-title">Our Story</h2>
+            <h2 className="section-title">Rooted in History, Designed for Adventure</h2>
             <p className="text-gray-600 mb-4">
-              Founded in 1968, Lone Ranger RV Park & Lodge began as a simple roadside camping spot for travelers exploring the beautiful wilderness of the region. Over the decades, we've grown and evolved while preserving the classic American road trip spirit that has always been our foundation.
-            </p>
-            <p className="text-gray-600 mb-4">
-              The original owner, Robert "Ranger" Williams, was passionate about creating a place where families could disconnect from the hustle of everyday life and reconnect with each other and nature. That vision continues to guide us today as we blend nostalgic charm with modern amenities.
+              Lone Ranger RV Park & Lodge brings a slice of old-school Americana to the heart of Ranger, Texas, 
+              just minutes from the new Palo Pinto Mountains State Park. Originally home to 1930s-era structures, 
+              the property has been thoughtfully restored by Texas builder and developer David Cassel to preserve 
+              its historic charm while offering modern comforts.
             </p>
             <p className="text-gray-600">
-              In 2010, the park underwent a major renovation to upgrade facilities while carefully preserving its vintage character. Today, we're proud to offer an experience that honors the golden age of road travel while providing all the comforts modern travelers expect.
+              From the glow of rare neon signs to a vintage Texaco station turned candy shop, everything here 
+              tells a story. Lone Ranger isn't just a place to stay — it's an experience made for road-trippers, 
+              families, and adventurers who appreciate the magic of a roadside escape.
             </p>
           </div>
           <div className="md:w-1/2 rounded-lg overflow-hidden shadow-xl">
@@ -69,43 +98,24 @@ const About = () => {
       
       <SectionDivider />
       
-      {/* Our Mission */}
-      <section className="section-container bg-rvyellow/10">
-        <div className="text-center max-w-3xl mx-auto">
-          <h2 className="section-title">Our Mission</h2>
-          <p className="text-xl text-gray-700 italic mb-6">
-            "To create an authentic getaway where the spirit of classic American road trips meets modern comfort, providing memorable experiences for every guest while preserving the natural beauty of our surroundings."
-          </p>
+      {/* Section 2 - The Property */}
+      <section className="section-container bg-gray-50 py-16">
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <h2 className="section-title">Ten Acres of Texas Charm, All in One Park</h2>
           <p className="text-gray-600">
-            At Lone Ranger RV Park & Lodge, we're committed to sustainable practices, exceptional service, and creating a welcoming community for travelers from all walks of life. We believe in preserving the nostalgia of simpler times while embracing the conveniences that make your stay comfortable and enjoyable.
-          </p>
-        </div>
-      </section>
-      
-      <SectionDivider />
-      
-      {/* Our Team */}
-      <section className="section-container">
-        <div className="text-center mb-10">
-          <h2 className="section-title">Meet Our Team</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            The dedicated individuals who work hard to make your stay exceptional.
+            The property spans 10 scenic acres on both sides of SH-Loop 254. Whether you're RVing, hauling horses, 
+            or booking a lodge, you'll enjoy spacious sites, unique amenities, and views that stretch toward 
+            the Palo Pinto Mountains.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {teamMembers.map((member, index) => (
-            <div key={index} className="text-center">
-              <div className="rounded-full overflow-hidden w-48 h-48 mx-auto mb-4 border-4 border-rvred">
-                <img
-                  src={member.imageUrl}
-                  alt={member.name}
-                  className="w-full h-full object-cover"
-                />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {amenities.map((amenity, index) => (
+            <div key={index} className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-center text-center">
+              <div className="mb-3">
+                {amenity.icon}
               </div>
-              <h3 className="text-xl font-display text-rvmaroon">{member.name}</h3>
-              <p className="text-rvblue font-medium mb-2">{member.role}</p>
-              <p className="text-gray-600">{member.bio}</p>
+              <h3 className="text-sm md:text-base font-medium text-rvmaroon">{amenity.name}</h3>
             </div>
           ))}
         </div>
@@ -113,54 +123,56 @@ const About = () => {
       
       <SectionDivider />
       
-      {/* Photo History */}
-      <section className="section-container">
-        <div className="text-center mb-10">
-          <h2 className="section-title">Through the Years</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            A visual journey through the history of Lone Ranger RV Park & Lodge from its humble beginnings to the present day.
+      {/* Section 3 - Accommodations Overview */}
+      <section className="section-container py-16">
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <h2 className="section-title">Find Your Perfect Stay</h2>
+          <p className="text-gray-600">
+            Choose from a variety of accommodations designed to suit your travel style
           </p>
         </div>
         
-        <ImageGallery images={historyImages} />
-      </section>
-      
-      {/* Values */}
-      <section className="section-container bg-rvmaroon text-white py-16">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-display mb-6">Our Values</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {accommodations.map((accommodation, index) => (
+            <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={accommodation.imageUrl} 
+                  alt={accommodation.title}
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                />
+                <div className="absolute top-4 left-4 bg-white/90 rounded-full p-2">
+                  {accommodation.icon}
+                </div>
+              </div>
+              <CardContent className="p-6">
+                <h3 className="text-xl font-display text-rvmaroon mb-2">{accommodation.title}</h3>
+                <p className="text-gray-600">{accommodation.description}</p>
+                <Link to="/accommodations" className="text-rvblue font-medium inline-block mt-4 hover:underline">
+                  View Details →
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center p-6">
-            <div className="bg-white/10 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">🌿</span>
-            </div>
-            <h3 className="text-xl font-display mb-3">Sustainability</h3>
-            <p className="text-gray-200">
-              We're committed to eco-friendly practices that preserve our beautiful surroundings for future generations.
-            </p>
-          </div>
-          
-          <div className="text-center p-6">
-            <div className="bg-white/10 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">🤝</span>
-            </div>
-            <h3 className="text-xl font-display mb-3">Community</h3>
-            <p className="text-gray-200">
-              We foster a welcoming environment where travelers can connect and create lasting memories together.
-            </p>
-          </div>
-          
-          <div className="text-center p-6">
-            <div className="bg-white/10 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">⭐</span>
-            </div>
-            <h3 className="text-xl font-display mb-3">Excellence</h3>
-            <p className="text-gray-200">
-              We strive to exceed expectations in every aspect of our service and facilities.
-            </p>
-          </div>
+        <div className="mt-10 text-center">
+          <Link to="/reservations" className="btn-primary">
+            Book Your Stay Now
+          </Link>
+        </div>
+      </section>
+      
+      {/* CTA Section */}
+      <section className="py-16 bg-rvmaroon text-white">
+        <div className="section-container text-center">
+          <h2 className="text-3xl md:text-4xl font-display mb-6">Experience Ranger's Vintage Roadside Getaway</h2>
+          <p className="text-xl max-w-2xl mx-auto mb-8">
+            Where classic American road trip nostalgia meets modern comfort in the Texas countryside.
+          </p>
+          <Link to="/contact" className="bg-rvyellow text-rvmaroon hover:bg-rvyellow/90 font-semibold py-3 px-8 rounded-md transition-all duration-300 inline-block text-lg">
+            Contact Us
+          </Link>
         </div>
       </section>
     </Layout>
