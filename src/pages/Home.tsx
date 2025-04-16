@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -18,10 +17,8 @@ import {
   Trees, 
   Car,
   Wifi, 
-  Horse, 
-  TennisBall, 
-  IceCream, 
-  Music
+  Music,
+  IceCream
 } from "lucide-react";
 import {
   Carousel,
@@ -70,7 +67,7 @@ const Home = () => {
       title: "Horse Hotel",
       description: "Traveling with equine companions? Our specialized facilities include comfortable stalls and dedicated RV hookups nearby.",
       image: "/placeholder.svg",
-      icon: <Horse size={24} />
+      icon: <House size={24} />
     },
     {
       title: "Food & Drinks",
@@ -85,7 +82,7 @@ const Home = () => {
     { activity: "Take a refreshing dip in our resort-style swimming pool", icon: <SwimmingPool size={24} className="text-rvblue" /> },
     { activity: "Challenge friends to a pickleball match", icon: <Activity size={24} className="text-rvblue" /> },
     { activity: "Explore nearby horse trails with your equine companions", icon: <House size={24} className="text-rvblue" /> },
-    { activity: "Enjoy live music events on select weekend evenings", icon: <Music size={24} className="text-rvblue" },
+    { activity: "Enjoy live music events on select weekend evenings", icon: <Music size={24} className="text-rvblue" /> },
     { activity: "Savor burgers and shakes at our Gulf Burgers Restaurant", icon: <Utensils size={24} className="text-rvblue" /> },
     { activity: "Experience our outdoor movie nights under the stars", icon: <IceCream size={24} className="text-rvblue" /> },
     { activity: "Take scenic drives through the nearby Palo Pinto Mountains", icon: <Car size={24} className="text-rvblue" /> }
@@ -98,7 +95,7 @@ const Home = () => {
     { name: "Stephenville", distance: "30 min", icon: <MapPin size={20} /> },
     { name: "Ranger Drive-In Theater", distance: "5 min", icon: <Car size={20} /> },
     { name: "Ranger Airport", distance: "10 min", icon: <MapPin size={20} /> },
-    { name: "Local Rodeo Arenas", distance: "25 min", icon: <Horse size={20} /> }
+    { name: "Local Rodeo Arenas", distance: "25 min", icon: <House size={20} /> }
   ];
 
   return (
