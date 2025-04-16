@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -32,10 +33,12 @@ const Home = () => {
         </div>
         
         <div className="relative z-10 section-container text-white">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display mb-6">
-            Stay at Lone Ranger RV Park<br />
-            <span className="text-rvyellow">Near Palo Pinto Mountains & Stephenville, TX</span>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display mb-4">
+            Stay at Lone Ranger RV Park
           </h1>
+          <h2 className="text-2xl md:text-3xl text-rvyellow mb-8">
+            Near Palo Pinto Mountains & Stephenville, TX
+          </h2>
           <p className="text-xl md:text-2xl max-w-2xl mb-8">
             Experience the perfect blend of nostalgic charm and modern comfort at our retro Americana-inspired RV park and lodge.
           </p>
