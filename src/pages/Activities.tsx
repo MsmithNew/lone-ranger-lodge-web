@@ -2,321 +2,326 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
-import ActivityCard from "@/components/ActivityCard";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Mountain,
+  Fish,
+  Flower2,
+  Warehouse,
+  Film,
+  Candy,
+  Tennis,
+  Dog,
+  Music,
+  Store,
+  Plane,
+  Paintbrush,
+  Calendar,
+  Utensils,
+  MapPin,
+  Coffee,
+} from "lucide-react";
 
 const Activities = () => {
   const outdoorActivities = [
     {
-      title: "Mountain Trails",
-      description: "Explore miles of scenic hiking trails with difficulty levels ranging from beginner to expert. Enjoy breathtaking views and wildlife spotting opportunities.",
-      imageUrl: "/placeholder.svg",
-      distance: "5-15 miles away"
+      title: "Palo Pinto Mountains State Park",
+      description: "Hike, ride, or explore this newly opened Texas state park just one exit away.",
+      icon: <Mountain className="h-10 w-10 text-rvblue" />,
     },
     {
-      title: "Blue River Fishing",
-      description: "Some of the best trout fishing in the region can be found just minutes from our park. Guided fishing tours available or venture out on your own.",
-      imageUrl: "/placeholder.svg",
-      distance: "2 miles away"
+      title: "Lake Leon",
+      description: "Fish, kayak, or relax by the water — a perfect afternoon escape.",
+      icon: <Fish className="h-10 w-10 text-rvblue" />,
     },
     {
-      title: "Canyon Biking Trails",
-      description: "Mountain biking trails for all skill levels with bike rentals available in town. Maps provided at our front desk.",
-      imageUrl: "/placeholder.svg",
-      distance: "8 miles away"
+      title: "Scenic Drives & Wildflower Trails",
+      description: "Explore seasonal wildflower routes and open Texas skies.",
+      icon: <Flower2 className="h-10 w-10 text-rvblue" />,
     },
     {
-      title: "Wild Horse Wildlife Reserve",
-      description: "Observe wild horses and other native wildlife in their natural habitat. Guided tours available with local naturalists.",
-      imageUrl: "/placeholder.svg",
-      distance: "12 miles away"
-    }
+      title: "Horseback Riding Trails",
+      description: "Ideal for guests using our horse hotel — direct access nearby.",
+      icon: <Warehouse className="h-10 w-10 text-rvblue" />,
+    },
   ];
   
   const familyActivities = [
     {
-      title: "Pioneer Village Historic Site",
-      description: "Step back in time at this living history museum showcasing pioneer life in the American West. Interactive exhibits and demonstrations daily.",
-      imageUrl: "/placeholder.svg",
-      distance: "10 miles away"
+      title: "Historic Ranger Drive-In Theater (Coming Soon)",
+      description: "A retro movie night under the stars — reopening soon!",
+      icon: <Film className="h-10 w-10 text-rvmaroon" />,
     },
     {
-      title: "Splash Valley Water Park",
-      description: "Cool off at this family-friendly water park featuring slides, wave pools, and splash areas for younger children.",
-      imageUrl: "/placeholder.svg",
-      distance: "15 miles away"
+      title: "Candy & Ice Cream Shop",
+      description: "A vintage-style sweet shop inside a restored Texaco station.",
+      icon: <Candy className="h-10 w-10 text-rvmaroon" />,
     },
     {
-      title: "Wild West Mini Golf",
-      description: "18 holes of themed mini golf fun for the whole family with an adjacent ice cream parlor.",
-      imageUrl: "/placeholder.svg",
-      distance: "5 miles away"
-    }
+      title: "Pickleball in Town",
+      description: "Local courts available — great for families and casual players.",
+      icon: <Tennis className="h-10 w-10 text-rvmaroon" />,
+    },
+    {
+      title: "Dog-Friendly Trails",
+      description: "Grab a leash and explore open spaces perfect for pups.",
+      icon: <Dog className="h-10 w-10 text-rvmaroon" />,
+    },
   ];
   
   const culturalActivities = [
     {
-      title: "Wilderness County Historical Museum",
-      description: "Learn about the rich history of the region from Native American settlements to the railroad boom era.",
-      imageUrl: "/placeholder.svg",
-      distance: "8 miles away"
+      title: "Downtown Stephenville",
+      description: "A short drive to live music, local art, coffee, and shopping.",
+      icon: <Music className="h-10 w-10 text-rvolive" />,
     },
     {
-      title: "Frontier Art Gallery",
-      description: "Contemporary and traditional Western art featuring local and regional artists. Regular exhibits and events.",
-      imageUrl: "/placeholder.svg",
-      distance: "7 miles away"
+      title: "Eastland Antique Shops",
+      description: "Small-town Texas charm and vintage treasures in every store.",
+      icon: <Store className="h-10 w-10 text-rvolive" />,
     },
     {
-      title: "Main Street Historic District",
-      description: "Charming downtown area with preserved 19th century architecture, boutique shopping, and local restaurants.",
-      imageUrl: "/placeholder.svg",
-      distance: "6 miles away"
-    }
+      title: "Historic Ranger Airport",
+      description: "A cool local landmark for aviation and history fans.",
+      icon: <Plane className="h-10 w-10 text-rvolive" />,
+    },
+    {
+      title: "Public Art & Murals (Stephenville)",
+      description: "Explore colorful murals and rotating displays from local artists.",
+      icon: <Paintbrush className="h-10 w-10 text-rvolive" />,
+    },
   ];
   
   const seasonalEvents = [
     {
-      name: "Wilderness County Rodeo",
-      description: "Annual rodeo event featuring professional and amateur competitions, carnival, and Western entertainment.",
-      date: "July 15-17",
-      location: "County Fairgrounds (12 miles)"
+      season: "Spring",
+      events: ["Wildflower Festivals", "Local Rodeos"],
+      color: "bg-green-100 border-green-300",
+      textColor: "text-green-800",
     },
     {
-      name: "Harvest Festival",
-      description: "Celebrate the autumn harvest with a farmers market, crafts fair, live music, and seasonal food and drinks.",
-      date: "October 8-9",
-      location: "Main Street (6 miles)"
+      season: "Summer",
+      events: ["Live Music Nights", "Cookouts by the Lake"],
+      color: "bg-rvyellow/20 border-rvyellow",
+      textColor: "text-yellow-800",
     },
     {
-      name: "Winter Wonderland Light Festival",
-      description: "Spectacular holiday light displays, horse-drawn carriage rides, and seasonal treats.",
-      date: "December 1-31",
-      location: "City Park (7 miles)"
+      season: "Fall",
+      events: ["Harvest Markets", "Classic Car Shows"],
+      color: "bg-orange-100 border-orange-300",
+      textColor: "text-orange-800",
     },
     {
-      name: "Spring Wildflower Festival",
-      description: "Guided hikes, photography workshops, and educational exhibits celebrating the region's spectacular wildflower blooms.",
-      date: "April 15-16",
-      location: "Various locations (5-15 miles)"
-    }
+      season: "Winter",
+      events: ["Ranger Christmas Parade", "Holiday Light Drives"],
+      color: "bg-blue-100 border-blue-300",
+      textColor: "text-blue-800",
+    },
+  ];
+  
+  const staffRecommendations = [
+    {
+      title: "Palo Pinto Mountains State Park",
+      description: "Must-see for outdoor lovers",
+      icon: <Mountain className="h-6 w-6 text-rvblue" />,
+    },
+    {
+      title: "Lake Leon",
+      description: "Great for fishing and peaceful mornings",
+      icon: <Fish className="h-6 w-6 text-rvblue" />,
+    },
+    {
+      title: "Mary's Café (Strawn)",
+      description: "Local favorite for hearty comfort food",
+      icon: <Utensils className="h-6 w-6 text-rvmaroon" />,
+    },
+    {
+      title: "Downtown Stephenville",
+      description: "Music, food, shops",
+      icon: <Music className="h-6 w-6 text-rvmaroon" />,
+    },
+    {
+      title: "Historic Drive-In Theater",
+      description: "Ask when it reopens",
+      icon: <Film className="h-6 w-6 text-rvmaroon" />,
+    },
+    {
+      title: "Eastland",
+      description: "Classic small-town antique stop",
+      icon: <Store className="h-6 w-6 text-rvolive" />,
+    },
+    {
+      title: "Gulf Burgers",
+      description: "(On-site) A guest favorite for burgers and beer",
+      icon: <Utensils className="h-6 w-6 text-rvolive" />,
+    },
   ];
 
   return (
     <Layout>
       <PageHeader
         title="What to Do Nearby"
-        description="Discover the many attractions and activities within a short drive of Lone Ranger RV Park & Lodge."
+        description="Discover local attractions and activities within a short drive of Lone Ranger RV Park & Lodge."
+        imageUrl="/placeholder.svg"
       />
       
       {/* Outdoor Activities */}
       <section className="section-container">
-        <div className="text-center mb-10">
-          <h2 className="section-title">Outdoor Adventures</h2>
+        <div className="text-center mb-8">
+          <h2 className="section-title">Outdoor Activities</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore the natural beauty of the surrounding area with these outdoor activities.
+            Explore the natural beauty of the surrounding area.
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {outdoorActivities.map((activity, index) => (
-            <ActivityCard
-              key={index}
-              title={activity.title}
-              description={activity.description}
-              imageUrl={activity.imageUrl}
-              distance={activity.distance}
-            />
+            <Card key={index} className="border-t-4 border-rvblue hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-4 p-3 rounded-full bg-rvblue/10">
+                    {activity.icon}
+                  </div>
+                  <h3 className="font-display text-lg text-rvmaroon mb-2">{activity.title}</h3>
+                  <p className="text-gray-600">{activity.description}</p>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </section>
       
       <SectionDivider />
       
-      {/* Family Activities */}
+      {/* Family Fun */}
       <section className="section-container bg-gray-50">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <h2 className="section-title">Family Fun</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Activities and attractions perfect for visitors of all ages.
+            Activities perfect for visitors of all ages.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {familyActivities.map((activity, index) => (
-            <ActivityCard
-              key={index}
-              title={activity.title}
-              description={activity.description}
-              imageUrl={activity.imageUrl}
-              distance={activity.distance}
-            />
+            <Card key={index} className="border-t-4 border-rvmaroon hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-4 p-3 rounded-full bg-rvmaroon/10">
+                    {activity.icon}
+                  </div>
+                  <h3 className="font-display text-lg text-rvmaroon mb-2">{activity.title}</h3>
+                  <p className="text-gray-600">{activity.description}</p>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </section>
       
       <SectionDivider />
       
-      {/* Cultural Activities */}
+      {/* Arts & Culture */}
       <section className="section-container">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <h2 className="section-title">Arts & Culture</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Immerse yourself in the rich history and culture of the region.
+            Immerse yourself in the rich culture of the region.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {culturalActivities.map((activity, index) => (
-            <ActivityCard
-              key={index}
-              title={activity.title}
-              description={activity.description}
-              imageUrl={activity.imageUrl}
-              distance={activity.distance}
-            />
+            <Card key={index} className="border-t-4 border-rvolive hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-4 p-3 rounded-full bg-rvolive/10">
+                    {activity.icon}
+                  </div>
+                  <h3 className="font-display text-lg text-rvmaroon mb-2">{activity.title}</h3>
+                  <p className="text-gray-600">{activity.description}</p>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </section>
       
       <SectionDivider />
       
-      {/* Seasonal Events */}
-      <section className="section-container bg-rvblue/10">
-        <div className="text-center mb-10">
-          <h2 className="section-title">Seasonal Events</h2>
+      {/* Seasonal Events Calendar */}
+      <section className="section-container bg-rvyellow/5">
+        <div className="text-center mb-8">
+          <h2 className="section-title">Seasonal Events Calendar</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Special events throughout the year in the surrounding area.
+            Exciting events happening throughout the year near Lone Ranger RV Park & Lodge.
           </p>
         </div>
         
-        <div className="max-w-4xl mx-auto">
-          {seasonalEvents.map((event, index) => (
-            <div 
-              key={index} 
-              className="bg-white p-6 rounded-lg shadow-sm mb-4 border-l-4 border-rvyellow"
-            >
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                  <h3 className="text-xl font-display text-rvmaroon">{event.name}</h3>
-                  <p className="text-gray-600 mt-1">{event.description}</p>
-                </div>
-                <div className="md:text-right">
-                  <p className="text-rvblue font-semibold">{event.date}</p>
-                  <p className="text-gray-500 text-sm">{event.location}</p>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          {seasonalEvents.map((item, index) => (
+            <div key={index} className={`rounded-lg border ${item.color} p-6 text-center`}>
+              <div className="flex justify-center mb-3">
+                <Calendar className="h-8 w-8 text-rvmaroon" />
+              </div>
+              <h3 className="font-display text-xl text-rvmaroon mb-3">{item.season}</h3>
+              <ul className={`space-y-2 ${item.textColor}`}>
+                {item.events.map((event, idx) => (
+                  <li key={idx} className="flex items-center justify-center gap-1">
+                    <span>•</span> {event}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        
+        <div className="mt-8 text-center">
+          <p className="text-gray-500 italic">
+            Ask our front desk for more information on upcoming events during your stay!
+          </p>
+        </div>
+      </section>
+      
+      <SectionDivider />
+      
+      {/* Staff Recommendations */}
+      <section className="section-container">
+        <div className="text-center mb-8">
+          <h2 className="section-title">Staff Recommendations</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Local favorites and must-visit spots recommended by our team.
+          </p>
+        </div>
+        
+        <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+          {staffRecommendations.map((item, index) => (
+            <div key={index} className="flex items-start gap-4 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+              <div className="p-2 rounded-full bg-gray-100 flex-shrink-0">
+                {item.icon}
+              </div>
+              <div>
+                <h3 className="font-display text-lg text-rvmaroon">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
       
-      {/* Day Trips */}
-      <section className="section-container">
-        <div className="text-center mb-10">
-          <h2 className="section-title">Recommended Day Trips</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore these attractions within a 1-2 hour drive from Lone Ranger RV Park & Lodge.
+      {/* Find Your Adventure Banner */}
+      <section className="relative bg-gradient-to-r from-rvmaroon to-rvblue text-white py-16 mt-12">
+        <div className="max-w-3xl mx-auto px-4 text-center relative z-10">
+          <h2 className="font-display text-3xl mb-4">Find Your Texas Adventure</h2>
+          <p className="text-lg mb-8">
+            Our central location puts you within easy reach of the best that central Texas has to offer.
           </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h3 className="text-xl font-display text-rvmaroon mb-3">Canyon National Park</h3>
-            <div className="flex items-center mb-2">
-              <span className="bg-rvred/10 text-rvred text-sm font-medium px-2 py-1 rounded-md">1 hour drive</span>
-            </div>
-            <p className="text-gray-600 mb-4">
-              Explore this stunning national park featuring dramatic canyons, hiking trails, and scenic overlooks. The visitor center offers excellent educational exhibits about the region's geology.
-            </p>
-            <div className="flex justify-between items-center text-sm text-gray-500">
-              <span>Open year-round</span>
-              <span>Entrance fee: $20 per vehicle</span>
-            </div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h3 className="text-xl font-display text-rvmaroon mb-3">Historic Mining Town</h3>
-            <div className="flex items-center mb-2">
-              <span className="bg-rvred/10 text-rvred text-sm font-medium px-2 py-1 rounded-md">1.5 hour drive</span>
-            </div>
-            <p className="text-gray-600 mb-4">
-              Step back in time in this preserved 19th century mining town. Take a tour of the old mine, pan for gold, and enjoy the authentic saloons and shops along the wooden boardwalks.
-            </p>
-            <div className="flex justify-between items-center text-sm text-gray-500">
-              <span>Hours vary seasonally</span>
-              <span>Tours from $15 per person</span>
-            </div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h3 className="text-xl font-display text-rvmaroon mb-3">Lake Recreation Area</h3>
-            <div className="flex items-center mb-2">
-              <span className="bg-rvred/10 text-rvred text-sm font-medium px-2 py-1 rounded-md">45 minute drive</span>
-            </div>
-            <p className="text-gray-600 mb-4">
-              Enjoy a day at this beautiful mountain lake offering boating, swimming, and picnic areas. Boat rentals available on-site, including kayaks, canoes, and small motorboats.
-            </p>
-            <div className="flex justify-between items-center text-sm text-gray-500">
-              <span>Open May through September</span>
-              <span>Day use fee: $10 per vehicle</span>
-            </div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h3 className="text-xl font-display text-rvmaroon mb-3">Wine Country</h3>
-            <div className="flex items-center mb-2">
-              <span className="bg-rvred/10 text-rvred text-sm font-medium px-2 py-1 rounded-md">1.25 hour drive</span>
-            </div>
-            <p className="text-gray-600 mb-4">
-              Visit several family-owned wineries offering tastings and tours. The scenic drive through rolling vineyards makes this a perfect adult day trip from the park.
-            </p>
-            <div className="flex justify-between items-center text-sm text-gray-500">
-              <span>Most wineries open 11am-5pm</span>
-              <span>Tasting fees vary by winery</span>
-            </div>
+          <div className="flex items-center justify-center gap-3">
+            <MapPin className="h-6 w-6" />
+            <span className="font-medium">Within 30 minutes of all these attractions</span>
           </div>
         </div>
-      </section>
-      
-      {/* Local Tips */}
-      <section className="section-container bg-rvyellow/10">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="section-title text-center mb-6">Local Tips & Recommendations</h2>
-          
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h3 className="text-lg font-display text-rvmaroon mb-4">Staff Favorites</h3>
-            
-            <div className="space-y-4">
-              <div className="p-4 border-l-4 border-rvblue bg-rvblue/5 rounded-r-md">
-                <p className="italic text-gray-600 mb-2">
-                  "For the best sunrise views, take the Mountain Ridge Trail to Eagle Point. It's a moderate 30-minute hike from the trailhead, and the view is absolutely worth the early wake-up call."
-                </p>
-                <p className="text-sm text-rvblue">— John, Park Manager</p>
-              </div>
-              
-              <div className="p-4 border-l-4 border-rvblue bg-rvblue/5 rounded-r-md">
-                <p className="italic text-gray-600 mb-2">
-                  "Don't miss Mabel's Diner in town for the best pie you'll ever taste. Their seasonal fruit pies use local ingredients and the crust is perfect every time."
-                </p>
-                <p className="text-sm text-rvblue">— Sarah, Guest Services</p>
-              </div>
-              
-              <div className="p-4 border-l-4 border-rvblue bg-rvblue/5 rounded-r-md">
-                <p className="italic text-gray-600 mb-2">
-                  "If you're here on a Thursday, check out the farmers market downtown. Local produce, crafts, and often live music make it a great morning activity before heading out on other adventures."
-                </p>
-                <p className="text-sm text-rvblue">— Mike, Facilities Manager</p>
-              </div>
-            </div>
-            
-            <div className="mt-6 p-4 bg-rvred/10 rounded-md">
-              <h4 className="font-semibold text-rvmaroon mb-2">Need More Recommendations?</h4>
-              <p className="text-gray-600">
-                Our front desk staff is always happy to provide personalized recommendations based on your interests, the season, and current local events. Stop by the office anytime!
-              </p>
-            </div>
-          </div>
-        </div>
+        <div className="absolute inset-0 bg-black opacity-30"></div>
       </section>
     </Layout>
   );
