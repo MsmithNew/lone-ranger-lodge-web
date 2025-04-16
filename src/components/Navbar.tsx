@@ -1,22 +1,30 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { 
+  Collapsible, 
+  CollapsibleContent, 
+  CollapsibleTrigger 
+} from "@/components/ui/collapsible";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const location = useLocation();
   
-  const navItems = [
+  const mainNavItems = [
     { name: "Home", path: "/" },
-    { name: "About Us", path: "/about" },
     { name: "Accommodations", path: "/accommodations" },
-    { name: "Amenities", path: "/amenities" },
     { name: "What to Do", path: "/activities" },
     { name: "Reservations", path: "/reservations" },
-    { name: "Rules & FAQs", path: "/rules-faqs" },
     { name: "Contact Us", path: "/contact" },
+  ];
+
+  const aboutSubItems = [
+    { name: "Get to Know the Park", path: "/about" },
+    { name: "Rules & FAQs", path: "/rules-faqs" },
   ];
 
   const toggleMenu = () => {
@@ -36,13 +44,13 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center overflow-x-auto whitespace-nowrap">
-            <div className="flex items-center space-x-2">
-              {navItems.map((item) => (
+            <div className="flex items-center space-x-3">
+              {mainNavItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.path}
                   className={cn(
-                    "text-xs font-medium px-2 py-1 border-b-2 transition-colors duration-200 rounded-md truncate",
+                    "text-xs font-medium px-3 py-1 border-b-2 transition-colors duration-200 rounded-md truncate",
                     location.pathname === item.path
                       ? "border-rvred text-rvmaroon"
                       : "border-transparent text-gray-600 hover:text-rvmaroon hover:border-rvyellow hover:bg-rvyellow/10"
@@ -51,6 +59,45 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
+              
+              {/* About Dropdown */}
+              <Collapsible 
+                open={isAboutOpen} 
+                onOpenChange={setIsAboutOpen}
+                className="relative"
+              >
+                <CollapsibleTrigger className={cn(
+                  "text-xs font-medium px-3 py-1 border-b-2 transition-colors duration-200 rounded-md truncate flex items-center",
+                  (location.pathname === "/about" || location.pathname === "/rules-faqs")
+                    ? "border-rvred text-rvmaroon"
+                    : "border-transparent text-gray-600 hover:text-rvmaroon hover:border-rvyellow hover:bg-rvyellow/10"
+                )}>
+                  About
+                  {isAboutOpen ? (
+                    <ChevronUp className="h-3 w-3 ml-1" />
+                  ) : (
+                    <ChevronDown className="h-3 w-3 ml-1" />
+                  )}
+                </CollapsibleTrigger>
+                <CollapsibleContent className="absolute top-full left-0 bg-white rounded-md shadow-md py-1 mt-1 min-w-[180px] z-50">
+                  {aboutSubItems.map((subItem) => (
+                    <Link
+                      key={subItem.name}
+                      to={subItem.path}
+                      className={cn(
+                        "block px-4 py-2 text-xs whitespace-nowrap",
+                        location.pathname === subItem.path
+                          ? "bg-rvyellow/10 text-rvmaroon"
+                          : "text-gray-600 hover:bg-rvyellow/10 hover:text-rvmaroon"
+                      )}
+                      onClick={() => setIsAboutOpen(false)}
+                    >
+                      {subItem.name}
+                    </Link>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+
               <Link to="/reservations" className="btn-primary text-xs ml-2 px-3 py-1">
                 Book Now
               </Link>
@@ -73,7 +120,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden bg-white border-t border-gray-200 animate-fade-in">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navItems.map((item) => (
+            {mainNavItems.map((item) => (
               <Link
                 key={item.name}
                 to={item.path}
@@ -88,6 +135,37 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            
+            {/* Mobile About Dropdown */}
+            <Collapsible className="w-full">
+              <CollapsibleTrigger className={cn(
+                "w-full flex justify-between items-center px-4 py-2 rounded-md text-sm font-medium",
+                (location.pathname === "/about" || location.pathname === "/rules-faqs")
+                  ? "bg-rvyellow/10 text-rvmaroon"
+                  : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
+              )}>
+                About
+                <ChevronDown className="h-4 w-4" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pl-4">
+                {aboutSubItems.map((subItem) => (
+                  <Link
+                    key={subItem.name}
+                    to={subItem.path}
+                    className={cn(
+                      "block px-4 py-2 rounded-md text-sm font-medium truncate",
+                      location.pathname === subItem.path
+                        ? "bg-rvyellow/10 text-rvmaroon"
+                        : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
+                    )}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {subItem.name}
+                  </Link>
+                ))}
+              </CollapsibleContent>
+            </Collapsible>
+            
             <Link 
               to="/reservations" 
               className="block px-4 py-2 mt-4 btn-primary text-center text-sm"
