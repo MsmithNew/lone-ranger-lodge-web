@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -5,7 +6,7 @@ import SectionDivider from "@/components/SectionDivider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
-  SwimmingPool, 
+  Waves, 
   House, 
   Activity,
   Power, 
@@ -49,7 +50,7 @@ const Home = () => {
       title: "Resort-Style Pool",
       description: "Our vintage-inspired pool offers the perfect place to cool off and relax with plenty of lounge seating and mountain views.",
       image: "/placeholder.svg",
-      icon: <SwimmingPool size={24} />
+      icon: <Waves size={24} />
     },
     {
       title: "Iconic Neon Signs",
@@ -79,7 +80,7 @@ const Home = () => {
 
   // Things to do with icons
   const thingsToDo = [
-    { activity: "Take a refreshing dip in our resort-style swimming pool", icon: <SwimmingPool size={24} className="text-rvblue" /> },
+    { activity: "Take a refreshing dip in our resort-style swimming pool", icon: <Waves size={24} className="text-rvblue" /> },
     { activity: "Challenge friends to a pickleball match", icon: <Activity size={24} className="text-rvblue" /> },
     { activity: "Explore nearby horse trails with your equine companions", icon: <House size={24} className="text-rvblue" /> },
     { activity: "Enjoy live music events on select weekend evenings", icon: <Music size={24} className="text-rvblue" /> },
@@ -91,7 +92,7 @@ const Home = () => {
   // Local attractions
   const localAttractions = [
     { name: "Palo Pinto Mountains State Park", distance: "15 min", icon: <Trees size={20} /> },
-    { name: "Lake Leon", distance: "20 min", icon: <SwimmingPool size={20} /> },
+    { name: "Lake Leon", distance: "20 min", icon: <Waves size={20} /> },
     { name: "Stephenville", distance: "30 min", icon: <MapPin size={20} /> },
     { name: "Ranger Drive-In Theater", distance: "5 min", icon: <Car size={20} /> },
     { name: "Ranger Airport", distance: "10 min", icon: <MapPin size={20} /> },
