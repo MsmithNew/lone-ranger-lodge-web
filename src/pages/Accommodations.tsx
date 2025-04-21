@@ -1,4 +1,3 @@
-
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
@@ -16,11 +15,14 @@ import {
   ArrowRight,
   Bed,
   ShowerHead,
-  Thermometer
+  Thermometer,
+  Tent,
+  Laundry,
+  Pet,
+  Utensils
 } from "lucide-react";
 
 const Accommodations = () => {
-  // RV site features with icons
   const rvFeatures = [
     { text: "Full hookups (water, electric, sewer)", icon: <Droplets className="text-rvblue" size={18} /> },
     { text: "Pull-through and back-in options", icon: <ParkingCircle className="text-rvblue" size={18} /> },
@@ -31,7 +33,6 @@ const Accommodations = () => {
     { text: "Walking distance to Gulf Burgers and Pickleball", icon: <ArrowRight className="text-rvblue" size={18} /> }
   ];
 
-  // Horse hotel features with icons
   const horseFeatures = [
     { text: "Full RV hookups", icon: <Droplets className="text-rvblue" size={18} /> },
     { text: "Individual shaded horse stalls", icon: <Warehouse className="text-rvblue" size={18} /> },
@@ -42,7 +43,6 @@ const Accommodations = () => {
     { text: "Quiet area near pasture views", icon: <ArrowRight className="text-rvblue" size={18} /> }
   ];
 
-  // Lodge features with icons
   const lodgeFeatures = [
     { text: "Queen bed and private bathroom", icon: <Bed className="text-rvblue" size={18} /> },
     { text: "Air conditioning and heating", icon: <Thermometer className="text-rvblue" size={18} /> },
@@ -50,6 +50,15 @@ const Accommodations = () => {
     { text: "Mini-fridge, coffee maker, and essentials", icon: <Coffee className="text-rvblue" size={18} /> },
     { text: "Private entrance and parking", icon: <ParkingCircle className="text-rvblue" size={18} /> },
     { text: "Steps away from pool and restaurant", icon: <ArrowRight className="text-rvblue" size={18} /> }
+  ];
+
+  const tentFeatures = [
+    { text: "Shaded open areas for tents", icon: <Tent className="text-rvblue" size={18} /> },
+    { text: "Access to restrooms and showers", icon: <ShowerHead className="text-rvblue" size={18} /> },
+    { text: "Access to laundry facilities", icon: <Laundry className="text-rvblue" size={18} /> },
+    { text: "Free high-speed Wi-Fi", icon: <Wifi className="text-rvblue" size={18} /> },
+    { text: "Pet-friendly area", icon: <Pet className="text-rvblue" size={18} /> },
+    { text: "Enjoy all shared park amenities", icon: <Utensils className="text-rvblue" size={18} /> }
   ];
 
   return (
@@ -159,7 +168,40 @@ const Accommodations = () => {
       
       <SectionDivider />
       
-      {/* Final Banner Section - Location & Style Highlight */}
+      {/* Tent Sites Section */}
+      <section className="section-container">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="section-title text-center mb-6">Tent Sites</h2>
+          <div className="flex flex-col md:flex-row gap-8 items-center">
+            <div className="md:w-1/2">
+              <div className="rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="/placeholder.svg" 
+                  alt="Tent sites at Lone Ranger RV Park" 
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+            </div>
+            <div className="md:w-1/2">
+              <p className="text-gray-700 mb-6">
+                Enjoy a more primitive camping experience surrounded by nature. Our tent sites are perfect for guests seeking a simple, no-fuss stay with access to essential comforts.
+              </p>
+              <ul className="space-y-3">
+                {tentFeatures.map((feature, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="mt-0.5 flex-shrink-0">{feature.icon}</span>
+                    <span>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <SectionDivider />
+      
+      {/* Final Banner Section */}
       <section className="relative py-16">
         <div className="absolute inset-0 bg-gradient-to-r from-rvmaroon to-rvblue opacity-90">
           <img 
