@@ -35,17 +35,28 @@ const Navbar = () => {
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between py-3 md:py-0">
+          {/* Logo and Mobile Menu Button */}
+          <div className="flex justify-between items-center h-10 md:h-16">
             <Link to="/" className="flex-shrink-0 flex items-center space-x-2">
               <span className="font-display text-xl text-rvred">Lone Ranger</span>
               <span className="font-display text-base text-rvblue">RV Park & Lodge</span>
             </Link>
+            
+            {/* Mobile Navigation Button */}
+            <div className="flex items-center md:hidden">
+              <button
+                onClick={toggleMenu}
+                className="text-gray-600 hover:text-rvmaroon focus:outline-none"
+              >
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center">
-            <div className="flex items-center space-x-3">
+          {/* Desktop Navigation - Now wraps to second line when needed */}
+          <nav className="hidden md:flex md:flex-wrap items-center py-2">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
               {/* Home (first item) */}
               <Link
                 key="home"
@@ -121,16 +132,6 @@ const Navbar = () => {
               </Link>
             </div>
           </nav>
-
-          {/* Mobile Navigation Button */}
-          <div className="flex items-center md:hidden">
-            <button
-              onClick={toggleMenu}
-              className="text-gray-600 hover:text-rvmaroon focus:outline-none"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
         </div>
       </div>
 
