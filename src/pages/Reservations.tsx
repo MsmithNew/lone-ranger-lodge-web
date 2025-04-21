@@ -1,10 +1,37 @@
-
 import { useState } from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
 import { toast } from "sonner";
 import { Calendar, CheckCircle, ParkingCircle, Bed, Tent } from "lucide-react";
+
+const RateCard = ({
+  title,
+  price,
+  note,
+  highlightColor = "bg-rvred text-white",
+  buttonColor = "bg-rvblue hover:bg-rvblue/90",
+  border = "border-rvred"
+}: {
+  title: string;
+  price: string;
+  note: string;
+  highlightColor?: string;
+  buttonColor?: string;
+  border?: string;
+}) => (
+  <div className={`rounded-xl shadow-md border-2 ${border} flex flex-col p-6 mb-4 w-full max-w-[350px] mx-auto`} style={{ minHeight: 250 }}>
+    <h3 className={`font-display text-lg font-bold mb-3 ${highlightColor} py-2 px-3 rounded-md inline-block w-fit`}>{title}</h3>
+    <div className="mt-2 mb-4">
+      <span className="block text-3xl font-extrabold text-rvmaroon mb-2">{price}</span>
+      <span className="block text-gray-600 text-sm">{note}</span>
+    </div>
+    <div className="flex-grow" />
+    <button className={`mt-4 ${buttonColor} text-white font-bold rounded-md py-2 px-4 transition duration-200 text-lg shadow-sm`} style={{ backgroundColor: "#1FBEFF" }}>
+      Book Now
+    </button>
+  </div>
+);
 
 const Reservations = () => {
   const [formData, setFormData] = useState({
@@ -77,360 +104,63 @@ const Reservations = () => {
         description="Book your stay at Lone Ranger RV Park & Lodge. Check availability, rates, and make your reservation online."
       />
       
-      {/* Reservation Process */}
-      <section className="section-container">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-center mb-10">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-rvblue text-white' : 'bg-gray-200 text-gray-500'}`}>
-              1
-            </div>
-            <div className={`h-1 w-16 ${step >= 2 ? 'bg-rvblue' : 'bg-gray-200'}`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? 'bg-rvblue text-white' : 'bg-gray-200 text-gray-500'}`}>
-              2
-            </div>
-            <div className={`h-1 w-16 ${step >= 3 ? 'bg-rvblue' : 'bg-gray-200'}`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 3 ? 'bg-rvblue text-white' : 'bg-gray-200 text-gray-500'}`}>
-              3
-            </div>
-          </div>
-          
-          <div className="text-center mb-8">
-            <h2 className="text-xl font-semibold">
-              {step === 1 && "Choose Your Accommodation"}
-              {step === 2 && "Your Information"}
-              {step === 3 && "Review & Confirm"}
-            </h2>
-          </div>
-          
-          <form onSubmit={handleSubmit}>
-            {/* Step 1: Accommodation Selection */}
-            {step === 1 && (
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <div className="space-y-4 mb-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Accommodation Type *
-                    </label>
-                    <select
-                      name="accommodationType"
-                      value={formData.accommodationType}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                    >
-                      <option value="">Select accommodation type</option>
-                      <option value="rv-premium">Premium Pull-Through RV Site</option>
-                      <option value="rv-standard">Standard Back-In RV Site</option>
-                      <option value="rv-riverside">Riverside RV Site</option>
-                      <option value="cabin-deluxe">Deluxe Family Cabin</option>
-                      <option value="cabin-couple">Cozy Couple's Cabin</option>
-                      <option value="airstream">Vintage Airstream</option>
-                      <option value="wagon">Covered Wagon</option>
-                    </select>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Check-In Date *
-                      </label>
-                      <input
-                        type="date"
-                        name="checkIn"
-                        value={formData.checkIn}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Check-Out Date *
-                      </label>
-                      <input
-                        type="date"
-                        name="checkOut"
-                        value={formData.checkOut}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Adults *
-                      </label>
-                      <select
-                        name="adults"
-                        value={formData.adults}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                      >
-                        {Array.from({ length: 10 }, (_, i) => (
-                          <option key={i} value={i + 1}>
-                            {i + 1}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Children
-                      </label>
-                      <select
-                        name="children"
-                        value={formData.children}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                      >
-                        {Array.from({ length: 11 }, (_, i) => (
-                          <option key={i} value={i}>
-                            {i}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Pets
-                      </label>
-                      <select
-                        name="pets"
-                        value={formData.pets}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                      >
-                        {Array.from({ length: 4 }, (_, i) => (
-                          <option key={i} value={i}>
-                            {i}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={handleNextStep}
-                    className="btn-primary"
-                  >
-                    Continue
-                  </button>
-                </div>
-              </div>
-            )}
-            
-            {/* Step 2: Personal Information */}
-            {step === 2 && (
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <div className="space-y-4 mb-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        First Name *
-                      </label>
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Last Name *
-                      </label>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Email *
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Phone *
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Special Requests or Notes
-                    </label>
-                    <textarea
-                      name="specialRequests"
-                      value={formData.specialRequests}
-                      onChange={handleChange}
-                      rows={4}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-rvblue focus:border-transparent"
-                    />
-                  </div>
-                </div>
-                
-                <div className="flex justify-between">
-                  <button
-                    type="button"
-                    onClick={handlePrevStep}
-                    className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-semibold py-3 px-6 rounded-md transition-all duration-300"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleNextStep}
-                    className="btn-primary"
-                  >
-                    Review Booking
-                  </button>
-                </div>
-              </div>
-            )}
-            
-            {/* Step 3: Review & Confirm */}
-            {step === 3 && (
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold mb-4">Booking Summary</h3>
-                
-                <div className="border-t border-b py-4 space-y-3">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 text-rvblue mr-3">
-                      {formData.accommodationType.includes('rv') ? (
-                        <ParkingCircle size={20} />
-                      ) : formData.accommodationType.includes('cabin') ? (
-                        <Bed size={20} />
-                      ) : (
-                        <Tent size={20} />
-                      )}
-                    </div>
-                    <div>
-                      <p className="font-semibold">
-                        {formData.accommodationType === 'rv-premium' && 'Premium Pull-Through RV Site'}
-                        {formData.accommodationType === 'rv-standard' && 'Standard Back-In RV Site'}
-                        {formData.accommodationType === 'rv-riverside' && 'Riverside RV Site'}
-                        {formData.accommodationType === 'cabin-deluxe' && 'Deluxe Family Cabin'}
-                        {formData.accommodationType === 'cabin-couple' && 'Cozy Couple\'s Cabin'}
-                        {formData.accommodationType === 'airstream' && 'Vintage Airstream'}
-                        {formData.accommodationType === 'wagon' && 'Covered Wagon'}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 text-rvblue mr-3">
-                      <Calendar size={20} />
-                    </div>
-                    <div>
-                      <p className="font-semibold">
-                        {formData.checkIn} to {formData.checkOut}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 text-rvblue mr-3">
-                      <CheckCircle size={20} />
-                    </div>
-                    <div>
-                      <p>
-                        {formData.adults} {formData.adults === 1 ? 'Adult' : 'Adults'}
-                        {formData.children > 0 && `, ${formData.children} ${formData.children === 1 ? 'Child' : 'Children'}`}
-                        {formData.pets > 0 && `, ${formData.pets} ${formData.pets === 1 ? 'Pet' : 'Pets'}`}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mt-4 mb-6">
-                  <h4 className="font-semibold mb-2">Guest Information</h4>
-                  <p>
-                    {formData.firstName} {formData.lastName}
-                  </p>
-                  <p>{formData.email}</p>
-                  <p>{formData.phone}</p>
-                  
-                  {formData.specialRequests && (
-                    <div className="mt-3">
-                      <h4 className="font-semibold mb-1">Special Requests</h4>
-                      <p className="text-gray-600">{formData.specialRequests}</p>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="bg-rvyellow/10 p-4 rounded-md mb-6">
-                  <h4 className="font-semibold text-rvmaroon mb-2">Important Information</h4>
-                  <ul className="space-y-1 text-gray-700 text-sm">
-                    <li>This is a reservation request. We'll confirm availability within 24 hours.</li>
-                    <li>A 50% deposit will be required to secure your reservation after confirmation.</li>
-                    <li>Check-in time is 3:00 PM. Check-out time is 11:00 AM.</li>
-                    <li>Pet fee of $10 per pet per night will be added if applicable.</li>
-                  </ul>
-                </div>
-                
-                <div className="flex justify-between">
-                  <button
-                    type="button"
-                    onClick={handlePrevStep}
-                    className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-semibold py-3 px-6 rounded-md transition-all duration-300"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="btn-primary"
-                  >
-                    {isSubmitting ? "Submitting..." : "Confirm Reservation"}
-                  </button>
-                </div>
-              </div>
-            )}
-          </form>
+      <section className="section-container max-w-screen-lg mx-auto pb-2">
+        <h1 className="page-title text-4xl md:text-5xl mb-2" style={{ color: "#FF1F47" }}>
+          Fair, flexible rates for every kind of traveler
+        </h1>
+        <p className="mb-10 text-lg md:text-xl max-w-2xl text-gray-700 font-medium">
+          Whether you're staying a night, a week, or the whole season, Lone Ranger RV Park & Lodge offers competitive rates without sacrificing comfort, charm, or location.
+        </p>
+
+        <div className="flex flex-wrap gap-x-6 gap-y-6 justify-center mb-10">
+          <RateCard
+            title="Daily Rate"
+            price="Starting at $45 / NIGHT"
+            note="Includes full hookups and free Wi-Fi"
+            highlightColor="bg-rvred text-white"
+            buttonColor="bg-rvblue hover:bg-rvblue/90"
+            border="border-rvred"
+          />
+          <RateCard
+            title="Weekly Rate"
+            price="Starting at $250 / WEEK"
+            note="Includes full hookups and free Wi-Fi"
+            highlightColor="bg-rvyellow text-rvmaroon"
+            buttonColor="bg-rvred hover:bg-rvred/90"
+            border="border-rvyellow"
+          />
+          <RateCard
+            title="Monthly Rate"
+            price="Starting at $600 / MONTH"
+            note="Includes Wi-Fi; utilities billed separately"
+            highlightColor="bg-rvolive text-white"
+            buttonColor="bg-rvmaroon hover:bg-rvmaroon/80"
+            border="border-rvolive"
+          />
+        </div>
+
+        <div className="flex flex-wrap gap-x-6 gap-y-6 justify-center mb-10">
+          <RateCard
+            title="Horse Hotel Sites"
+            price="Same rates as RV Sites"
+            note="Includes full hookups + shaded horse stalls"
+            highlightColor="bg-rvblue text-white"
+            buttonColor="bg-rvyellow text-rvmaroon hover:bg-rvyellow/90"
+            border="border-rvblue"
+          />
+          <RateCard
+            title="Lodges"
+            price="$175 / NIGHT"
+            note="Private 1930s cabins with modern amenities"
+            highlightColor="bg-rvmaroon text-white"
+            buttonColor="bg-rvblue hover:bg-rvblue/90"
+            border="border-rvmaroon"
+          />
         </div>
       </section>
       
       <SectionDivider />
       
-      {/* Rates */}
       <section className="section-container bg-gray-50">
         <div className="text-center mb-10">
           <h2 className="section-title">Our Rates</h2>
@@ -535,7 +265,6 @@ const Reservations = () => {
         </div>
       </section>
       
-      {/* Seasonal Specials */}
       <section className="section-container">
         <div className="text-center mb-10">
           <h2 className="section-title">Seasonal Specials</h2>
@@ -631,7 +360,6 @@ const Reservations = () => {
         </div>
       </section>
       
-      {/* Booking Policies */}
       <section className="section-container bg-gray-50">
         <div className="max-w-3xl mx-auto">
           <h2 className="section-title text-center">Booking Policies</h2>
