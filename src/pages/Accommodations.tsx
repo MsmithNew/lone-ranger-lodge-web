@@ -1,4 +1,3 @@
-
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
@@ -169,10 +168,10 @@ const Accommodations = () => {
       <SectionDivider />
       
       {/* Tent Sites Section */}
-      <section className="section-container">
+      <section className="section-container bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="section-title text-center mb-6">Tent Sites</h2>
-          <div className="flex flex-col md:flex-row gap-8 items-center">
+          <div className="flex flex-col md:flex-row-reverse gap-8 items-center">
             <div className="md:w-1/2">
               <div className="rounded-lg overflow-hidden shadow-lg">
                 <img 
