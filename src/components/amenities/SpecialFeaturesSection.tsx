@@ -3,20 +3,6 @@ import { styles, featureCards } from "@/data/amenitiesData";
 import EssentialAmenityCard from "@/components/EssentialAmenityCard";
 
 const SpecialFeaturesSection = () => {
-  // Calculate number of cards needed to complete the last row
-  const totalCards = featureCards.length;
-  const cardsNeededForLastRow = totalCards % 3 === 0 ? 0 : 3 - (totalCards % 3);
-  
-  // Create placeholder cards if needed to maintain grid symmetry
-  const placeholderCards = Array(cardsNeededForLastRow).fill(null).map((_, idx) => ({
-    image: "",
-    title: "",
-    description: "",
-    isPlaceholder: true
-  }));
-
-  const allCards = [...featureCards, ...placeholderCards];
-
   return (
     <section
       className="section-container"
@@ -27,19 +13,23 @@ const SpecialFeaturesSection = () => {
           Special Features
         </h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center max-w-6xl mx-auto">
-        {allCards.map((card, idx) => (
-          card.isPlaceholder ? (
-            <div key={`placeholder-${idx}`} className="invisible w-full h-full" />
-          ) : (
-            <div key={card.title} className="w-full h-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {featureCards.map(({ image, title, description }, index) => (
+          <div 
+            key={title} 
+            className={`w-full flex justify-center ${
+              // Apply special styles only to the last two cards to center them
+              index >= 3 ? "lg:col-span-1 lg:mx-auto" : ""
+            }`}
+          >
+            <div className="w-full max-w-sm">
               <EssentialAmenityCard
-                image={card.image}
-                title={card.title}
-                description={card.description}
+                image={image}
+                title={title}
+                description={description}
               />
             </div>
-          )
+          </div>
         ))}
       </div>
     </section>
