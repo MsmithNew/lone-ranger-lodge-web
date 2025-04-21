@@ -1,4 +1,3 @@
-
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
@@ -7,14 +6,9 @@ import GoogleMap from "@/components/GoogleMap";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-
 const Contact = () => {
-  return (
-    <Layout>
-      <PageHeader
-        title="Contact Us"
-        description="We're here to help with any questions you might have about Lone Ranger RV Park & Lodge."
-      />
+  return <Layout>
+      <PageHeader title="Contact Us" description="We're here to help with any questions you might have about Lone Ranger RV Park & Lodge." />
       
       {/* Contact Information & Form */}
       <section className="section-container">
@@ -43,7 +37,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Phone</h3>
-                  <p className="text-gray-600">(254) 647-1736</p>
+                  <p className="text-gray-600">(817) 805-0582</p>
                   <p className="text-gray-500 text-sm">For general inquiries and reservations</p>
                 </div>
               </div>
@@ -54,7 +48,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Email</h3>
-                  <p className="text-gray-600">info@lonerangerresort.com</p>
+                  <p className="text-gray-600">lodge@lonerangerrv.com
+                </p>
                   <p className="text-gray-500 text-sm">We aim to respond within 24 hours</p>
                 </div>
               </div>
@@ -143,8 +138,6 @@ const Contact = () => {
           </Link>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Contact;
