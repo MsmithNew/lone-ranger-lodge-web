@@ -1,10 +1,7 @@
-
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, MapPin, Phone, Mail } from "lucide-react";
-
 const Footer = () => {
-  return (
-    <footer className="bg-rvmaroon text-white">
+  return <footer className="bg-rvmaroon text-white">
       <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Column 1: Logo & Description */}
@@ -63,7 +60,7 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-start">
                 <MapPin className="mr-2 mt-1 flex-shrink-0 text-rvyellow" size={18} />
-                <span>1234 Ranger Road, Wilderness County, WC 12345</span>
+                <span>2526 SH - Loop 254, Ranger, TX</span>
               </div>
               <div className="flex items-center">
                 <Phone className="mr-2 flex-shrink-0 text-rvyellow" size={18} />
@@ -86,8 +83,6 @@ const Footer = () => {
           <p>© {new Date().getFullYear()} Lone Ranger RV Park & Lodge. All rights reserved.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
