@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -44,7 +43,7 @@ const Home = () => {
     { src: "/placeholder.svg", alt: "Palo Pinto Mountains" }
   ];
 
-  // Featured amenities for grid cards
+  // Updated featured amenities to include tent camping
   const featuredAmenities = [
     {
       title: "Resort-Style Pool",
@@ -75,6 +74,12 @@ const Home = () => {
       description: "From Gulf Burgers Restaurant to our vintage Texaco Station candy shop, enjoy delicious meals and treats without leaving the park.",
       image: "/placeholder.svg",
       icon: <Utensils size={24} />
+    },
+    {
+      title: "Tent Camping",
+      description: "Prefer something more rustic? Our tent sites offer a peaceful, no-frills outdoor experience for adventurous guests.",
+      image: "/placeholder.svg",
+      icon: <HomeIcon size={24} />
     }
   ];
 
@@ -89,14 +94,44 @@ const Home = () => {
     { activity: "Take scenic drives through the nearby Palo Pinto Mountains", icon: <Car size={24} className="text-rvblue" /> }
   ];
 
-  // Local attractions
+  // Updated local attractions with accurate locations
   const localAttractions = [
-    { name: "Palo Pinto Mountains State Park", distance: "15 min", icon: <Trees size={20} /> },
-    { name: "Lake Leon", distance: "20 min", icon: <Waves size={20} /> },
-    { name: "Stephenville", distance: "30 min", icon: <MapPin size={20} /> },
-    { name: "Ranger Drive-In Theater", distance: "5 min", icon: <Car size={20} /> },
-    { name: "Ranger Airport", distance: "10 min", icon: <MapPin size={20} /> },
-    { name: "Local Rodeo Arenas", distance: "25 min", icon: <House size={20} /> }
+    {
+      name: "Palo Pinto Mountains State Park",
+      description: "Texas' newest state park with hiking, wildlife, and scenic views.",
+      distance: "15 min",
+      icon: <Trees size={20} />
+    },
+    {
+      name: "Lake Leon",
+      description: "A local favorite for fishing, kayaking, and relaxing afternoons by the water.",
+      distance: "20 min",
+      icon: <Waves size={20} />
+    },
+    {
+      name: "Historic Downtown Ranger",
+      description: "Classic Texas small town with antique shops, cafés, and local history.",
+      distance: "5 min",
+      icon: <MapPin size={20} />
+    },
+    {
+      name: "Eastland County Museum",
+      description: "Regional exhibits featuring oil boom stories, outlaw legends, and early Texas culture.",
+      distance: "10 min",
+      icon: <Building size={20} />
+    },
+    {
+      name: "Greer's Western Store",
+      description: "Shop cowboy boots, hats, and western gear in this locally loved shop.",
+      distance: "10 min",
+      icon: <HomeIcon size={20} />
+    },
+    {
+      name: "R&K Café",
+      description: "Southern-style breakfasts, lunch plates, and homemade pies just minutes from the park.",
+      distance: "5 min",
+      icon: <Utensils size={20} />
+    }
   ];
 
   return (
@@ -319,17 +354,15 @@ const Home = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {localAttractions.map((attraction, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xl font-display text-rvmaroon">{attraction.name}</h3>
-                <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm font-medium flex items-center">
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100 h-full">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-xl font-display text-rvmaroon flex-grow pr-2">{attraction.name}</h3>
+                <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm font-medium flex items-center whitespace-nowrap">
                   <MapPin size={14} className="mr-1" />
                   {attraction.distance}
                 </span>
               </div>
-              <p className="text-gray-600">
-                Experience the natural beauty and local culture of the Ranger area.
-              </p>
+              <p className="text-gray-600">{attraction.description}</p>
             </div>
           ))}
         </div>
