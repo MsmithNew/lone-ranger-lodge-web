@@ -20,38 +20,38 @@ import {
 } from "lucide-react";
 
 const maroon = "#804F58";
-const lightBg = "#F9F8F6"; // A light, warm beige for sections
-const lightAltBg = "#F1F0FB"; // Soft gray-beige for alternating backgrounds
+const lightBg = "#F9F8F6";
+const lightAltBg = "#F1F0FB";
 
-// Essential amenities list, removing "Pull-Through & Back-In Sites"
+// Essential amenities list with images
 const essentialAmenities = [
   {
-    icon: <Wifi color="#FF1F47" size={32} strokeWidth={2.3} />,
+    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
     title: "Free High-Speed Wi-Fi",
     description: "Reliable, park-wide high-speed internet access for all guests.",
   },
   {
-    icon: <Dog color="#FF1F47" size={32} strokeWidth={2.3} />,
+    image: "https://images.unsplash.com/photo-1517022812141-23620dba5c23",
     title: "Dog Park",
     description: "Fenced-in, off-leash dog park for your furry companions to run and play.",
   },
   {
-    icon: <WashingMachine color="#FF1F47" size={32} strokeWidth={2.3} />,
+    image: "https://images.unsplash.com/photo-1489171084589-9b5031ebcf9b",
     title: "Laundry Facilities",
     description: "Coin-operated washers and dryers available on-site.",
   },
   {
-    icon: <ShowerHead color="#FF1F47" size={32} strokeWidth={2.3} />,
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a",
     title: "Private Showers & Bathrooms",
     description: "Modern, accessible facilities open 24/7.",
   },
   {
-    icon: <Plug color="#FF1F47" size={32} strokeWidth={2.3} />,
+    image: "https://images.unsplash.com/photo-1545558014-8692077e9b5c",
     title: "Full RV Hookups",
     description: "Water, electric, and sewer included at all RV sites.",
   },
   {
-    icon: <CarFront color="#FF1F47" size={32} strokeWidth={2.3} />,
+    image: "https://images.unsplash.com/photo-1472396961693-142e6e269027",
     title: "On-Site Parking",
     description: "Parking space for RVs, trailers, and personal vehicles.",
   },
@@ -145,7 +145,7 @@ const Amenities = () => {
         description="Real comfort and memorable experiences — discover what makes Lone Ranger RV Park &amp; Lodge the perfect getaway."
       />
 
-      {/* Section 1 - Essential Amenities: Grid/Card layout with icons */}
+      {/* Section 1 - Essential Amenities: Grid/Card layout with images */}
       <section
         className="section-container"
         style={{ background: lightBg, borderRadius: 18 }}
@@ -155,14 +155,16 @@ const Amenities = () => {
             Essential Amenities
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {essentialAmenities.map(({ icon, title, description }) => (
-            <EssentialAmenityCard
-              key={title}
-              icon={icon}
-              title={title}
-              description={description}
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+          {essentialAmenities.map(({ image, title, description }) => (
+            <div className="w-full max-w-sm">
+              <EssentialAmenityCard
+                key={title}
+                image={image}
+                title={title}
+                description={description}
+              />
+            </div>
           ))}
         </div>
       </section>
