@@ -8,6 +8,7 @@ interface RateCardProps {
   className?: string;
 }
 
+// Pill styling refactored for a consistent appearance across cards
 const RateCard = ({
   label,
   price,
@@ -18,8 +19,8 @@ const RateCard = ({
     className={`rounded-xl shadow-md border-2 border-[#804F58] flex flex-col p-6 mb-4 w-full max-w-[340px] mx-auto bg-white ${className}`}
     style={{ minHeight: 250 }}
   >
-    {/* Red pill badge for label */}
-    <div className="mb-4">
+    {/* Red pill badge for label (top-left) */}
+    <div className="mb-4 flex items-start">
       <span className="inline-block px-4 py-1 rounded-full bg-[#FF1F47] text-white font-bold text-sm shadow-sm">
         {label}
       </span>
