@@ -6,6 +6,7 @@ import SectionDivider from "@/components/SectionDivider";
 import EssentialAmenitiesSection from "@/components/amenities/EssentialAmenitiesSection";
 import RecreationSection from "@/components/amenities/RecreationSection";
 import SpecialFeaturesSection from "@/components/amenities/SpecialFeaturesSection";
+import CTABanner from "@/components/CTABanner";
 
 const Amenities = () => {
   return (
@@ -19,6 +20,7 @@ const Amenities = () => {
       <RecreationSection />
       <SectionDivider />
       <SpecialFeaturesSection />
+      <CTABanner />
     </Layout>
   );
 };

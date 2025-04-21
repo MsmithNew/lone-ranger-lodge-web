@@ -3,6 +3,16 @@ import { styles, featureCards } from "@/data/amenitiesData";
 import EssentialAmenityCard from "@/components/EssentialAmenityCard";
 
 const SpecialFeaturesSection = () => {
+  // Add the new card to the existing features
+  const allFeatureCards = [
+    ...featureCards,
+    {
+      image: "/outdoor-gathering.jpg", // This image should be added to public folder
+      title: "Outdoor Gathering Area",
+      description: "Every evening, guests gather near our shaded lawn for conversation, stargazing, and unplugged relaxation."
+    }
+  ];
+
   return (
     <section
       className="section-container"
@@ -14,15 +24,9 @@ const SpecialFeaturesSection = () => {
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {featureCards.map(({ image, title, description }, index) => (
-          <div 
-            key={title} 
-            className={`w-full flex justify-center ${
-              // Apply special styles only to the last two cards to center them
-              index >= 3 ? "lg:col-span-1 lg:mx-auto" : ""
-            }`}
-          >
-            <div className="w-full max-w-sm">
+        {allFeatureCards.map(({ image, title, description }) => (
+          <div key={title} className="w-full">
+            <div className="w-full max-w-sm mx-auto">
               <EssentialAmenityCard
                 image={image}
                 title={title}
