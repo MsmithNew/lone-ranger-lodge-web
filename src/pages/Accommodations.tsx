@@ -1,3 +1,4 @@
+
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
@@ -17,8 +18,7 @@ import {
   ShowerHead,
   Thermometer,
   Tent,
-  Laundry,
-  Pet,
+  WashingMachine,
   Utensils
 } from "lucide-react";
 
@@ -55,9 +55,9 @@ const Accommodations = () => {
   const tentFeatures = [
     { text: "Shaded open areas for tents", icon: <Tent className="text-rvblue" size={18} /> },
     { text: "Access to restrooms and showers", icon: <ShowerHead className="text-rvblue" size={18} /> },
-    { text: "Access to laundry facilities", icon: <Laundry className="text-rvblue" size={18} /> },
+    { text: "Access to laundry facilities", icon: <WashingMachine className="text-rvblue" size={18} /> },
     { text: "Free high-speed Wi-Fi", icon: <Wifi className="text-rvblue" size={18} /> },
-    { text: "Pet-friendly area", icon: <Pet className="text-rvblue" size={18} /> },
+    { text: "Pet-friendly area", icon: <Dog className="text-rvblue" size={18} /> },
     { text: "Enjoy all shared park amenities", icon: <Utensils className="text-rvblue" size={18} /> }
   ];
 
