@@ -91,47 +91,30 @@ const recreationAmenities = [
   },
 ];
 
-// Feature cards with icons, as requested
+// Feature cards with images instead of icons
 const featureCards = [
   {
-    icon: <House color="#804F58" size={32} strokeWidth={2} />,
+    image: "https://images.unsplash.com/photo-1527576539890-dfa815648363",
     title: "Restored 1930s Lodges",
     description: "Original cabins with retro exteriors and fully updated interiors.",
   },
   {
-    icon: <BedDouble color="#FF1F47" size={32} strokeWidth={2} />,
+    image: "https://images.unsplash.com/photo-1439886183900-e79ec0057170",
     title: "Vintage Neon Sign Collection",
     description: "Rare signage installed throughout the property.",
   },
   {
-    icon: <Film color="#1FBEFF" size={32} strokeWidth={2} />,
+    image: "https://images.unsplash.com/photo-1489089905289-5c91ae6e2544",
     title: "Outdoor Drive-In Cinema (Coming Soon)",
     description: "Retro-style movie nights under the stars.",
   },
   {
-    icon: <Candy color="#FFF41F" size={32} strokeWidth={2} />,
+    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
     title: "Candy & Ice Cream Shop",
     description: "Located in a restored Texaco station with nostalgic snacks.",
   },
   {
-    icon: (
-      <svg
-        width="32"
-        height="32"
-        viewBox="0 0 24 24"
-        fill="#AAA54D"
-        xmlns="http://www.w3.org/2000/svg"
-        strokeWidth={2}
-      >
-        <path d="M4 6h16v12H4z" fill="#AAA54D" />
-        <path
-          d="M4 6l8 6 8-6"
-          stroke="#804F58"
-          strokeWidth={1.5}
-          fill="none"
-        />
-      </svg>
-    ),
+    image: "https://images.unsplash.com/photo-1473091534298-04dcbce3278c",
     title: "Retro Americana Atmosphere",
     description: "Every detail celebrates the charm of roadside America.",
   },
@@ -195,7 +178,7 @@ const Amenities = () => {
 
       <SectionDivider />
 
-      {/* Section 3 - Special Features: three card layout with icons and center-aligned text */}
+      {/* Section 3 - Special Features: three card layout with images and center-aligned text */}
       <section
         className="section-container"
         style={{ background: lightBg, borderRadius: 18 }}
@@ -205,14 +188,16 @@ const Amenities = () => {
             Special Features
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {featureCards.map(({ icon, title, description }) => (
-            <FeatureCard
-              key={title}
-              icon={icon}
-              title={title}
-              description={description}
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 place-items-center">
+          {featureCards.map(({ image, title, description }) => (
+            <div className="w-full max-w-sm">
+              <EssentialAmenityCard
+                key={title}
+                image={image}
+                title={title}
+                description={description}
+              />
+            </div>
           ))}
         </div>
       </section>
