@@ -10,8 +10,7 @@ import {
   WashingMachine, ParkingCircle, 
   Tent, Beer, UtensilsCrossed, 
   Music2, Gamepad2, Building, BadgePercent, Film, IceCream, Landmark, 
-  pool as PoolIcon,
-  horse as HorseIcon
+  WavesLadder, House
 } from "lucide-react";
 
 // Use brand colors as before
@@ -60,7 +59,7 @@ const Amenities = () => {
   // SECTION 2: Recreation & Activities
   const recreationAmenities = [
     {
-      icon: <PoolIcon size={36} />,
+      icon: <WavesLadder size={36} />,
       title: "Resort-Style Swimming Pool",
       description: "Enjoy a large, hilltop pool with panoramic park views."
     },
@@ -85,7 +84,7 @@ const Amenities = () => {
       description: "Enjoy live music every weekend during our seasonal event series."
     },
     {
-      icon: <HorseIcon size={36} />,
+      icon: <House size={36} />,
       title: "Horse Hotel",
       description: "Shaded stalls with water and electric for your equine friends."
     }
