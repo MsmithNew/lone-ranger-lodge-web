@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
@@ -5,102 +6,141 @@ import SectionDivider from "@/components/SectionDivider";
 import AmenityCard from "@/components/AmenityCard";
 import ImageGallery from "@/components/ImageGallery";
 import { 
-  Wifi, Waves, UtensilsCrossed, Dog, ShowerHead, Waypoints,
-  Dumbbell, Car, Tent, Baby, TreePine, Coffee 
+  Wifi, Dog, ShowerHead, Car, Waypoints, 
+  WashingMachine, ParkingCircle, 
+  Tent, Pool, Beer, UtensilsCrossed, 
+  Music2, Horse, Gamepad2, Building, BadgePercent, Film, IceCream, Landmark 
 } from "lucide-react";
 
+// Use brand colors as before
+const maroon = "#804F58";
+
 const Amenities = () => {
+  // SECTION 1: Essential Amenities
   const essentialAmenities = [
     {
       icon: <Wifi size={36} />,
-      title: "Free Wi-Fi",
-      description: "High-speed wireless internet available throughout the property to keep you connected."
-    },
-    {
-      icon: <ShowerHead size={36} />,
-      title: "Modern Bathhouses",
-      description: "Clean, spacious bathhouses with private shower stalls, dressing areas, and laundry facilities."
-    },
-    {
-      icon: <Car size={36} />,
-      title: "Pull-Through Sites",
-      description: "Easy access pull-through RV sites with full hookups, including 50/30/20 amp service."
-    },
-    {
-      icon: <UtensilsCrossed size={36} />,
-      title: "On-Site Dining",
-      description: "Our 50's-style diner serves breakfast and dinner daily, plus a general store for supplies."
-    },
-    {
-      icon: <Waypoints size={36} />,
-      title: "Central Location",
-      description: "Conveniently located near popular attractions, hiking trails, and shopping areas."
+      title: "Free High-Speed Wi-Fi",
+      description: "Reliable, park-wide high-speed internet access for all guests."
     },
     {
       icon: <Dog size={36} />,
-      title: "Pet Friendly",
-      description: "Dedicated dog park and pet-friendly accommodations so your furry friends can join the fun."
+      title: "Dog Park",
+      description: "Fenced-in, off-leash dog park for your furry companions to run and play."
+    },
+    {
+      icon: <WashingMachine size={36} />,
+      title: "Laundry Facilities",
+      description: "Coin-operated washers and dryers available on-site for your convenience."
+    },
+    {
+      icon: <ShowerHead size={36} />,
+      title: "Private Showers & Bathrooms",
+      description: "Modern, accessible facilities open 24/7 for guests."
+    },
+    {
+      icon: <Waypoints size={36} />,
+      title: "Full RV Hookups",
+      description: "All sites offer water, electric, and sewer hookups for RVs."
+    },
+    {
+      icon: <ParkingCircle size={36} />,
+      title: "On-Site Parking",
+      description: "Parking space for RVs and personal vehicles included with every stay."
+    },
+    {
+      icon: <Car size={36} />,
+      title: "Pull-Through & Back-In Sites",
+      description: "Choose from spacious pull-through or back-in RV sites to suit your setup."
     }
   ];
-  
+
+  // SECTION 2: Recreation & Activities
   const recreationAmenities = [
     {
-      icon: <Waves size={36} />,
-      title: "Swimming Pool",
-      description: "Heated pool with lounge area, splash pad for kids, and seasonal poolside service."
+      icon: <Pool size={36} />,
+      title: "Resort-Style Swimming Pool",
+      description: "Enjoy a large, hilltop pool with panoramic park views."
     },
     {
-      icon: <Dumbbell size={36} />,
-      title: "Fitness Trail",
-      description: "Scenic 1-mile fitness trail with workout stations throughout the property."
+      icon: <UtensilsCrossed size={36} />,
+      title: "Gulf Burgers Restaurant",
+      description: "On-site burgers, beer, and wine at our guest-favorite eatery."
     },
     {
-      icon: <Tent size={36} />,
-      title: "Community Campfire",
-      description: "Nightly community campfires with complimentary s'mores and storytelling."
+      icon: <Gamepad2 size={36} />,
+      title: "Pickleball Court",
+      description: "Family-friendly court for a fun and active game of pickleball."
     },
     {
-      icon: <Baby size={36} />,
-      title: "Playground",
-      description: "Vintage-inspired playground with modern safety features for children of all ages."
+      icon: <Building size={36} />,
+      title: "Lounge & Game Area",
+      description: "Chill space with a pool table and games for all ages."
     },
     {
-      icon: <TreePine size={36} />,
-      title: "Nature Trails",
-      description: "Explore our network of nature trails with guided walks available on weekends."
+      icon: <Music2 size={36} />,
+      title: "Weekend Live Music",
+      description: "Enjoy live music every weekend during our seasonal event series."
     },
     {
-      icon: <Coffee size={36} />,
-      title: "Community Lounge",
-      description: "Indoor community lounge with games, books, TV, and complimentary coffee and tea."
+      icon: <Horse size={36} />,
+      title: "Horse Hotel",
+      description: "Shaded stalls with water and electric for your equine friends."
     }
   ];
-  
+
+  // SECTION 3: Special Features
+  const specialFeatures = [
+    {
+      icon: <Tent size={36} />,
+      title: "Renovated 1930s Lodges",
+      description: "Vintage exteriors with fully modern, comfortable interiors."
+    },
+    {
+      icon: <BadgePercent size={36} />,
+      title: "Vintage Neon Sign Collection",
+      description: "Stunning restored signage displayed throughout the park."
+    },
+    {
+      icon: <Film size={36} />,
+      title: "Outdoor Drive-In Cinema",
+      description: "COMING SOON: Classic movies outdoors on select nights."
+    },
+    {
+      icon: <IceCream size={36} />,
+      title: "Candy & Ice Cream Shop",
+      description: "A sweet stop inside our restored Texaco station."
+    },
+    {
+      icon: <Landmark size={36} />,
+      title: "Retro Americana Vibe",
+      description: "Nostalgia and retro details woven into every corner of the park."
+    }
+  ];
+
+  // SECTION 4: Amenities Gallery — no captions or text, visual grid only
+  // Replace these sample URLs with real images of your amenities if available
   const amenityImages = [
-    { src: "/placeholder.svg", alt: "Swimming pool" },
-    { src: "/placeholder.svg", alt: "50's style diner" },
-    { src: "/placeholder.svg", alt: "Modern bathhouse" },
-    { src: "/placeholder.svg", alt: "Community campfire" },
-    { src: "/placeholder.svg", alt: "Dog park" },
-    { src: "/placeholder.svg", alt: "Nature trail" }
+    { src: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21", alt: "" }, // pool
+    { src: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843", alt: "" }, // trees/trails
+    { src: "https://images.unsplash.com/photo-1721322800607-8c38375eef04", alt: "" }, // lounge
+    { src: "https://images.unsplash.com/photo-1582562124811-c09040d0a901", alt: "" }, // dog/park
+    { src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb", alt: "" }, // park signage
+    { src: "/placeholder.svg", alt: "" } // fallback
   ];
 
   return (
     <Layout>
       <PageHeader
         title="Amenities & Features"
-        description="Discover all the amenities and features that make Lone Ranger RV Park & Lodge the perfect getaway destination."
+        description="Discover real amenities and unique features that make Lone Ranger RV Park & Lodge the perfect getaway destination."
       />
-      
+
       {/* Essential Amenities */}
       <section className="section-container">
         <div className="text-center mb-10">
           <h2 className="section-title">Essential Amenities</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            We provide all the essentials needed for a comfortable and convenient stay.
-          </p>
         </div>
-        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {essentialAmenities.map((amenity, index) => (
             <AmenityCard
@@ -112,18 +152,14 @@ const Amenities = () => {
           ))}
         </div>
       </section>
-      
+
       <SectionDivider />
-      
+
       {/* Recreation & Activities */}
       <section className="section-container bg-gray-50">
         <div className="text-center mb-10">
           <h2 className="section-title">Recreation & Activities</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Plenty of on-site activities to keep you entertained throughout your stay.
-          </p>
         </div>
-        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {recreationAmenities.map((amenity, index) => (
             <AmenityCard
@@ -135,209 +171,37 @@ const Amenities = () => {
           ))}
         </div>
       </section>
-      
+
       <SectionDivider />
-      
+
       {/* Special Features */}
       <section className="section-container">
         <div className="text-center mb-10">
           <h2 className="section-title">Special Features</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Unique offerings that set Lone Ranger RV Park & Lodge apart.
-          </p>
         </div>
-        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h3 className="text-xl font-display text-rvmaroon mb-3">50's Style Roadside Diner</h3>
-            <p className="text-gray-600 mb-4">
-              Step back in time at our authentic 50's inspired diner serving classic American comfort food. Enjoy daily breakfast specials, hand-dipped milkshakes, and hearty dinners in a nostalgic setting complete with jukebox and vintage decor.
-            </p>
-            <ul className="space-y-2 text-gray-600">
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Breakfast served 7am-11am
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Dinner served 5pm-9pm
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Friday night all-you-can-eat fish fry
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Saturday classic car meet-ups (seasonal)
-              </li>
-            </ul>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h3 className="text-xl font-display text-rvmaroon mb-3">Vintage Game Arcade</h3>
-            <p className="text-gray-600 mb-4">
-              Our vintage game arcade features classic pinball machines, arcade games from the 70s and 80s, and table games for all ages. The perfect rainy day activity or evening entertainment.
-            </p>
-            <ul className="space-y-2 text-gray-600">
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Classic pinball collection
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Restored arcade machines
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Air hockey and shuffleboard
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Weekly tournaments with prizes
-              </li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h3 className="text-xl font-display text-rvmaroon mb-3">Vintage Trailer Museum</h3>
-            <p className="text-gray-600 mb-4">
-              Explore our small but impressive collection of restored vintage trailers from the 1940s-1970s. Learn about the history of American road travel and see how camping has evolved over the decades.
-            </p>
-            <ul className="space-y-2 text-gray-600">
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Guided tours available on weekends
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Interactive exhibits on RV history
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Photo opportunities in restored settings
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Free admission for park guests
-              </li>
-            </ul>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h3 className="text-xl font-display text-rvmaroon mb-3">Ranger's General Store</h3>
-            <p className="text-gray-600 mb-4">
-              Our well-stocked general store offers everything from camping essentials to local crafts and souvenirs. Forgot something at home? We've got you covered!
-            </p>
-            <ul className="space-y-2 text-gray-600">
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                RV supplies and essentials
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Local products and crafts
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Grocery basics and ice
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                Lone Ranger branded merchandise
-              </li>
-            </ul>
-          </div>
+          {specialFeatures.map((feature, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+              <div className="mb-4 text-rvblue">{feature.icon}</div>
+              <h3 className="text-xl font-display text-rvmaroon mb-3">{feature.title}</h3>
+              <p className="text-gray-600 mb-2">{feature.description}</p>
+            </div>
+          ))}
         </div>
       </section>
-      
+
       <SectionDivider />
-      
-      {/* Amenities Gallery */}
+
+      {/* Amenities Gallery – visual only */}
       <section className="section-container bg-gray-50">
         <div className="text-center mb-10">
           <h2 className="section-title">Amenities Gallery</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Take a visual tour of some of our favorite amenities and features.
-          </p>
         </div>
-        
-        <ImageGallery images={amenityImages} />
-      </section>
-      
-      {/* Seasonal Amenities */}
-      <section className="section-container bg-rvblue/10">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="section-title text-center">Seasonal Amenities & Events</h2>
-          
-          <div className="space-y-6 mt-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-display text-rvmaroon mb-2">Summer (June - August)</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Outdoor movie nights every Friday
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Ice cream social every Saturday
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Extended pool hours with poolside service
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Annual 4th of July vintage car parade and barbecue
-                </li>
-              </ul>
-            </div>
-            
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-display text-rvmaroon mb-2">Fall (September - November)</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Harvest festival weekend in October
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Guided fall foliage hikes
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Halloween weekend with trick-or-treating and costume contest
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Thanksgiving potluck dinner
-                </li>
-              </ul>
-            </div>
-            
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-display text-rvmaroon mb-2">Winter & Spring (December - May)</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Holiday light display and Christmas celebration
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Indoor game tournaments in the community center
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Spring wildflower walks and bird watching excursions
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-rvred rounded-full mr-2"></span>
-                  Easter egg hunt and pancake breakfast
-                </li>
-              </ul>
-            </div>
-          </div>
+        <div>
+          {/* Use ImageGallery, but ensure no captions/text are provided */}
+          <ImageGallery
+            images={amenityImages}
+          />
         </div>
       </section>
     </Layout>
@@ -345,3 +209,4 @@ const Amenities = () => {
 };
 
 export default Amenities;
+
