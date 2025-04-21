@@ -1,4 +1,3 @@
-
 import React from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
@@ -24,7 +23,7 @@ const maroon = "#804F58";
 const lightBg = "#F9F8F6"; // A light, warm beige for sections
 const lightAltBg = "#F1F0FB"; // Soft gray-beige for alternating backgrounds
 
-// Essential amenities list, with icons from lucide-react matching their topics
+// Essential amenities list, removing "Pull-Through & Back-In Sites"
 const essentialAmenities = [
   {
     icon: <Wifi color="#FF1F47" size={32} strokeWidth={2.3} />,
@@ -55,11 +54,6 @@ const essentialAmenities = [
     icon: <CarFront color="#FF1F47" size={32} strokeWidth={2.3} />,
     title: "On-Site Parking",
     description: "Parking space for RVs, trailers, and personal vehicles.",
-  },
-  {
-    icon: <Bed color="#FF1F47" size={32} strokeWidth={2.3} />,
-    title: "Pull-Through & Back-In Sites",
-    description: "Convenient options for large and small rigs.",
   },
 ];
 
@@ -225,4 +219,3 @@ const Amenities = () => {
 };
 
 export default Amenities;
-
