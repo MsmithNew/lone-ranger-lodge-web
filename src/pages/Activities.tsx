@@ -1,8 +1,8 @@
-
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
 import AttractionSection from "@/components/attractions/AttractionSection";
+import FrontDeskRecommendations from "@/components/activities/FrontDeskRecommendations";
 
 // Unsplash IDs for images
 const images = {
@@ -193,12 +193,7 @@ const Activities = () => (
     <SectionDivider />
 
     <div className="section-container bg-gray-50 rounded-xl mb-10">
-      <AttractionSection
-        title="Front Desk Recommendations"
-        color="bg-rvmaroon"
-        activities={frontDeskRecommendations}
-        columns="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-      />
+      <FrontDeskRecommendations />
     </div>
   </Layout>
 );
