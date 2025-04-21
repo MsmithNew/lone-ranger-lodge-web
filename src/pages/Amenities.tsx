@@ -178,7 +178,7 @@ const Amenities = () => {
 
       <SectionDivider />
 
-      {/* Section 3 - Special Features: three card layout with images and center-aligned text */}
+      {/* Section 3 - Special Features: two row layout with three cards each */}
       <section
         className="section-container"
         style={{ background: lightBg, borderRadius: 18 }}
@@ -188,11 +188,10 @@ const Amenities = () => {
             Special Features
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 place-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center max-w-6xl mx-auto">
           {featureCards.map(({ image, title, description }) => (
-            <div className="w-full max-w-sm">
+            <div key={title} className="w-full">
               <EssentialAmenityCard
-                key={title}
                 image={image}
                 title={title}
                 description={description}

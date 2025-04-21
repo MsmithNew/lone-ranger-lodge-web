@@ -1,7 +1,7 @@
-
 import Layout from "@/components/Layout";
 import RateCard from "@/components/RateCard";
 import SectionDivider from "@/components/SectionDivider";
+import { Button } from "@/components/ui/button";
 
 const sectionTitleClass =
   "text-center text-2xl md:text-3xl font-bold mb-7 text-[#804F58] font-display";
@@ -96,8 +96,24 @@ const Reservations = () => (
         />
       </div>
     </section>
+
+    <section className="bg-[#F1F0FB] py-16 mt-8">
+      <div className="section-container text-center max-w-4xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-display text-[#804F58] mb-4">
+          Ready to book your stay?
+        </h2>
+        <p className="text-lg text-gray-700 mb-8">
+          Whether you're rolling in with your RV, traveling with horses, or booking a cozy lodge, we've got a spot for you.
+        </p>
+        <Button 
+          className="bg-[#804F58] hover:bg-[#804F58]/90 text-white px-8 py-6 text-lg"
+          size="lg"
+        >
+          Book Now
+        </Button>
+      </div>
+    </section>
   </Layout>
 );
 
 export default Reservations;
-
