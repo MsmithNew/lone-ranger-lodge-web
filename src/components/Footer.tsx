@@ -68,7 +68,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center">
                 <Mail className="mr-2 flex-shrink-0 text-rvyellow" size={18} />
-                <span>info@loneranger-rvpark.com</span>
+                <span>lodge@lonerangerrv.com</span>
               </div>
             </div>
             <div className="mt-6">
