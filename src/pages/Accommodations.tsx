@@ -2,7 +2,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
 import { Link } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { 
   ParkingCircle, 
   Droplets, 
@@ -68,7 +68,6 @@ const Accommodations = () => {
         imageUrl="/placeholder.svg"
       />
       
-      {/* RV Sites Section */}
       <section className="section-container">
         <div className="max-w-6xl mx-auto">
           <h2 className="section-title text-center mb-6">RV Sites</h2>
@@ -94,6 +93,11 @@ const Accommodations = () => {
                   </li>
                 ))}
               </ul>
+              <Link to="/reservations" className="mt-6 inline-block">
+                <Button className="bg-rvblue hover:bg-rvblue/90 text-white">
+                  Book RV Site
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -101,7 +105,6 @@ const Accommodations = () => {
       
       <SectionDivider />
       
-      {/* Horse Hotel Section */}
       <section className="section-container bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="section-title text-center mb-6">Horse Hotel</h2>
@@ -127,6 +130,11 @@ const Accommodations = () => {
                   </li>
                 ))}
               </ul>
+              <Link to="/reservations" className="mt-6 inline-block">
+                <Button className="bg-rvblue hover:bg-rvblue/90 text-white">
+                  Book Horse Hotel
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -134,7 +142,6 @@ const Accommodations = () => {
       
       <SectionDivider />
       
-      {/* Lodges Section */}
       <section className="section-container">
         <div className="max-w-6xl mx-auto">
           <h2 className="section-title text-center mb-6">Lodges</h2>
@@ -160,6 +167,11 @@ const Accommodations = () => {
                   </li>
                 ))}
               </ul>
+              <Link to="/reservations" className="mt-6 inline-block">
+                <Button className="bg-rvblue hover:bg-rvblue/90 text-white">
+                  Book Lodge
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -167,7 +179,6 @@ const Accommodations = () => {
       
       <SectionDivider />
       
-      {/* Tent Sites Section */}
       <section className="section-container bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="section-title text-center mb-6">Tent Sites</h2>
@@ -193,6 +204,11 @@ const Accommodations = () => {
                   </li>
                 ))}
               </ul>
+              <Link to="/reservations" className="mt-6 inline-block">
+                <Button className="bg-rvblue hover:bg-rvblue/90 text-white">
+                  Book Tent Site
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -200,7 +216,6 @@ const Accommodations = () => {
       
       <SectionDivider />
       
-      {/* Final Banner Section */}
       <section className="relative py-16">
         <div className="absolute inset-0 bg-gradient-to-r from-rvmaroon to-rvblue opacity-90">
           <img 
