@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
@@ -8,6 +7,8 @@ import {
   CollapsibleContent, 
   CollapsibleTrigger 
 } from "@/components/ui/collapsible";
+
+const LOGO_SRC = "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,12 +38,16 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
           {/* Logo and Mobile Menu Button */}
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex-shrink-0 flex items-center space-x-2">
-              <span className="font-display text-xl text-rvred">Lone Ranger</span>
-              <span className="font-display text-base text-rvblue">RV Park & Lodge</span>
+          <div className="flex justify-between items-center h-20 md:h-20">
+            <Link to="/" className="flex-shrink-0 flex items-center space-x-2 group">
+              <img
+                src={LOGO_SRC}
+                alt="Lone Ranger RV Park & Lodge Logo"
+                className="block object-contain max-h-16 md:max-h-[70px] w-auto select-none group-hover:opacity-90 transition-all duration-200"
+                style={{ maxWidth: 270 }}
+                draggable={false}
+              />
             </Link>
-            
             {/* Mobile Navigation Button */}
             <div className="flex items-center md:hidden">
               <button

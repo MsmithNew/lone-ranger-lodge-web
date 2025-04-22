@@ -18,7 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
     // Small delay to ensure the opacity is 0 before fading in
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 50);
+    }, 30);
 
     return () => clearTimeout(timer);
   }, [location.pathname]);
@@ -27,11 +27,14 @@ const Layout = ({ children }: LayoutProps) => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main 
-        className={`flex-grow transition-all duration-300 ease-out ${
+        className={`flex-grow transition-all duration-500 ease-out ${
           isVisible 
-            ? "opacity-100 translate-y-0" 
+            ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-4"
         }`}
+        style={{
+          willChange: "opacity, transform"
+        }}
       >
         {children}
       </main>
@@ -41,4 +44,3 @@ const Layout = ({ children }: LayoutProps) => {
 };
 
 export default Layout;
-

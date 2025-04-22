@@ -1,14 +1,24 @@
+
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, MapPin, Phone, Mail } from "lucide-react";
+// Logo source
+const LOGO_SRC = "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png";
+
 const Footer = () => {
-  return <footer className="bg-rvmaroon text-white">
+  return (
+    <footer className="bg-rvmaroon text-white">
       <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Column 1: Logo & Description */}
           <div>
             <Link to="/" className="flex items-center">
-              <span className="font-display text-2xl text-white">Lone Ranger</span>
-              <span className="ml-2 font-display text-lg text-rvyellow">RV Park & Lodge</span>
+              <img
+                src={LOGO_SRC}
+                alt="Lone Ranger RV Park & Lodge Logo"
+                className="object-contain block max-h-[60px] w-auto select-none bg-white rounded-md p-1 shadow-md"
+                style={{ background: "white", maxWidth: 280 }}
+                draggable={false}
+              />
             </Link>
             <p className="mt-4 text-gray-300">
               Experience the perfect blend of retro Americana charm and modern comfort at our RV park and lodge. Your adventure starts here.
@@ -72,17 +82,20 @@ const Footer = () => {
               </div>
             </div>
             <div className="mt-6">
-              <Link to="/reservations" className="bg-rvyellow hover:bg-rvyellow/90 text-rvmaroon font-semibold py-2 px-4 rounded-md transition-all duration-300 inline-block">
+              <Link
+                to="/reservations"
+                className="bg-rvyellow hover:bg-rvyellow/90 text-rvmaroon font-semibold py-2 px-4 rounded-md transition-all duration-300 inline-block shadow"
+              >
                 BOOK A SITE
               </Link>
             </div>
           </div>
         </div>
-        
         <div className="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-gray-400">
           <p>© {new Date().getFullYear()} Lone Ranger RV Park & Lodge. All rights reserved.</p>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
 export default Footer;
