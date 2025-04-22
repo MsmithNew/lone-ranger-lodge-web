@@ -1,8 +1,8 @@
-
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, MapPin, Phone, Mail } from "lucide-react";
-// Logo source
-const LOGO_SRC = "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png";
+
+// Updated logo source
+const LOGO_SRC = "/lovable-uploads/ebe7aca1-8ce4-4faa-a5ce-278e467b07ae.png";
 
 const Footer = () => {
   return (
@@ -15,8 +15,8 @@ const Footer = () => {
               <img
                 src={LOGO_SRC}
                 alt="Lone Ranger RV Park & Lodge Logo"
-                className="object-contain block max-h-[60px] w-auto select-none bg-white rounded-md p-1 shadow-md"
-                style={{ background: "white", maxWidth: 280 }}
+                className="object-contain block max-h-[80px] w-auto select-none rounded-md"
+                style={{ maxWidth: 280 }}
                 draggable={false}
               />
             </Link>
