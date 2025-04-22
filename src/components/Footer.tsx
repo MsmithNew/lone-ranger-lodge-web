@@ -72,8 +72,8 @@ const Footer = () => {
               </div>
             </div>
             <div className="mt-6">
-              <Link to="/contact" className="bg-rvyellow hover:bg-rvyellow/90 text-rvmaroon font-semibold py-2 px-4 rounded-md transition-all duration-300 inline-block">
-                Get Directions
+              <Link to="/reservations" className="bg-rvyellow hover:bg-rvyellow/90 text-rvmaroon font-semibold py-2 px-4 rounded-md transition-all duration-300 inline-block">
+                BOOK A SITE
               </Link>
             </div>
           </div>
