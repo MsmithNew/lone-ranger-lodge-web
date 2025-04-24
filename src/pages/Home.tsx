@@ -137,7 +137,7 @@ const Home = () => {
   return (
     <Layout>
       {/* Hero Banner Section */}
-      <section className="relative h-[85vh] min-h-[600px] flex items-center">
+      <section className="relative min-h-[600px] flex items-center py-8 md:py-0 h-[85vh]">
         <div className="absolute inset-0 z-0">
           <img src="/placeholder.svg" alt="Lone Ranger RV Park" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/50"></div>
