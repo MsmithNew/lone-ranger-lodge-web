@@ -115,15 +115,13 @@ const frontDeskRecommendations = [
   },
   {
     title: "Downtown Stephenville",
-    description:
-      "Great for dining, shopping, and soaking up small-town charm.",
+    description: "Great for dining, shopping, and soaking up small-town charm.",
     imageUrl: images.downtownStephenville,
     learnMore: "https://www.stephenvilletx.gov/administrative-services/page/stephenville-main-street",
   },
   {
     title: "W.K. Gordon Center",
-    description:
-      "Educational and visually immersive — guests often rave about it.",
+    description: "Educational and visually immersive — guests often rave about it.",
     imageUrl: images.gordonCenter,
     learnMore: "https://www.tarleton.edu/gordoncenter/",
   },
