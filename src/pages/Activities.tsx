@@ -1,4 +1,3 @@
-
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
@@ -8,7 +7,7 @@ import FrontDeskRecommendations from "@/components/activities/FrontDeskRecommend
 // Actual location images from uploads
 const images = {
   paloPinto: "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png", // Palo Pinto Mountains photo
-  lakeLeon: "/lovable-uploads/67ee9e50-9972-479a-a783-d53a93e4442b.png", // New Lake Leon autumn view
+  lakeLeon: "/lovable-uploads/96f12b3f-0295-4f36-a9ea-6ebb02e5057b.png", // Updated Lake Leon autumn view
   copperasCreek: "https://images.unsplash.com/photo-1433086966358-54859d0ed716", // Keeping placeholder until provided
   stephensLake: "/lovable-uploads/ebe7aca1-8ce4-4faa-a5ce-278e467b07ae.png", // Lake Leon photo
   driveIn: "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png", // Using mountain view temporarily
