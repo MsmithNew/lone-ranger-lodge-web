@@ -28,59 +28,45 @@ const outdoorActivities = [
     description:
       "Just one exit away, this newly opened Texas state park offers scenic hiking trails, horseback riding, and panoramic overlooks of the surrounding mountains.",
     imageUrl: images.paloPinto,
-    learnMore: "#",
+    learnMore: "https://tpwd.texas.gov/state-parks/palo-pinto-mountains",
   },
   {
     title: "Lake Leon (Eastland County)",
     description:
       "A peaceful spot for fishing, kayaking, or swimming. Ideal for a morning on the water or a relaxed picnic by the shoreline.",
     imageUrl: images.lakeLeon,
-    learnMore: "#",
+    learnMore: "https://tpwd.texas.gov/fishboat/fish/recreational/lakes/leon/",
   },
   {
     title: "Copperas Creek Park",
     description:
       "A day-use park near Lake Proctor with trails, shaded picnic areas, and birdwatching opportunities.",
     imageUrl: images.copperasCreek,
-    learnMore: "#",
-  },
-  {
-    title: "Stephens Lake Trailhead (Gorman, TX)",
-    description:
-      "A scenic local trailhead perfect for hiking or nature walks just under 30 minutes away.",
-    imageUrl: images.stephensLake,
-    learnMore: "#",
+    learnMore: "https://www.recreation.gov/camping/campgrounds/232557",
   },
 ];
 
 const familyFun = [
   {
-    title: "Historic Ranger Drive-In Theater (Ranger, TX)",
-    description:
-      "A classic drive-in movie experience under renovation and reopening soon. Stay tuned for screenings and special events.",
-    imageUrl: images.driveIn,
-    learnMore: "#",
-  },
-  {
-    title: "Plaza Theatre (Eastland, TX)",
+    title: "The Majestic Theatre (Eastland, TX)",
     description:
       "A beautifully restored historic cinema still showing current films with vintage charm.",
     imageUrl: images.plazaTheatre,
-    learnMore: "#",
-  },
-  {
-    title: "Downtown Eastland Splash Pad",
-    description:
-      "A fun, free option for kids to cool off during summer, located in Eastland’s walkable town square.",
-    imageUrl: images.splashPad,
-    learnMore: "#",
+    learnMore: "https://www.majesticeastland.com/about/",
   },
   {
     title: "Stephenville City Park",
     description:
       "One of the largest parks in the area, with playgrounds, walking trails, and plenty of green space for family fun.",
     imageUrl: images.stephenvillePark,
-    learnMore: "#",
+    learnMore: "https://www.stephenvilletx.gov/parks-leisure/page/stephenville-city-park",
+  },
+  {
+    title: "Greer's Western Store",
+    description:
+      "Classic western wear and boots - a must-visit for authentic Texas style and souvenirs.",
+    imageUrl: images.driveIn,
+    learnMore: "https://www.facebook.com/Greerswesternstore/",
   },
 ];
 
@@ -90,28 +76,21 @@ const artsCulture = [
     description:
       "Known for its local shops, art galleries, coffee spots, and live music. Great for a relaxed afternoon or date night stroll.",
     imageUrl: images.downtownStephenville,
-    learnMore: "#",
-  },
-  {
-    title: "Grimes Memorial Garden & Murals (Eastland, TX)",
-    description:
-      "A quiet spot to enjoy local murals and flower gardens — great for photos and a quick cultural stop.",
-    imageUrl: images.grimesGarden,
-    learnMore: "#",
+    learnMore: "https://www.stephenvilletx.gov/administrative-services/page/stephenville-main-street",
   },
   {
     title: "Eastland County Museum & Historical Society",
     description:
       "Explore the history of this Texas region through local artifacts, Route 66 memorabilia, and more.",
     imageUrl: images.eastlandMuseum,
-    learnMore: "#",
+    learnMore: "https://eastlandcountymuseum.com/",
   },
   {
     title: "W.K. Gordon Center for Industrial History of Texas (Mingus, TX)",
     description:
       "A unique museum just off I-20 focused on ghost towns, oil booms, and Texas industrial life.",
     imageUrl: images.gordonCenter,
-    learnMore: "#",
+    learnMore: "https://www.tarleton.edu/gordoncenter/",
   },
 ];
 
@@ -120,40 +99,33 @@ const frontDeskRecommendations = [
     title: "Palo Pinto Mountains State Park",
     description: "Our top pick for hiking, horseback riding, and views.",
     imageUrl: images.paloPinto,
-    learnMore: "#",
+    learnMore: "https://tpwd.texas.gov/state-parks/palo-pinto-mountains",
   },
   {
     title: "Lake Leon",
     description: "A guest favorite for early morning fishing or kayaking.",
     imageUrl: images.lakeLeon,
-    learnMore: "#",
+    learnMore: "https://tpwd.texas.gov/fishboat/fish/recreational/lakes/leon/",
   },
   {
-    title: "Mary’s Café (Strawn, TX)",
+    title: "Mary's Café (Strawn, TX)",
     description: "Local legend for its massive chicken-fried steak.",
     imageUrl: images.marysCafe,
-    learnMore: "#",
+    learnMore: "https://www.tripadvisor.com/Restaurant_Review-g56719-d1141351-Reviews-Mary_s_Cafe-Strawn_Texas.html",
   },
   {
     title: "Downtown Stephenville",
     description:
       "Great for dining, shopping, and soaking up small-town charm.",
     imageUrl: images.downtownStephenville,
-    learnMore: "#",
-  },
-  {
-    title: "Eastland Antique Shops",
-    description:
-      "Multiple storefronts filled with vintage finds and Texas treasures.",
-    imageUrl: images.eastlandAntiques,
-    learnMore: "#",
+    learnMore: "https://www.stephenvilletx.gov/administrative-services/page/stephenville-main-street",
   },
   {
     title: "W.K. Gordon Center",
     description:
       "Educational and visually immersive — guests often rave about it.",
     imageUrl: images.gordonCenter,
-    learnMore: "#",
+    learnMore: "https://www.tarleton.edu/gordoncenter/",
   },
 ];
 
