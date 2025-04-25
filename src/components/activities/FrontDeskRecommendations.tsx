@@ -1,4 +1,3 @@
-
 import React from "react";
 import { ArrowLeft, ArrowRight, MapPin, Store, Utensils, Star } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
@@ -8,37 +7,31 @@ const recommendations = [
     title: "Palo Pinto Mountains State Park",
     description: "Our top pick for hiking, horseback riding, and incredible views.",
     icon: <MapPin className="h-7 w-7 text-rvblue" aria-label="Park" />,
-    learnMore: "#",
+    learnMore: "https://tpwd.texas.gov/state-parks/palo-pinto-mountains",
   },
   {
     title: "Lake Leon",
     description: "A guest favorite for early morning fishing or kayaking.",
     icon: <Star className="h-7 w-7 text-rvyellow" aria-label="Lake" />,
-    learnMore: "#",
+    learnMore: "https://tpwd.texas.gov/fishboat/fish/recreational/lakes/leon/",
   },
   {
-    title: "Mary’s Café (Strawn, TX)",
+    title: "Mary's Café (Strawn, TX)",
     description: "Local legend for its massive chicken-fried steak.",
     icon: <Utensils className="h-7 w-7 text-rvmaroon" aria-label="Cafe" />,
-    learnMore: "#",
+    learnMore: "https://www.tripadvisor.com/Restaurant_Review-g56719-d1141351-Reviews-Mary_s_Cafe-Strawn_Texas.html",
   },
   {
     title: "Downtown Stephenville",
     description: "Great for dining, shopping, and soaking up small-town charm.",
     icon: <Store className="h-7 w-7 text-rvolive" aria-label="Shops" />,
-    learnMore: "#",
-  },
-  {
-    title: "Eastland Antique Shops",
-    description: "Multiple storefronts filled with vintage finds and Texas treasures.",
-    icon: <Store className="h-7 w-7 text-rvred" aria-label="Antiques" />,
-    learnMore: "#",
+    learnMore: "https://www.stephenvilletx.gov/administrative-services/page/stephenville-main-street",
   },
   {
     title: "W.K. Gordon Center",
     description: "Educational and visually immersive — guests often rave about it.",
     icon: <MapPin className="h-7 w-7 text-rvblue" aria-label="Museum" />,
-    learnMore: "#",
+    learnMore: "https://www.tarleton.edu/gordoncenter/",
   },
 ];
 
@@ -53,7 +46,6 @@ const FrontDeskRecommendations = () => {
   const [startIdx, setStartIdx] = React.useState(0);
   const [cardsPerPage, setCardsPerPage] = React.useState(getCardsPerPage());
 
-  // Update cardsPerPage on resize
   React.useEffect(() => {
     function handleResize() {
       setCardsPerPage(getCardsPerPage());
@@ -89,7 +81,6 @@ const FrontDeskRecommendations = () => {
         </p>
       </div>
       <div className="relative flex items-center">
-        {/* Left arrow */}
         <button
           onClick={handlePrev}
           disabled={startIdx === 0}
@@ -100,7 +91,6 @@ const FrontDeskRecommendations = () => {
           <ArrowLeft className="h-7 w-7" />
         </button>
 
-        {/* Cards */}
         <div className="flex-1 flex justify-center gap-6">
           {visibleCards.map((rec, idx) => (
             <Card
@@ -127,7 +117,6 @@ const FrontDeskRecommendations = () => {
           ))}
         </div>
 
-        {/* Right arrow */}
         <button
           onClick={handleNext}
           disabled={startIdx >= maxStartIdx}
