@@ -1,25 +1,26 @@
+
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
 import AttractionSection from "@/components/attractions/AttractionSection";
 import FrontDeskRecommendations from "@/components/activities/FrontDeskRecommendations";
 
-// Unsplash IDs for images
+// Actual location images from uploads
 const images = {
-  paloPinto: "https://images.unsplash.com/photo-1472396961693-142e6e269027",
-  lakeLeon: "https://images.unsplash.com/photo-1500673922987-e212871fec22",
-  copperasCreek: "https://images.unsplash.com/photo-1433086966358-54859d0ed716",
-  stephensLake: "https://images.unsplash.com/photo-1433086966358-54859d0ed716",
-  driveIn: "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb",
-  plazaTheatre: "https://images.unsplash.com/photo-1492321936769-b49830bc1d1e",
-  splashPad: "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
-  stephenvillePark: "https://images.unsplash.com/photo-1433086966358-54859d0ed716",
-  downtownStephenville: "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
-  grimesGarden: "https://images.unsplash.com/photo-1466442929976-97f336a657be",
-  eastlandMuseum: "https://images.unsplash.com/photo-1466442929976-97f336a657be",
-  gordonCenter: "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
-  marysCafe: "https://images.unsplash.com/photo-1492321936769-b49830bc1d1e",
-  eastlandAntiques: "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
+  paloPinto: "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png", // Palo Pinto Mountains photo
+  lakeLeon: "/lovable-uploads/ebe7aca1-8ce4-4faa-a5ce-278e467b07ae.png", // Lake Leon aerial view
+  copperasCreek: "https://images.unsplash.com/photo-1433086966358-54859d0ed716", // Keeping placeholder until provided
+  stephensLake: "/lovable-uploads/ebe7aca1-8ce4-4faa-a5ce-278e467b07ae.png", // Lake Leon photo
+  driveIn: "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png", // Using mountain view temporarily
+  plazaTheatre: "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png", // Using mountain view temporarily
+  splashPad: "/lovable-uploads/ebe7aca1-8ce4-4faa-a5ce-278e467b07ae.png", // Using lake view temporarily
+  stephenvillePark: "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png", // Using mountain view temporarily
+  downtownStephenville: "/lovable-uploads/ebe7aca1-8ce4-4faa-a5ce-278e467b07ae.png", // Using lake view temporarily
+  grimesGarden: "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png", // Using mountain view temporarily
+  eastlandMuseum: "/lovable-uploads/ebe7aca1-8ce4-4faa-a5ce-278e467b07ae.png", // Using lake view temporarily
+  gordonCenter: "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png", // Using mountain view temporarily
+  marysCafe: "/lovable-uploads/ebe7aca1-8ce4-4faa-a5ce-278e467b07ae.png", // Using lake view temporarily
+  eastlandAntiques: "/lovable-uploads/91372a14-ff20-478c-8e82-f8acdb6bf151.png", // Using mountain view temporarily
 };
 
 const outdoorActivities = [

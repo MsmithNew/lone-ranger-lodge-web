@@ -11,7 +11,7 @@ interface AttractionCardProps {
 const AttractionCard = ({ title, description, imageUrl, learnMore }: AttractionCardProps) => {
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
-      <div className="relative h-40 w-full overflow-hidden">
+      <div className="relative h-48 w-full overflow-hidden">
         <img
           src={imageUrl}
           alt={title}
