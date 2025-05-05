@@ -4,138 +4,124 @@ import Layout from "@/components/Layout";
 import SectionDivider from "@/components/SectionDivider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { 
-  Waves, 
-  House, 
-  Activity,
-  Power, 
-  Building, 
-  Home as HomeIcon, 
-  Utensils, 
-  MapPin, 
-  Calendar, 
-  Trees, 
-  Car,
-  Wifi, 
-  Music,
-  IceCream
-} from "lucide-react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { Waves, House, Activity, Power, Building, Home as HomeIcon, Utensils, MapPin, Calendar, Trees, Car, Wifi, Music, IceCream } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { useIsMobile } from "@/hooks/use-mobile";
-
 const Home = () => {
   const isMobile = useIsMobile();
-  
+
   // Sample gallery images - replace with actual images when available
-  const galleryImages = [
-    { src: "/placeholder.svg", alt: "Resort-Style Swimming Pool" },
-    { src: "/placeholder.svg", alt: "Historic Lodges from the 1930s" },
-    { src: "/placeholder.svg", alt: "Horse Hotel with Stalls & Hookups" },
-    { src: "/placeholder.svg", alt: "Vintage Neon Signs" },
-    { src: "/placeholder.svg", alt: "Candy & Ice Cream Shop in Texaco Station" },
-    { src: "/placeholder.svg", alt: "Palo Pinto Mountains" }
-  ];
+  const galleryImages = [{
+    src: "/placeholder.svg",
+    alt: "Resort-Style Swimming Pool"
+  }, {
+    src: "/placeholder.svg",
+    alt: "Historic Lodges from the 1930s"
+  }, {
+    src: "/placeholder.svg",
+    alt: "Horse Hotel with Stalls & Hookups"
+  }, {
+    src: "/placeholder.svg",
+    alt: "Vintage Neon Signs"
+  }, {
+    src: "/placeholder.svg",
+    alt: "Candy & Ice Cream Shop in Texaco Station"
+  }, {
+    src: "/placeholder.svg",
+    alt: "Palo Pinto Mountains"
+  }];
 
   // Updated featured amenities to include tent camping
-  const featuredAmenities = [
-    {
-      title: "Resort-Style Pool",
-      description: "Our vintage-inspired pool offers the perfect place to cool off and relax with plenty of lounge seating and mountain views.",
-      image: "/placeholder.svg",
-      icon: <Waves size={24} />
-    },
-    {
-      title: "Iconic Neon Signs",
-      description: "Experience the glow of authentic restored neon signs throughout the property that light up the Texas night sky.",
-      image: "/placeholder.svg",
-      icon: <Power size={24} />
-    },
-    {
-      title: "Historic Lodges",
-      description: "Stay in our fully renovated 1930s lodges, combining authentic vintage charm with modern comforts and amenities.",
-      image: "/placeholder.svg",
-      icon: <Building size={24} />
-    },
-    {
-      title: "Horse Hotel",
-      description: "Traveling with equine companions? Our specialized facilities include comfortable stalls and dedicated RV hookups nearby.",
-      image: "/placeholder.svg",
-      icon: <House size={24} />
-    },
-    {
-      title: "Food & Drinks",
-      description: "From Gulf Burgers Restaurant to our vintage Texaco Station candy shop, enjoy delicious meals and treats without leaving the park.",
-      image: "/placeholder.svg",
-      icon: <Utensils size={24} />
-    },
-    {
-      title: "Tent Camping",
-      description: "Prefer something more rustic? Our tent sites offer a peaceful, no-frills outdoor experience for adventurous guests.",
-      image: "/placeholder.svg",
-      icon: <HomeIcon size={24} />
-    }
-  ];
+  const featuredAmenities = [{
+    title: "Resort-Style Pool",
+    description: "Our vintage-inspired pool offers the perfect place to cool off and relax with plenty of lounge seating and mountain views.",
+    image: "/placeholder.svg",
+    icon: <Waves size={24} />
+  }, {
+    title: "Iconic Neon Signs",
+    description: "Experience the glow of authentic restored neon signs throughout the property that light up the Texas night sky.",
+    image: "/placeholder.svg",
+    icon: <Power size={24} />
+  }, {
+    title: "Historic Lodges",
+    description: "Stay in our fully renovated 1930s lodges, combining authentic vintage charm with modern comforts and amenities.",
+    image: "/placeholder.svg",
+    icon: <Building size={24} />
+  }, {
+    title: "Horse Hotel",
+    description: "Traveling with equine companions? Our specialized facilities include comfortable stalls and dedicated RV hookups nearby.",
+    image: "/placeholder.svg",
+    icon: <House size={24} />
+  }, {
+    title: "Food & Drinks",
+    description: "From Gulf Burgers Restaurant to our vintage Texaco Station candy shop, enjoy delicious meals and treats without leaving the park.",
+    image: "/placeholder.svg",
+    icon: <Utensils size={24} />
+  }, {
+    title: "Tent Camping",
+    description: "Prefer something more rustic? Our tent sites offer a peaceful, no-frills outdoor experience for adventurous guests.",
+    image: "/placeholder.svg",
+    icon: <HomeIcon size={24} />
+  }];
 
   // Things to do with icons
-  const thingsToDo = [
-    { activity: "Take a refreshing dip in our resort-style swimming pool", icon: <Waves size={24} className="text-rvblue" /> },
-    { activity: "Challenge friends to a pickleball match", icon: <Activity size={24} className="text-rvblue" /> },
-    { activity: "Explore nearby horse trails with your equine companions", icon: <House size={24} className="text-rvblue" /> },
-    { activity: "Enjoy live music events on select weekend evenings", icon: <Music size={24} className="text-rvblue" /> },
-    { activity: "Savor burgers and shakes at our Gulf Burgers Restaurant", icon: <Utensils size={24} className="text-rvblue" /> },
-    { activity: "Experience our outdoor movie nights under the stars", icon: <IceCream size={24} className="text-rvblue" /> },
-    { activity: "Take scenic drives through the nearby Palo Pinto Mountains", icon: <Car size={24} className="text-rvblue" /> }
-  ];
+  const thingsToDo = [{
+    activity: "Take a refreshing dip in our resort-style swimming pool",
+    icon: <Waves size={24} className="text-rvblue" />
+  }, {
+    activity: "Challenge friends to a pickleball match",
+    icon: <Activity size={24} className="text-rvblue" />
+  }, {
+    activity: "Explore nearby horse trails with your equine companions",
+    icon: <House size={24} className="text-rvblue" />
+  }, {
+    activity: "Enjoy live music events on select weekend evenings",
+    icon: <Music size={24} className="text-rvblue" />
+  }, {
+    activity: "Savor burgers and shakes at our Gulf Burgers Restaurant",
+    icon: <Utensils size={24} className="text-rvblue" />
+  }, {
+    activity: "Experience our outdoor movie nights under the stars",
+    icon: <IceCream size={24} className="text-rvblue" />
+  }, {
+    activity: "Take scenic drives through the nearby Palo Pinto Mountains",
+    icon: <Car size={24} className="text-rvblue" />
+  }];
 
   // Updated local attractions with accurate locations
-  const localAttractions = [
-    {
-      name: "Palo Pinto Mountains State Park",
-      description: "Texas' newest state park with hiking, wildlife, and scenic views.",
-      distance: "15 min",
-      icon: <Trees size={20} />
-    },
-    {
-      name: "Lake Leon",
-      description: "A local favorite for fishing, kayaking, and relaxing afternoons by the water.",
-      distance: "20 min",
-      icon: <Waves size={20} />
-    },
-    {
-      name: "Historic Downtown Ranger",
-      description: "Classic Texas small town with antique shops, cafés, and local history.",
-      distance: "5 min",
-      icon: <MapPin size={20} />
-    },
-    {
-      name: "Eastland County Museum",
-      description: "Regional exhibits featuring oil boom stories, outlaw legends, and early Texas culture.",
-      distance: "10 min",
-      icon: <Building size={20} />
-    },
-    {
-      name: "Greer's Western Store",
-      description: "Shop cowboy boots, hats, and western gear in this locally loved shop.",
-      distance: "10 min",
-      icon: <HomeIcon size={20} />
-    },
-    {
-      name: "R&K Café",
-      description: "Southern-style breakfasts, lunch plates, and homemade pies just minutes from the park.",
-      distance: "5 min",
-      icon: <Utensils size={20} />
-    }
-  ];
-
-  return (
-    <Layout>
+  const localAttractions = [{
+    name: "Palo Pinto Mountains State Park",
+    description: "Texas' newest state park with hiking, wildlife, and scenic views.",
+    distance: "15 min",
+    icon: <Trees size={20} />
+  }, {
+    name: "Lake Leon",
+    description: "A local favorite for fishing, kayaking, and relaxing afternoons by the water.",
+    distance: "20 min",
+    icon: <Waves size={20} />
+  }, {
+    name: "Historic Downtown Ranger",
+    description: "Classic Texas small town with antique shops, cafés, and local history.",
+    distance: "5 min",
+    icon: <MapPin size={20} />
+  }, {
+    name: "Eastland County Museum",
+    description: "Regional exhibits featuring oil boom stories, outlaw legends, and early Texas culture.",
+    distance: "10 min",
+    icon: <Building size={20} />
+  }, {
+    name: "Greer's Western Store",
+    description: "Shop cowboy boots, hats, and western gear in this locally loved shop.",
+    distance: "10 min",
+    icon: <HomeIcon size={20} />
+  }, {
+    name: "R&K Café",
+    description: "Southern-style breakfasts, lunch plates, and homemade pies just minutes from the park.",
+    distance: "5 min",
+    icon: <Utensils size={20} />
+  }];
+  return <Layout>
       {/* Hero Banner Section */}
       <section className="relative min-h-[600px] flex items-center py-8 md:py-0 h-[85vh]">
         <div className="absolute inset-0 z-0">
@@ -147,11 +133,15 @@ const Home = () => {
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-display mb-4 animate-fade-in">
             Where the Spirit of the Road Lives On
           </h1>
-          <h2 className="text-2xl md:text-3xl text-rvyellow mb-8 animate-fade-in" style={{animationDelay: "0.2s"}}>
+          <h2 className="text-2xl md:text-3xl text-rvyellow mb-8 animate-fade-in" style={{
+          animationDelay: "0.2s"
+        }}>
             Just off Loop 254 in Ranger, Texas — minutes from Palo Pinto Mountains
           </h2>
           
-          <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg max-w-2xl mb-8 animate-fade-in" style={{animationDelay: "0.4s"}}>
+          <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg max-w-2xl mb-8 animate-fade-in" style={{
+          animationDelay: "0.4s"
+        }}>
             <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 text-lg">
               <li>Resort-Style Pool</li>
               <li>Historic Lodges</li>
@@ -164,7 +154,9 @@ const Home = () => {
             </ul>
           </div>
           
-          <Link to="/reservations" className="btn-primary text-lg px-8 py-4 animate-fade-in" style={{animationDelay: "0.6s"}}>
+          <Link to="/reservations" className="btn-primary text-lg px-8 py-4 animate-fade-in" style={{
+          animationDelay: "0.6s"
+        }}>
             Book Your Stay Now
           </Link>
         </div>
@@ -184,7 +176,7 @@ const Home = () => {
             </Link>
           </div>
           <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
-            <img src="/placeholder.svg" alt="Lone Ranger RV Park at sunset" className="w-full h-full object-cover" />
+            <img alt="Lone Ranger RV Park at sunset" className="w-full h-full object-cover" src="/lovable-uploads/80032f50-944d-4a9d-9c74-a69472f7475d.jpg" />
           </div>
         </div>
       </section>
@@ -200,20 +192,14 @@ const Home = () => {
         
         <Carousel className="w-full max-w-5xl mx-auto">
           <CarouselContent>
-            {galleryImages.map((image, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+            {galleryImages.map((image, index) => <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                 <div className="p-1">
                   <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                    <img 
-                      src={image.src} 
-                      alt={image.alt} 
-                      className="w-full h-64 object-cover transition-transform duration-500 hover:scale-105"
-                    />
+                    <img src={image.src} alt={image.alt} className="w-full h-64 object-cover transition-transform duration-500 hover:scale-105" />
                   </div>
                   <p className="text-center mt-2 text-sm text-gray-600">{image.alt}</p>
                 </div>
-              </CarouselItem>
-            ))}
+              </CarouselItem>)}
           </CarouselContent>
           <div className="flex justify-center mt-4">
             <CarouselPrevious className="relative static left-0 right-auto translate-y-0 mr-2" />
@@ -237,12 +223,10 @@ const Home = () => {
             </p>
             
             <ul className="space-y-3 text-lg">
-              {thingsToDo.map((activity, index) => (
-                <li key={index} className="flex items-start">
+              {thingsToDo.map((activity, index) => <li key={index} className="flex items-start">
                   <span className="inline-block bg-rvyellow text-rvmaroon rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 font-bold">{index + 1}</span>
                   <span>{activity.activity}</span>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
         </div>
@@ -258,21 +242,15 @@ const Home = () => {
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredAmenities.map((amenity, index) => (
-            <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+          {featuredAmenities.map((amenity, index) => <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <div className="h-48 overflow-hidden">
-                <img 
-                  src={amenity.image} 
-                  alt={amenity.title} 
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                />
+                <img src={amenity.image} alt={amenity.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
               </div>
               <CardContent className="p-6">
                 <h3 className="text-xl font-display mb-2 text-rvmaroon">{amenity.title}</h3>
                 <p className="text-gray-600">{amenity.description}</p>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
       </section>
 
@@ -353,8 +331,7 @@ const Home = () => {
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {localAttractions.map((attraction, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100 h-full">
+          {localAttractions.map((attraction, index) => <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100 h-full">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-xl font-display text-rvmaroon flex-grow pr-2">{attraction.name}</h3>
                 <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm font-medium flex items-center whitespace-nowrap">
@@ -363,8 +340,7 @@ const Home = () => {
                 </span>
               </div>
               <p className="text-gray-600">{attraction.description}</p>
-            </div>
-          ))}
+            </div>)}
         </div>
         
         <div className="text-center mt-10">
@@ -373,8 +349,6 @@ const Home = () => {
           </Link>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Home;
