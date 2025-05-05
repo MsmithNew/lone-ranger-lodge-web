@@ -1,8 +1,9 @@
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { isLovableEnvironment } from "@/utils/environment";
 
 interface ClickableAttractionCardProps {
   title: string;
@@ -24,14 +25,24 @@ const ClickableAttractionCard = ({
   const [isUploading, setIsUploading] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isEditable, setIsEditable] = useState(false);
+
+  // Check if we're in Lovable environment when component mounts
+  useEffect(() => {
+    setIsEditable(isLovableEnvironment());
+  }, []);
 
   const handleImageClick = () => {
+    if (!isEditable) return;
+    
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isEditable) return;
+    
     const file = e.target.files?.[0];
     if (!file) return;
     
@@ -107,7 +118,7 @@ const ClickableAttractionCard = ({
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
       <div 
-        className="relative h-48 w-full overflow-hidden cursor-pointer"
+        className={`relative h-48 w-full overflow-hidden ${isEditable ? 'cursor-pointer' : ''}`}
         onClick={handleImageClick}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -119,7 +130,7 @@ const ClickableAttractionCard = ({
           loading="lazy"
         />
         
-        {isHovering && !isUploading && (
+        {isEditable && isHovering && !isUploading && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-150">
             <span className="text-white bg-rvblue px-3 py-2 rounded-md font-medium text-sm">
               Click to change image
