@@ -6,20 +6,25 @@ import { Loader2 } from "lucide-react";
 import { isLovableEnvironment } from "@/utils/environment";
 
 interface ClickableAttractionCardProps {
-  title: string;
-  description: string;
-  imageUrl: string;
-  learnMore: string;
-  imageKey: string;
+  id: number;
+  title?: string;
+  description?: string;
+  image_url: string;
+  learnMore?: string;
+  key: string;
+  category?: string;
+  display_order?: number;
   onImageUpdate: (key: string, newUrl: string) => void;
 }
 
 const ClickableAttractionCard = ({ 
+  id,
   title, 
   description, 
-  imageUrl, 
+  image_url, 
   learnMore, 
-  imageKey,
+  key: imageKey,
+  category,
   onImageUpdate 
 }: ClickableAttractionCardProps) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -88,7 +93,7 @@ const ClickableAttractionCard = ({
       const { error: updateError } = await supabase
         .from('activity_images')
         .update({ image_url: publicUrlData.publicUrl })
-        .eq('key', imageKey);
+        .eq('id', id);
 
       if (updateError) throw updateError;
 
@@ -124,7 +129,7 @@ const ClickableAttractionCard = ({
         onMouseLeave={() => setIsHovering(false)}
       >
         <img
-          src={imageUrl}
+          src={image_url}
           alt={title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"

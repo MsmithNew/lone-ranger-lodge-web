@@ -11,18 +11,24 @@ export type Database = {
     Tables: {
       activity_images: {
         Row: {
+          category: string
+          display_order: number | null
           id: number
           image_url: string
           key: string
           updated_at: string
         }
         Insert: {
+          category: string
+          display_order?: number | null
           id?: number
           image_url: string
           key: string
           updated_at?: string
         }
         Update: {
+          category?: string
+          display_order?: number | null
           id?: number
           image_url?: string
           key?: string

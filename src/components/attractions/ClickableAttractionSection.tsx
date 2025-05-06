@@ -2,15 +2,20 @@
 import React from "react";
 import ClickableAttractionCard from "./ClickableAttractionCard";
 
+interface Attraction {
+  id: number;
+  key: string;
+  image_url: string;
+  title?: string;
+  description?: string;
+  learnMore?: string;
+  category?: string;
+  display_order?: number;
+}
+
 interface ClickableAttractionSectionProps {
   title: string;
-  activities: {
-    title: string;
-    description: string;
-    imageUrl: string;
-    learnMore: string;
-    imageKey: string;
-  }[];
+  activities: Attraction[];
   color?: string;
   columns?: string;
   onImageUpdate: (key: string, newUrl: string) => void;
@@ -29,9 +34,9 @@ const ClickableAttractionSection = ({
         <h2 className={`section-title ${color ? color + "/80" : ""}`}>{title}</h2>
       </div>
       <div className={`grid gap-6 ${columns}`}>
-        {activities.map((activity, idx) => (
+        {activities.map((activity) => (
           <ClickableAttractionCard 
-            key={idx} 
+            key={activity.id} 
             {...activity} 
             onImageUpdate={onImageUpdate}
           />
