@@ -7,13 +7,13 @@ import { isLovableEnvironment } from "@/utils/environment";
 
 interface ClickableAttractionCardProps {
   id: number;
-  title?: string;
-  description?: string;
+  title?: string | null;
+  description?: string | null;
   image_url: string;
-  learnMore?: string;
+  learnMore?: string | null;
   key: string;
   category?: string;
-  display_order?: number;
+  display_order?: number | null;
   onImageUpdate: (key: string, newUrl: string) => void;
 }
 

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { ArrowLeft, ArrowRight, MapPin, Store, Utensils, Star } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
@@ -7,11 +6,11 @@ interface Attraction {
   id: number;
   key: string;
   image_url: string;
-  title?: string;
-  description?: string;
-  learnMore?: string;
+  title?: string | null;
+  description?: string | null;
+  learnMore?: string | null;
   category?: string;
-  display_order?: number;
+  display_order?: number | null;
 }
 
 interface FrontDeskRecommendationsProps {

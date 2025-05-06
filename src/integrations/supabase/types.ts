@@ -12,26 +12,35 @@ export type Database = {
       activity_images: {
         Row: {
           category: string
+          description: string | null
           display_order: number | null
           id: number
           image_url: string
           key: string
+          learnMore: string | null
+          title: string | null
           updated_at: string
         }
         Insert: {
           category: string
+          description?: string | null
           display_order?: number | null
           id?: number
           image_url: string
           key: string
+          learnMore?: string | null
+          title?: string | null
           updated_at?: string
         }
         Update: {
           category?: string
+          description?: string | null
           display_order?: number | null
           id?: number
           image_url?: string
           key?: string
+          learnMore?: string | null
+          title?: string | null
           updated_at?: string
         }
         Relationships: []
