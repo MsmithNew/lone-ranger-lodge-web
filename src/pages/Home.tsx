@@ -13,8 +13,8 @@ const Home = () => {
 
   // Sample gallery images - replace with actual images when available
   const galleryImages = [{
-    src: "/placeholder.svg",
-    alt: "Resort-Style Swimming Pool"
+    src: "/lovable-uploads/96ae0ec8-856a-412c-a730-a2f6d51df53f.png",
+    alt: "Historic Stone Cottage with Wooden Porch"
   }, {
     src: "/placeholder.svg",
     alt: "Historic Lodges from the 1930s"
