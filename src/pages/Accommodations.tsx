@@ -158,7 +158,7 @@ const Accommodations = () => {
           <div className="flex flex-col md:flex-row gap-8 items-center">
             <div className="md:w-1/2">
               <div className="rounded-lg overflow-hidden shadow-lg">
-                <img src="/placeholder.svg" alt="Vintage lodges at Lone Ranger RV Park" className="w-full h-64 object-cover" />
+                <img alt="Vintage lodges at Lone Ranger RV Park" className="w-full h-64 object-cover" src="/lovable-uploads/a32be049-78e9-4081-a5b7-86add61a2bb1.jpg" />
               </div>
             </div>
             <div className="md:w-1/2">
