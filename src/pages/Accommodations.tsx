@@ -3,70 +3,92 @@ import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { 
-  ParkingCircle, 
-  Droplets, 
-  Salad, 
-  Wifi, 
-  Dog, 
-  Warehouse,
-  Building, 
-  Coffee,
-  ArrowRight,
-  Bed,
-  ShowerHead,
-  Thermometer,
-  Tent,
-  WashingMachine,
-  Utensils
-} from "lucide-react";
-
+import { ParkingCircle, Droplets, Salad, Wifi, Dog, Warehouse, Building, Coffee, ArrowRight, Bed, ShowerHead, Thermometer, Tent, WashingMachine, Utensils } from "lucide-react";
 const Accommodations = () => {
-  const rvFeatures = [
-    { text: "Full hookups (water, electric, sewer)", icon: <Droplets className="text-rvblue" size={18} /> },
-    { text: "Pull-through and back-in options", icon: <ParkingCircle className="text-rvblue" size={18} /> },
-    { text: "Picnic table at every site", icon: <Salad className="text-rvblue" size={18} /> },
-    { text: "Free high-speed Wi-Fi", icon: <Wifi className="text-rvblue" size={18} /> },
-    { text: "Access to pool, laundry, and restrooms", icon: <ShowerHead className="text-rvblue" size={18} /> },
-    { text: "Pet-friendly with nearby dog park", icon: <Dog className="text-rvblue" size={18} /> },
-    { text: "Walking distance to Gulf Burgers and Pickleball", icon: <ArrowRight className="text-rvblue" size={18} /> }
-  ];
-
-  const horseFeatures = [
-    { text: "Full RV hookups", icon: <Droplets className="text-rvblue" size={18} /> },
-    { text: "Individual shaded horse stalls", icon: <Warehouse className="text-rvblue" size={18} /> },
-    { text: "Easy pull-through access", icon: <ParkingCircle className="text-rvblue" size={18} /> },
-    { text: "Water and electric for trailers", icon: <Droplets className="text-rvblue" size={18} /> },
-    { text: "Quick trail access to Palo Pinto", icon: <ArrowRight className="text-rvblue" size={18} /> },
-    { text: "Access to restrooms and pool", icon: <ShowerHead className="text-rvblue" size={18} /> },
-    { text: "Quiet area near pasture views", icon: <ArrowRight className="text-rvblue" size={18} /> }
-  ];
-
-  const lodgeFeatures = [
-    { text: "Queen bed and private bathroom", icon: <Bed className="text-rvblue" size={18} /> },
-    { text: "Air conditioning and heating", icon: <Thermometer className="text-rvblue" size={18} /> },
-    { text: "Retro-style decor", icon: <Building className="text-rvblue" size={18} /> },
-    { text: "Mini-fridge, coffee maker, and essentials", icon: <Coffee className="text-rvblue" size={18} /> },
-    { text: "Private entrance and parking", icon: <ParkingCircle className="text-rvblue" size={18} /> },
-    { text: "Steps away from pool and restaurant", icon: <ArrowRight className="text-rvblue" size={18} /> }
-  ];
-
-  const tentFeatures = [
-    { text: "Shaded open areas for tents", icon: <Tent className="text-rvblue" size={18} /> },
-    { text: "Access to restrooms and showers", icon: <ShowerHead className="text-rvblue" size={18} /> },
-    { text: "Access to laundry facilities", icon: <WashingMachine className="text-rvblue" size={18} /> },
-    { text: "Free high-speed Wi-Fi", icon: <Wifi className="text-rvblue" size={18} /> },
-    { text: "Pet-friendly area", icon: <Dog className="text-rvblue" size={18} /> },
-    { text: "Enjoy all shared park amenities", icon: <Utensils className="text-rvblue" size={18} /> }
-  ];
-
-  return (
-    <Layout>
-      <PageHeader
-        title="Choose Your Stay in the Heart of Ranger, TX"
-        description="Whether you're rolling in with your rig, traveling with horses, or looking for a cozy lodge escape, Lone Ranger RV Park offers comfort, convenience, and retro charm just minutes from Palo Pinto Mountains State Park."
-        imageUrl="/placeholder.svg"
-      />
+  const rvFeatures = [{
+    text: "Full hookups (water, electric, sewer)",
+    icon: <Droplets className="text-rvblue" size={18} />
+  }, {
+    text: "Pull-through and back-in options",
+    icon: <ParkingCircle className="text-rvblue" size={18} />
+  }, {
+    text: "Picnic table at every site",
+    icon: <Salad className="text-rvblue" size={18} />
+  }, {
+    text: "Free high-speed Wi-Fi",
+    icon: <Wifi className="text-rvblue" size={18} />
+  }, {
+    text: "Access to pool, laundry, and restrooms",
+    icon: <ShowerHead className="text-rvblue" size={18} />
+  }, {
+    text: "Pet-friendly with nearby dog park",
+    icon: <Dog className="text-rvblue" size={18} />
+  }, {
+    text: "Walking distance to Gulf Burgers and Pickleball",
+    icon: <ArrowRight className="text-rvblue" size={18} />
+  }];
+  const horseFeatures = [{
+    text: "Full RV hookups",
+    icon: <Droplets className="text-rvblue" size={18} />
+  }, {
+    text: "Individual shaded horse stalls",
+    icon: <Warehouse className="text-rvblue" size={18} />
+  }, {
+    text: "Easy pull-through access",
+    icon: <ParkingCircle className="text-rvblue" size={18} />
+  }, {
+    text: "Water and electric for trailers",
+    icon: <Droplets className="text-rvblue" size={18} />
+  }, {
+    text: "Quick trail access to Palo Pinto",
+    icon: <ArrowRight className="text-rvblue" size={18} />
+  }, {
+    text: "Access to restrooms and pool",
+    icon: <ShowerHead className="text-rvblue" size={18} />
+  }, {
+    text: "Quiet area near pasture views",
+    icon: <ArrowRight className="text-rvblue" size={18} />
+  }];
+  const lodgeFeatures = [{
+    text: "Queen bed and private bathroom",
+    icon: <Bed className="text-rvblue" size={18} />
+  }, {
+    text: "Air conditioning and heating",
+    icon: <Thermometer className="text-rvblue" size={18} />
+  }, {
+    text: "Retro-style decor",
+    icon: <Building className="text-rvblue" size={18} />
+  }, {
+    text: "Mini-fridge, coffee maker, and essentials",
+    icon: <Coffee className="text-rvblue" size={18} />
+  }, {
+    text: "Private entrance and parking",
+    icon: <ParkingCircle className="text-rvblue" size={18} />
+  }, {
+    text: "Steps away from pool and restaurant",
+    icon: <ArrowRight className="text-rvblue" size={18} />
+  }];
+  const tentFeatures = [{
+    text: "Shaded open areas for tents",
+    icon: <Tent className="text-rvblue" size={18} />
+  }, {
+    text: "Access to restrooms and showers",
+    icon: <ShowerHead className="text-rvblue" size={18} />
+  }, {
+    text: "Access to laundry facilities",
+    icon: <WashingMachine className="text-rvblue" size={18} />
+  }, {
+    text: "Free high-speed Wi-Fi",
+    icon: <Wifi className="text-rvblue" size={18} />
+  }, {
+    text: "Pet-friendly area",
+    icon: <Dog className="text-rvblue" size={18} />
+  }, {
+    text: "Enjoy all shared park amenities",
+    icon: <Utensils className="text-rvblue" size={18} />
+  }];
+  return <Layout>
+      <PageHeader title="Choose Your Stay in the Heart of Ranger, TX" description="Whether you're rolling in with your rig, traveling with horses, or looking for a cozy lodge escape, Lone Ranger RV Park offers comfort, convenience, and retro charm just minutes from Palo Pinto Mountains State Park." imageUrl="/placeholder.svg" />
       
       <section className="section-container">
         <div className="max-w-6xl mx-auto">
@@ -74,11 +96,7 @@ const Accommodations = () => {
           <div className="flex flex-col md:flex-row gap-8 items-center">
             <div className="md:w-1/2">
               <div className="rounded-lg overflow-hidden shadow-lg">
-                <img 
-                  src="/placeholder.svg" 
-                  alt="RV sites at Lone Ranger RV Park" 
-                  className="w-full h-64 object-cover"
-                />
+                <img alt="RV sites at Lone Ranger RV Park" className="w-full h-64 object-cover" src="/lovable-uploads/a89b6df4-23bf-4df4-8dd5-dbb71fdce29c.jpg" />
               </div>
             </div>
             <div className="md:w-1/2">
@@ -86,12 +104,10 @@ const Accommodations = () => {
                 Pull into one of our 18 RV sites designed for ease, shade, and a scenic stay.
               </p>
               <ul className="space-y-3">
-                {rvFeatures.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2">
+                {rvFeatures.map((feature, index) => <li key={index} className="flex items-start gap-2">
                     <span className="mt-0.5 flex-shrink-0">{feature.icon}</span>
                     <span>{feature.text}</span>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
               <Link to="/reservations" className="mt-6 inline-block">
                 <Button className="bg-rvblue hover:bg-rvblue/90 text-white">
@@ -111,11 +127,7 @@ const Accommodations = () => {
           <div className="flex flex-col md:flex-row-reverse gap-8 items-center">
             <div className="md:w-1/2">
               <div className="rounded-lg overflow-hidden shadow-lg">
-                <img 
-                  src="/placeholder.svg" 
-                  alt="Horse Hotel at Lone Ranger RV Park" 
-                  className="w-full h-64 object-cover"
-                />
+                <img src="/placeholder.svg" alt="Horse Hotel at Lone Ranger RV Park" className="w-full h-64 object-cover" />
               </div>
             </div>
             <div className="md:w-1/2">
@@ -123,12 +135,10 @@ const Accommodations = () => {
                 Bringing your horse along? Our Horse Hotel sites offer a unique stay with comfort for you and your companion.
               </p>
               <ul className="space-y-3">
-                {horseFeatures.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2">
+                {horseFeatures.map((feature, index) => <li key={index} className="flex items-start gap-2">
                     <span className="mt-0.5 flex-shrink-0">{feature.icon}</span>
                     <span>{feature.text}</span>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
               <Link to="/reservations" className="mt-6 inline-block">
                 <Button className="bg-rvblue hover:bg-rvblue/90 text-white">
@@ -148,11 +158,7 @@ const Accommodations = () => {
           <div className="flex flex-col md:flex-row gap-8 items-center">
             <div className="md:w-1/2">
               <div className="rounded-lg overflow-hidden shadow-lg">
-                <img 
-                  src="/placeholder.svg" 
-                  alt="Vintage lodges at Lone Ranger RV Park" 
-                  className="w-full h-64 object-cover"
-                />
+                <img src="/placeholder.svg" alt="Vintage lodges at Lone Ranger RV Park" className="w-full h-64 object-cover" />
               </div>
             </div>
             <div className="md:w-1/2">
@@ -160,12 +166,10 @@ const Accommodations = () => {
                 Stay in one of our four fully renovated 1930s lodges, where vintage charm meets modern comfort.
               </p>
               <ul className="space-y-3">
-                {lodgeFeatures.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2">
+                {lodgeFeatures.map((feature, index) => <li key={index} className="flex items-start gap-2">
                     <span className="mt-0.5 flex-shrink-0">{feature.icon}</span>
                     <span>{feature.text}</span>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
               <Link to="/reservations" className="mt-6 inline-block">
                 <Button className="bg-rvblue hover:bg-rvblue/90 text-white">
@@ -185,11 +189,7 @@ const Accommodations = () => {
           <div className="flex flex-col md:flex-row-reverse gap-8 items-center">
             <div className="md:w-1/2">
               <div className="rounded-lg overflow-hidden shadow-lg">
-                <img 
-                  src="/placeholder.svg" 
-                  alt="Tent sites at Lone Ranger RV Park" 
-                  className="w-full h-64 object-cover"
-                />
+                <img src="/placeholder.svg" alt="Tent sites at Lone Ranger RV Park" className="w-full h-64 object-cover" />
               </div>
             </div>
             <div className="md:w-1/2">
@@ -197,12 +197,10 @@ const Accommodations = () => {
                 Enjoy a more primitive camping experience surrounded by nature. Our tent sites are perfect for guests seeking a simple, no-fuss stay with access to essential comforts.
               </p>
               <ul className="space-y-3">
-                {tentFeatures.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2">
+                {tentFeatures.map((feature, index) => <li key={index} className="flex items-start gap-2">
                     <span className="mt-0.5 flex-shrink-0">{feature.icon}</span>
                     <span>{feature.text}</span>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
               <Link to="/reservations" className="mt-6 inline-block">
                 <Button className="bg-rvblue hover:bg-rvblue/90 text-white">
@@ -218,11 +216,7 @@ const Accommodations = () => {
       
       <section className="relative py-16">
         <div className="absolute inset-0 bg-gradient-to-r from-rvmaroon to-rvblue opacity-90">
-          <img 
-            src="/placeholder.svg" 
-            alt="Scenic view of Lone Ranger RV Park" 
-            className="w-full h-full object-cover mix-blend-overlay" 
-          />
+          <img src="/placeholder.svg" alt="Scenic view of Lone Ranger RV Park" className="w-full h-full object-cover mix-blend-overlay" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
           <h2 className="text-3xl md:text-4xl font-display mb-4">
@@ -231,16 +225,11 @@ const Accommodations = () => {
           <p className="text-xl mb-8">
             Just minutes from Palo Pinto Mountains State Park and packed with character, Lone Ranger RV Park is more than a place to sleep. It's a place to experience.
           </p>
-          <Link 
-            to="/reservations" 
-            className="bg-rvyellow text-rvmaroon hover:bg-rvyellow/90 font-semibold py-3 px-8 rounded-md transition-all duration-300 inline-block"
-          >
+          <Link to="/reservations" className="bg-rvyellow text-rvmaroon hover:bg-rvyellow/90 font-semibold py-3 px-8 rounded-md transition-all duration-300 inline-block">
             Book Now
           </Link>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Accommodations;
