@@ -32,6 +32,7 @@ const LinkSelector = ({
   useEffect(() => {
     const fetchPages = async () => {
       try {
+        setIsLoading(true);
         const { data, error } = await supabase
           .from('site_pages')
           .select('*')
@@ -54,9 +55,12 @@ const LinkSelector = ({
     onLinkTypeChange(newType);
     
     // Reset value when changing types
-    if (newType === 'internal' && !pages.some(p => p.path === value)) {
-      onValueChange(pages.length > 0 ? pages[0].path : '');
-    } else if (newType === 'external' && value.startsWith('/')) {
+    if (newType === 'internal' && pages.length > 0) {
+      // Only set a default if no valid path is currently selected
+      if (!value || !pages.some(p => p.path === value)) {
+        onValueChange(pages[0].path);
+      }
+    } else if (newType === 'external' && (!value || value.startsWith('/'))) {
       onValueChange('https://');
     }
   };
@@ -85,7 +89,7 @@ const LinkSelector = ({
           <Select
             value={value}
             onValueChange={onValueChange}
-            disabled={isLoading || pages.length === 0}
+            disabled={isLoading}
           >
             <SelectTrigger id={`page-select-${label}`}>
               <SelectValue placeholder={isLoading ? "Loading pages..." : "Select a page"} />
