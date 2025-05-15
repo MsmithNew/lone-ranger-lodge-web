@@ -176,11 +176,7 @@ const Home = () => {
             </Link>
           </div>
           <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
-            <img 
-              alt="Lone Ranger RV Park at sunset" 
-              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
-              src="/lovable-uploads/44b44f22-8a5d-4c95-83e8-8d02128280e4.png" 
-            />
+            <img alt="Lone Ranger RV Park at sunset" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="/lovable-uploads/44b44f22-8a5d-4c95-83e8-8d02128280e4.png" />
           </div>
         </div>
       </section>
@@ -307,7 +303,7 @@ const Home = () => {
             </Link>
           </div>
           <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
-            <img src="/placeholder.svg" alt="RV campsite at Lone Ranger RV Park" className="w-full h-full object-cover" />
+            <img alt="RV campsite at Lone Ranger RV Park" className="w-full h-full object-cover" src="/lovable-uploads/b4ad59a6-723e-4fc0-b4fd-72c2109b8867.jpg" />
           </div>
         </div>
       </section>
