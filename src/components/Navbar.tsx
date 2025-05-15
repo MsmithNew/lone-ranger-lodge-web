@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,12 @@ const Navbar = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const location = useLocation();
   
+  // Reset body overflow and menu state when route changes
+  useEffect(() => {
+    document.body.style.overflow = '';
+    setIsOpen(false);
+  }, [location.pathname]);
+
   const mainNavItems = [
     { name: "Home", path: "/" },
     { name: "Accommodations", path: "/accommodations" },
@@ -31,13 +37,17 @@ const Navbar = () => {
   ];
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    const newIsOpen = !isOpen;
+    setIsOpen(newIsOpen);
+    
     // Prevent scrolling when menu is open
-    if (!isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = newIsOpen ? 'hidden' : '';
+  };
+  
+  // Helper function to ensure clean navigation
+  const handleNavigation = () => {
+    document.body.style.overflow = '';
+    setIsOpen(false);
   };
 
   return (
@@ -151,7 +161,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden fixed inset-0 bg-white z-40 flex flex-col animate-fade-in">
           <div className="px-4 py-4 border-b border-gray-200 flex justify-between items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center space-x-2" onClick={() => setIsOpen(false)}>
+            <Link to="/" className="flex-shrink-0 flex items-center space-x-2" onClick={handleNavigation}>
               <img
                 src={LOGO_SRC}
                 alt="Lone Ranger RV Park & Lodge Logo"
@@ -181,7 +191,7 @@ const Navbar = () => {
                     ? "bg-rvyellow/10 text-rvmaroon"
                     : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
                 )}
-                onClick={() => setIsOpen(false)}
+                onClick={handleNavigation}
               >
                 Home
               </Link>
@@ -209,7 +219,7 @@ const Navbar = () => {
                             ? "bg-rvyellow/10 text-rvmaroon"
                             : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
                         )}
-                        onClick={() => setIsOpen(false)}
+                        onClick={handleNavigation}
                       >
                         {subItem.name}
                       </Link>
@@ -229,7 +239,7 @@ const Navbar = () => {
                       ? "bg-rvyellow/10 text-rvmaroon"
                       : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
                   )}
-                  onClick={() => setIsOpen(false)}
+                  onClick={handleNavigation}
                 >
                   {item.name}
                 </Link>
@@ -241,7 +251,7 @@ const Navbar = () => {
               <Link 
                 to="/reservations" 
                 className="block px-4 py-3 btn-primary text-center text-base font-semibold whitespace-nowrap"
-                onClick={() => setIsOpen(false)}
+                onClick={handleNavigation}
               >
                 Book Now
               </Link>

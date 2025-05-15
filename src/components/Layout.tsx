@@ -20,7 +20,14 @@ const Layout = ({ children }: LayoutProps) => {
       setIsVisible(true);
     }, 30);
 
-    return () => clearTimeout(timer);
+    // Ensure body overflow is reset when component mounts
+    document.body.style.overflow = '';
+    
+    return () => {
+      clearTimeout(timer);
+      // Ensure body overflow is reset when component unmounts
+      document.body.style.overflow = '';
+    };
   }, [location.pathname]);
 
   return (
