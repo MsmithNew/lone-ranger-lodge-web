@@ -52,6 +52,7 @@ export type Database = {
           content_value: string
           display_order: number
           id: string
+          link_type: string | null
           page: string
           section: string
           updated_at: string
@@ -62,6 +63,7 @@ export type Database = {
           content_value: string
           display_order?: number
           id?: string
+          link_type?: string | null
           page: string
           section: string
           updated_at?: string
@@ -72,9 +74,31 @@ export type Database = {
           content_value?: string
           display_order?: number
           id?: string
+          link_type?: string | null
           page?: string
           section?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      site_pages: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          path: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          path: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          path?: string
         }
         Relationships: []
       }

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -45,12 +46,20 @@ export function useContent<T extends Record<string, any>>({
             if (section) {
               // If we're fetching a specific section, flatten the structure
               transformedData[item.content_key] = item.content_value;
+              // Add link_type if it exists
+              if (item.link_type) {
+                transformedData[`${item.content_key}_link_type`] = item.link_type;
+              }
             } else {
               // Otherwise, organize by section
               if (!transformedData[item.section]) {
                 transformedData[item.section] = {};
               }
               transformedData[item.section][item.content_key] = item.content_value;
+              // Add link_type if it exists
+              if (item.link_type) {
+                transformedData[item.section][`${item.content_key}_link_type`] = item.link_type;
+              }
             }
           });
           
