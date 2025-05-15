@@ -214,7 +214,7 @@ const Home = () => {
       <section className="section-container py-16">
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
-            <img src="/placeholder.svg" alt="Activities at Lone Ranger RV Park" className="w-full h-full object-cover" />
+            <img alt="Activities at Lone Ranger RV Park" className="w-full h-full object-cover" src="/lovable-uploads/acc82a50-acaf-43f9-b4d0-a05f64415827.jpg" />
           </div>
           <div className="md:w-1/2">
             <h2 className="section-title text-4xl mb-6">Things to Do</h2>
