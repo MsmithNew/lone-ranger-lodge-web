@@ -9,11 +9,13 @@ import { Waves, House, Activity, Power, Building, Home as HomeIcon, Utensils, Ma
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useContent } from "@/hooks/use-content";
+
 const Home = () => {
   const isMobile = useIsMobile();
 
-  // Sample gallery images - replace with actual images when available
-  const galleryImages = [{
+  // Original data to use as fallback
+  const originalGalleryImages = [{
     src: "/lovable-uploads/96ae0ec8-856a-412c-a730-a2f6d51df53f.png",
     alt: "Resort-Style Swimming Pool"
   }, {
@@ -33,8 +35,7 @@ const Home = () => {
     alt: "Palo Pinto Mountains"
   }];
 
-  // Updated featured amenities to include tent camping
-  const featuredAmenities = [{
+  const originalFeaturedAmenities = [{
     title: "Resort-Style Pool",
     description: "Our vintage-inspired pool offers the perfect place to cool off and relax with plenty of lounge seating and mountain views.",
     image: "/placeholder.svg",
@@ -66,8 +67,7 @@ const Home = () => {
     icon: <HomeIcon size={24} />
   }];
 
-  // Things to do with icons
-  const thingsToDo = [{
+  const originalThingsToDo = [{
     activity: "Take a refreshing dip in our resort-style swimming pool",
     icon: <Waves size={24} className="text-rvblue" />
   }, {
@@ -90,8 +90,7 @@ const Home = () => {
     icon: <Car size={24} className="text-rvblue" />
   }];
 
-  // Updated local attractions with accurate locations
-  const localAttractions = [{
+  const originalLocalAttractions = [{
     name: "Palo Pinto Mountains State Park",
     description: "Texas' newest state park with hiking, wildlife, and scenic views.",
     distance: "15 min",
@@ -122,43 +121,179 @@ const Home = () => {
     distance: "5 min",
     icon: <Utensils size={20} />
   }];
-  return <Layout>
+
+  // Fetch content from the database with fallback to original data
+  const { content: homeContent, isLoading } = useContent({
+    page: 'home',
+    fallbackData: {}
+  });
+
+  // Prepare the content with fallback to original data
+  
+  // Hero section content
+  const heroContent = homeContent.hero || {};
+  const heroHeadline = heroContent.headline || "Where the Spirit of the Road Lives On";
+  const heroSubtitle = heroContent.subtitle || "Just off Loop 254 in Ranger, Texas — minutes from Palo Pinto Mountains";
+  const heroImage = heroContent.image_url || "/placeholder.svg";
+  const heroCta = heroContent.cta_text || "Book Your Stay Now";
+  
+  // Parse features list from string if it exists
+  const heroFeatures = heroContent.features 
+    ? heroContent.features.split(',').map(item => item.trim())
+    : [
+        "Resort-Style Pool",
+        "Historic Lodges",
+        "Full Hookups",
+        "Horse Hotel",
+        "Gulf Burgers Restaurant",
+        "Pickleball Court",
+        "Candy & Ice Cream Shop",
+        "Free Wi-Fi"
+      ];
+
+  // Welcome section content
+  const welcomeContent = homeContent.welcome || {};
+  const welcomeTitle = welcomeContent.title || "Where History Meets Hospitality";
+  const welcomeDescription = welcomeContent.description || 
+    "Step back in time at Lone Ranger RV Park & Lodge, where vintage neon signs illuminate your path and the spirit of classic Americana lives on. Nestled among scenic views of the Palo Pinto Mountains, our family-friendly park blends historic charm with modern amenities. Whether you're parking your RV, pitching a tent, or staying in one of our restored 1930s lodges, you'll experience Texas hospitality at its finest.";
+  const welcomeImage = welcomeContent.image_url || "/lovable-uploads/44b44f22-8a5d-4c95-83e8-8d02128280e4.png";
+  const welcomeCta = welcomeContent.cta_text || "Book Now";
+
+  // Gallery section content
+  const galleryContent = homeContent.gallery || {};
+  const galleryTitle = galleryContent.title || "Capture the Experience";
+  const galleryDescription = galleryContent.description || 
+    "Vintage neon, scenic mountain views, and modern comfort come together to create an unforgettable stay.";
+  
+  // Create gallery images from content or fall back to original
+  const galleryImages = originalGalleryImages.map((original, index) => {
+    const imageNumber = index + 1;
+    return {
+      src: galleryContent[`image${imageNumber}_url`] || original.src,
+      alt: galleryContent[`image${imageNumber}_alt`] || original.alt
+    };
+  });
+
+  // Things to do section content
+  const thingsToDoContent = homeContent.thingsToDo || {};
+  const thingsToDoTitle = thingsToDoContent.title || "Things to Do";
+  const thingsToDoDescription = thingsToDoContent.description || 
+    "Your adventure doesn't end when you park. Here's what awaits at Lone Ranger RV Park:";
+  const thingsToDoImage = thingsToDoContent.image_url || "/lovable-uploads/acc82a50-acaf-43f9-b4d0-a05f64415827.jpg";
+  
+  // Create things to do list from content or fall back to original
+  const thingsToDo = originalThingsToDo.map((original, index) => {
+    return {
+      activity: thingsToDoContent[`activity${index+1}`] || original.activity,
+      icon: original.icon // Keep the original icon
+    };
+  });
+
+  // Featured Amenities content
+  const amenitiesContent = homeContent.featuredAmenities || {};
+  const amenitiesTitle = amenitiesContent.title || "What Awaits You";
+  const amenitiesDescription = amenitiesContent.description || 
+    "Discover the unique features that make Lone Ranger RV Park a one-of-a-kind destination";
+  
+  // Create amenities list from content or fall back to original
+  const featuredAmenities = originalFeaturedAmenities.map((original, index) => {
+    const amenityNumber = index + 1;
+    return {
+      title: amenitiesContent[`amenity${amenityNumber}_title`] || original.title,
+      description: amenitiesContent[`amenity${amenityNumber}_description`] || original.description,
+      image: amenitiesContent[`amenity${amenityNumber}_image`] || original.image,
+      icon: original.icon // Keep the original icon
+    };
+  });
+
+  // Rules section content
+  const rulesContent = homeContent.rules || {};
+  const rulesTitle = rulesContent.title || "RV Rules & Regulations";
+  const rulesDescription = rulesContent.description || 
+    "To ensure everyone enjoys their stay, we maintain the following policies:";
+  const rulesImage = rulesContent.image_url || "/lovable-uploads/b4ad59a6-723e-4fc0-b4fd-72c2109b8867.jpg";
+  
+  // Rules items with fallbacks
+  const ruleItems = [
+    {
+      title: rulesContent.rule1_title || "Check-in/out times:",
+      text: rulesContent.rule1_text || "Check-in is at 2:00 PM, and check-out is at 11:00 AM."
+    },
+    {
+      title: rulesContent.rule2_title || "Quiet hours:",
+      text: rulesContent.rule2_text || "10:00 PM to 7:00 AM to ensure everyone gets their rest."
+    },
+    {
+      title: rulesContent.rule3_title || "Campfire policy:",
+      text: rulesContent.rule3_text || "Fires allowed in designated fire rings only. No fires during burn bans."
+    },
+    {
+      title: rulesContent.rule4_title || "Pets:",
+      text: rulesContent.rule4_text || "Welcome but must be leashed at all times. Please clean up after your pets."
+    },
+    {
+      title: rulesContent.rule5_title || "Wi-Fi:",
+      text: rulesContent.rule5_text || "Complimentary high-speed connection available throughout the property."
+    }
+  ];
+
+  // CTA section content
+  const ctaContent = homeContent.cta || {};
+  const ctaTitle = ctaContent.title || "Rest Your Wheels Where History Feels Alive";
+  const ctaDescription = ctaContent.description || 
+    "Experience the perfect blend of vintage charm and modern comfort at Lone Ranger RV Park.";
+  const ctaButtonText = ctaContent.button_text || "Book Your Getaway";
+
+  // Attractions section content
+  const attractionsContent = homeContent.attractions || {};
+  const attractionsTitle = attractionsContent.title || "Explore the Area";
+  const attractionsDescription = attractionsContent.description || 
+    "Perfectly situated to experience the best of Texas";
+  
+  // Create attractions list from content or fall back to original
+  const localAttractions = originalLocalAttractions.map((original, index) => {
+    const attractionNumber = index + 1;
+    return {
+      name: attractionsContent[`attraction${attractionNumber}_name`] || original.name,
+      description: attractionsContent[`attraction${attractionNumber}_description`] || original.description,
+      distance: attractionsContent[`attraction${attractionNumber}_distance`] || original.distance,
+      icon: original.icon // Keep the original icon
+    };
+  });
+
+  return (
+    <Layout>
       {/* Hero Banner Section */}
       <section className="relative min-h-[600px] flex items-center py-8 md:py-0 h-[85vh]">
         <div className="absolute inset-0 z-0">
-          <img src="/placeholder.svg" alt="Lone Ranger RV Park" className="w-full h-full object-cover" />
+          <img src={heroImage} alt="Lone Ranger RV Park" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
         
         <div className="relative z-10 section-container text-white">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-display mb-4 animate-fade-in">
-            Where the Spirit of the Road Lives On
+            {heroHeadline}
           </h1>
           <h2 className="text-2xl md:text-3xl text-rvyellow mb-8 animate-fade-in" style={{
           animationDelay: "0.2s"
         }}>
-            Just off Loop 254 in Ranger, Texas — minutes from Palo Pinto Mountains
+            {heroSubtitle}
           </h2>
           
           <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg max-w-2xl mb-8 animate-fade-in" style={{
           animationDelay: "0.4s"
         }}>
             <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 text-lg">
-              <li>Resort-Style Pool</li>
-              <li>Historic Lodges</li>
-              <li>Full Hookups</li>
-              <li>Horse Hotel</li>
-              <li>Gulf Burgers Restaurant</li>
-              <li>Pickleball Court</li>
-              <li>Candy & Ice Cream Shop</li>
-              <li>Free Wi-Fi</li>
+              {heroFeatures.map((feature, index) => (
+                <li key={index}>{feature}</li>
+              ))}
             </ul>
           </div>
           
           <Link to="/reservations" className="btn-primary text-lg px-8 py-4 animate-fade-in" style={{
           animationDelay: "0.6s"
         }}>
-            Book Your Stay Now
+            {heroCta}
           </Link>
         </div>
       </section>
@@ -167,17 +302,17 @@ const Home = () => {
       <section className="section-container py-16 md:py-24">
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <div className="md:w-1/2">
-            <h2 className="section-title text-4xl mb-6">Where History Meets Hospitality</h2>
+            <h2 className="section-title text-4xl mb-6">{welcomeTitle}</h2>
             <p className="text-xl text-gray-700 mb-8">
-              Step back in time at Lone Ranger RV Park & Lodge, where vintage neon signs illuminate your path and the spirit of classic Americana lives on. Nestled among scenic views of the Palo Pinto Mountains, our family-friendly park blends historic charm with modern amenities. Whether you're parking your RV, pitching a tent, or staying in one of our restored 1930s lodges, you'll experience Texas hospitality at its finest.
+              {welcomeDescription}
             </p>
             
             <Link to="/reservations" className="btn-primary">
-              Book Now
+              {welcomeCta}
             </Link>
           </div>
           <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
-            <img alt="Lone Ranger RV Park at sunset" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="/lovable-uploads/44b44f22-8a5d-4c95-83e8-8d02128280e4.png" />
+            <img alt="Lone Ranger RV Park at sunset" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src={welcomeImage} />
           </div>
         </div>
       </section>
@@ -186,21 +321,23 @@ const Home = () => {
 
       {/* Section 2 - Photo Gallery */}
       <section className="section-container py-16 bg-gray-50">
-        <h2 className="section-title text-4xl text-center mb-10">Capture the Experience</h2>
+        <h2 className="section-title text-4xl text-center mb-10">{galleryTitle}</h2>
         <p className="text-xl text-gray-600 text-center max-w-3xl mx-auto mb-12">
-          Vintage neon, scenic mountain views, and modern comfort come together to create an unforgettable stay.
+          {galleryDescription}
         </p>
         
         <Carousel className="w-full max-w-5xl mx-auto">
           <CarouselContent>
-            {galleryImages.map((image, index) => <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+            {galleryImages.map((image, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                 <div className="p-1">
                   <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
                     <img src={image.src} alt={image.alt} className="w-full h-64 object-cover transition-transform duration-500 hover:scale-105" />
                   </div>
                   <p className="text-center mt-2 text-sm text-gray-600">{image.alt}</p>
                 </div>
-              </CarouselItem>)}
+              </CarouselItem>
+            ))}
           </CarouselContent>
           <div className="flex justify-center mt-4">
             <CarouselPrevious className="relative static left-0 right-auto translate-y-0 mr-2" />
@@ -215,19 +352,21 @@ const Home = () => {
       <section className="section-container py-16">
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
-            <img alt="Activities at Lone Ranger RV Park" className="w-full h-full object-cover" src="/lovable-uploads/acc82a50-acaf-43f9-b4d0-a05f64415827.jpg" />
+            <img alt="Activities at Lone Ranger RV Park" className="w-full h-full object-cover" src={thingsToDoImage} />
           </div>
           <div className="md:w-1/2">
-            <h2 className="section-title text-4xl mb-6">Things to Do</h2>
+            <h2 className="section-title text-4xl mb-6">{thingsToDoTitle}</h2>
             <p className="text-lg text-gray-700 mb-6">
-              Your adventure doesn't end when you park. Here's what awaits at Lone Ranger RV Park:
+              {thingsToDoDescription}
             </p>
             
             <ul className="space-y-3 text-lg">
-              {thingsToDo.map((activity, index) => <li key={index} className="flex items-start">
+              {thingsToDo.map((activity, index) => (
+                <li key={index} className="flex items-start">
                   <span className="inline-block bg-rvyellow text-rvmaroon rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-1 font-bold">{index + 1}</span>
                   <span>{activity.activity}</span>
-                </li>)}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -237,13 +376,14 @@ const Home = () => {
 
       {/* Section 4 - What Awaits You */}
       <section className="section-container py-16 bg-gray-50">
-        <h2 className="section-title text-4xl text-center mb-3">What Awaits You</h2>
+        <h2 className="section-title text-4xl text-center mb-3">{amenitiesTitle}</h2>
         <p className="text-xl text-gray-600 text-center max-w-3xl mx-auto mb-12">
-          Discover the unique features that make Lone Ranger RV Park a one-of-a-kind destination
+          {amenitiesDescription}
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredAmenities.map((amenity, index) => <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+          {featuredAmenities.map((amenity, index) => (
+            <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <div className="h-48 overflow-hidden">
                 <img src={amenity.image} alt={amenity.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
               </div>
@@ -251,7 +391,8 @@ const Home = () => {
                 <h3 className="text-xl font-display mb-2 text-rvmaroon">{amenity.title}</h3>
                 <p className="text-gray-600">{amenity.description}</p>
               </CardContent>
-            </Card>)}
+            </Card>
+          ))}
         </div>
       </section>
 
@@ -261,42 +402,20 @@ const Home = () => {
       <section className="section-container py-16">
         <div className="flex flex-col md:flex-row gap-12">
           <div className="md:w-1/2">
-            <h2 className="section-title text-4xl mb-6">RV Rules & Regulations</h2>
+            <h2 className="section-title text-4xl mb-6">{rulesTitle}</h2>
             <p className="text-lg text-gray-700 mb-6">
-              To ensure everyone enjoys their stay, we maintain the following policies:
+              {rulesDescription}
             </p>
             
             <ul className="space-y-4 text-lg">
-              <li className="flex items-start">
-                <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
-                <div>
-                  <span className="font-semibold">Check-in/out times:</span> Check-in is at 2:00 PM, and check-out is at 11:00 AM.
-                </div>
-              </li>
-              <li className="flex items-start">
-                <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
-                <div>
-                  <span className="font-semibold">Quiet hours:</span> 10:00 PM to 7:00 AM to ensure everyone gets their rest.
-                </div>
-              </li>
-              <li className="flex items-start">
-                <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
-                <div>
-                  <span className="font-semibold">Campfire policy:</span> Fires allowed in designated fire rings only. No fires during burn bans.
-                </div>
-              </li>
-              <li className="flex items-start">
-                <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
-                <div>
-                  <span className="font-semibold">Pets:</span> Welcome but must be leashed at all times. Please clean up after your pets.
-                </div>
-              </li>
-              <li className="flex items-start">
-                <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
-                <div>
-                  <span className="font-semibold">Wi-Fi:</span> Complimentary high-speed connection available throughout the property.
-                </div>
-              </li>
+              {ruleItems.map((rule, index) => (
+                <li key={index} className="flex items-start">
+                  <Calendar className="text-rvred mr-3 mt-1 flex-shrink-0" size={20} />
+                  <div>
+                    <span className="font-semibold">{rule.title}</span> {rule.text}
+                  </div>
+                </li>
+              ))}
             </ul>
             
             <Link to="/rules-faqs" className="btn-secondary mt-8 inline-block">
@@ -304,7 +423,7 @@ const Home = () => {
             </Link>
           </div>
           <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
-            <img alt="RV campsite at Lone Ranger RV Park" className="w-full h-full object-cover" src="/lovable-uploads/b4ad59a6-723e-4fc0-b4fd-72c2109b8867.jpg" />
+            <img alt="RV campsite at Lone Ranger RV Park" className="w-full h-full object-cover" src={rulesImage} />
           </div>
         </div>
       </section>
@@ -314,25 +433,26 @@ const Home = () => {
       {/* Section 6 - Rest CTA Section */}
       <section className="py-20 bg-rvmaroon text-white">
         <div className="section-container text-center">
-          <h2 className="text-4xl md:text-5xl font-display mb-8">Rest Your Wheels Where History Feels Alive</h2>
+          <h2 className="text-4xl md:text-5xl font-display mb-8">{ctaTitle}</h2>
           <p className="text-xl max-w-3xl mx-auto mb-10">
-            Experience the perfect blend of vintage charm and modern comfort at Lone Ranger RV Park.
+            {ctaDescription}
           </p>
           <Link to="/reservations" className="btn-primary bg-rvyellow text-rvmaroon hover:bg-rvyellow/90 text-lg px-8 py-4">
-            Book Your Getaway
+            {ctaButtonText}
           </Link>
         </div>
       </section>
 
       {/* Section 7 - Local Attractions */}
       <section className="section-container py-16">
-        <h2 className="section-title text-4xl text-center mb-3">Explore the Area</h2>
+        <h2 className="section-title text-4xl text-center mb-3">{attractionsTitle}</h2>
         <p className="text-xl text-gray-600 text-center max-w-3xl mx-auto mb-12">
-          Perfectly situated to experience the best of Texas
+          {attractionsDescription}
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {localAttractions.map((attraction, index) => <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100 h-full">
+          {localAttractions.map((attraction, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100 h-full">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-xl font-display text-rvmaroon flex-grow pr-2">{attraction.name}</h3>
                 <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm font-medium flex items-center whitespace-nowrap">
@@ -341,7 +461,8 @@ const Home = () => {
                 </span>
               </div>
               <p className="text-gray-600">{attraction.description}</p>
-            </div>)}
+            </div>
+          ))}
         </div>
         
         <div className="text-center mt-10">
@@ -350,6 +471,8 @@ const Home = () => {
           </Link>
         </div>
       </section>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default Home;

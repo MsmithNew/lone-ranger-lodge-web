@@ -9,17 +9,27 @@ import { toast } from "@/hooks/use-toast";
 
 const AdminDashboard = () => {
   const [attractionCount, setAttractionCount] = useState<number | null>(null);
+  const [contentCount, setContentCount] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const { count, error } = await supabase
+        // Fetch attractions count
+        const { count: attractionsCount, error: attractionsError } = await supabase
           .from('activity_images')
           .select('*', { count: 'exact', head: true });
 
-        if (error) throw error;
-        setAttractionCount(count);
+        if (attractionsError) throw attractionsError;
+        setAttractionCount(attractionsCount);
+        
+        // Fetch content count
+        const { count: pageContentCount, error: contentError } = await supabase
+          .from('page_content')
+          .select('*', { count: 'exact', head: true });
+          
+        if (contentError) throw contentError;
+        setContentCount(pageContentCount);
       } catch (error) {
         console.error('Error fetching stats:', error);
         toast({
@@ -37,6 +47,13 @@ const AdminDashboard = () => {
 
   const dashboardItems = [
     {
+      title: "Manage Content",
+      description: "Edit text, images and other content on your website",
+      icon: <Edit className="h-8 w-8 text-rvblue" />,
+      link: "/admin/content",
+      stats: `${contentCount ?? '...'} content items`,
+    },
+    {
       title: "Manage Attractions",
       description: "Edit attraction images, titles, descriptions and links",
       icon: <Image className="h-8 w-8 text-rvblue" />,
@@ -49,14 +66,7 @@ const AdminDashboard = () => {
       icon: <Settings className="h-8 w-8 text-rvolive" />,
       link: "/admin/settings",
       stats: "General settings",
-    },
-    {
-      title: "Edit Content",
-      description: "Modify text content across the website",
-      icon: <Edit className="h-8 w-8 text-rvmaroon" />,
-      link: "/admin/content",
-      stats: "Page content",
-    },
+    }
   ];
 
   return (
@@ -87,6 +97,7 @@ const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <ul className="space-y-2 text-sm">
+              <li>• To edit website content, go to the Content section</li>
               <li>• To edit attraction images, go to the Attractions section</li>
               <li>• Changes are applied immediately after saving</li>
               <li>• Remember to log out when you're finished</li>
