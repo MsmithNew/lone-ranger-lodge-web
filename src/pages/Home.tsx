@@ -176,7 +176,11 @@ const Home = () => {
             </Link>
           </div>
           <div className="md:w-1/2 rounded-lg overflow-hidden shadow-2xl">
-            <img alt="Lone Ranger RV Park at sunset" className="w-full h-full object-cover" src="/lovable-uploads/80032f50-944d-4a9d-9c74-a69472f7475d.jpg" />
+            <img 
+              alt="Lone Ranger RV Park at sunset" 
+              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
+              src="/lovable-uploads/44b44f22-8a5d-4c95-83e8-8d02128280e4.png" 
+            />
           </div>
         </div>
       </section>
