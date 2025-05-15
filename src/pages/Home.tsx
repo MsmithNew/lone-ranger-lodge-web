@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -155,7 +154,7 @@ const Home = () => {
   const welcomeContent = homeContent.welcome || {};
   const welcomeTitle = welcomeContent.title || "Where History Meets Hospitality";
   const welcomeDescription = welcomeContent.description || 
-    "Step back in time at Lone Ranger RV Park & Lodge, where vintage neon signs illuminate your path and the spirit of classic Americana lives on. Nestled among scenic views of the Palo Pinto Mountains, our family-friendly park blends historic charm with modern amenities. Whether you're parking your RV, pitching a tent, or staying in one of our restored 1930s lodges, you'll experience Texas hospitality at its finest.";
+    "Step back in time at Lone Ranger RV Park, where vintage neon signs illuminate your path and the spirit of classic Americana lives on. Nestled among scenic views of the Palo Pinto Mountains, our family-friendly park blends historic charm with modern amenities. Whether you're parking your RV, pitching a tent, or staying in one of our restored 1930s lodges, you'll experience Texas hospitality at its finest.";
   const welcomeImage = welcomeContent.image_url || "/lovable-uploads/44b44f22-8a5d-4c95-83e8-8d02128280e4.png";
   const welcomeCta = welcomeContent.cta_text || "Book Now";
 
@@ -263,40 +262,42 @@ const Home = () => {
 
   return (
     <Layout>
-      {/* Hero Banner Section */}
-      <section className="relative min-h-[600px] flex items-center py-8 md:py-0 h-[85vh]">
+      {/* Hero Banner Section - Fixed for mobile */}
+      <section className="relative min-h-[600px] flex items-center py-16 md:py-0 h-[85vh] overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src={heroImage} alt="Lone Ranger RV Park" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
         
-        <div className="relative z-10 section-container text-white">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display mb-4 animate-fade-in">
+        <div className="relative z-10 section-container text-white flex flex-col justify-center h-full pb-16">
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-display mb-4 animate-fade-in pt-12 md:pt-0">
             {heroHeadline}
           </h1>
-          <h2 className="text-2xl md:text-3xl text-rvyellow mb-8 animate-fade-in" style={{
+          <h2 className="text-xl md:text-2xl lg:text-3xl text-rvyellow mb-8 animate-fade-in" style={{
           animationDelay: "0.2s"
         }}>
             {heroSubtitle}
           </h2>
           
-          <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg max-w-2xl mb-8 animate-fade-in" style={{
+          <div className="bg-white/10 backdrop-blur-sm p-4 md:p-6 rounded-lg max-w-2xl mb-8 animate-fade-in" style={{
           animationDelay: "0.4s"
         }}>
-            <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 text-lg">
+            <ul className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 text-base md:text-lg">
               {heroFeatures.map((feature, index) => (
                 <li key={index}>{feature}</li>
               ))}
             </ul>
           </div>
           
-          <Link to="/reservations" className="btn-primary text-lg px-8 py-4 animate-fade-in" style={{
-          animationDelay: "0.6s"
-        }}>
+          <div className="mb-8 md:mb-0">
+            <Link to="/reservations" className="btn-primary text-base md:text-lg px-6 md:px-8 py-3 md:py-4 animate-fade-in" style={{
+            animationDelay: "0.6s"
+          }}>
             {heroCta}
           </Link>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* Section 1 - Welcome */}
       <section className="section-container py-16 md:py-24">
