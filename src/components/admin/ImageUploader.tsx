@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, Upload, X, Image as ImageIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { v4 as uuidv4 } from 'uuid';
 
 interface ImageUploaderProps {
   currentImageUrl: string;
@@ -33,7 +32,7 @@ const ImageUploader = ({
     
     try {
       const fileExt = file.name.split('.').pop();
-      const fileName = `${folder}/${uuidv4()}.${fileExt}`;
+      const fileName = `${folder}/${crypto.randomUUID()}.${fileExt}`;
       
       const { data, error } = await supabase.storage
         .from(bucket)
