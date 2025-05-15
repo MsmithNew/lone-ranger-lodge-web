@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
@@ -168,8 +169,8 @@ const Navbar = () => {
           </div>
           
           <div className="flex-1 flex flex-col justify-between overflow-y-auto">
-            {/* Navigation Items */}
-            <div className="px-4 pt-6 pb-8 space-y-6">
+            {/* Navigation Items - Now with display:flex and flex-col to better distribute space */}
+            <div className="px-4 py-4 flex-grow flex flex-col justify-start space-y-4">
               {/* Home (first item) */}
               <Link
                 key="home"
@@ -197,13 +198,13 @@ const Navbar = () => {
                   <ChevronDown className="h-5 w-5" />
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <div className="pl-4 space-y-4 mt-4">
+                  <div className="pl-4 space-y-3 mt-3">
                     {aboutSubItems.map((subItem) => (
                       <Link
                         key={subItem.name}
                         to={subItem.path}
                         className={cn(
-                          "block px-4 py-3 rounded-md text-lg font-medium truncate whitespace-nowrap",
+                          "block px-4 py-2 rounded-md text-lg font-medium truncate whitespace-nowrap",
                           location.pathname === subItem.path
                             ? "bg-rvyellow/10 text-rvmaroon"
                             : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
@@ -235,11 +236,11 @@ const Navbar = () => {
               ))}
             </div>
             
-            {/* Book Now Button at the Bottom */}
-            <div className="px-4 py-6 border-t border-gray-200">
+            {/* Book Now Button - Now always visible at the bottom with fixed positioning */}
+            <div className="px-4 py-6 border-t border-gray-200 sticky bottom-0 bg-white">
               <Link 
                 to="/reservations" 
-                className="block px-4 py-3 btn-primary text-center text-base font-medium whitespace-nowrap"
+                className="block px-4 py-3 btn-primary text-center text-base font-semibold whitespace-nowrap"
                 onClick={() => setIsOpen(false)}
               >
                 Book Now
