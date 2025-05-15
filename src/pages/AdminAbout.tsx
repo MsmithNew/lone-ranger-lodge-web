@@ -45,6 +45,11 @@ const AdminAbout = () => {
   const [accommodationItems, setAccommodationItems] = useState<AccommodationItem[]>([]);
   const [isSavingAccommodations, setIsSavingAccommodations] = useState(false);
   
+  // New state for Accommodations CTA
+  const [accommodationsCtaButtonText, setAccommodationsCtaButtonText] = useState("");
+  const [accommodationsCtaButtonLink, setAccommodationsCtaButtonLink] = useState("");
+  const [accommodationsCtaButtonLinkType, setAccommodationsCtaButtonLinkType] = useState("internal");
+  
   // State for CTA section
   const [ctaTitle, setCtaTitle] = useState("");
   const [ctaDescription, setCtaDescription] = useState("");
@@ -107,6 +112,11 @@ const AdminAbout = () => {
           console.error("Error parsing accommodation items:", error);
           setAccommodationItems([]);
         }
+        
+        // Load accommodations CTA button data
+        setAccommodationsCtaButtonText(content.accommodations.buttonText || "");
+        setAccommodationsCtaButtonLink(content.accommodations.buttonLink || "");
+        setAccommodationsCtaButtonLinkType(content.accommodations.buttonLinkType || "internal");
       }
       
       // CTA section
@@ -175,6 +185,11 @@ const AdminAbout = () => {
       await saveContentItem("about", "accommodations", "title", accommodationsTitle);
       await saveContentItem("about", "accommodations", "description", accommodationsDescription);
       await saveContentItem("about", "accommodations", "items", JSON.stringify(accommodationItems));
+      
+      // Save accommodations CTA button
+      await saveContentItem("about", "accommodations", "buttonText", accommodationsCtaButtonText);
+      await saveContentItem("about", "accommodations", "buttonLink", accommodationsCtaButtonLink);
+      await saveContentItem("about", "accommodations", "buttonLinkType", accommodationsCtaButtonLinkType, "link_type");
       
       toast({
         title: "Accommodations section updated",
@@ -474,7 +489,31 @@ const AdminAbout = () => {
                     />
                   </div>
                   
-                  <div className="space-y-2">
+                  {/* Accommodations CTA Button Settings */}
+                  <div className="space-y-4 border-t pt-4 mt-4">
+                    <h4 className="font-medium">Section CTA Button</h4>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="accommodations-cta-button-text">Button Text</Label>
+                      <Input
+                        id="accommodations-cta-button-text"
+                        value={accommodationsCtaButtonText}
+                        onChange={(e) => setAccommodationsCtaButtonText(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <LinkSelector
+                        label="Button Link"
+                        value={accommodationsCtaButtonLink}
+                        linkType={accommodationsCtaButtonLinkType}
+                        onValueChange={setAccommodationsCtaButtonLink}
+                        onLinkTypeChange={setAccommodationsCtaButtonLinkType}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2 mt-4">
                     <div className="flex justify-between items-center mb-2">
                       <Label>Accommodation Cards</Label>
                       <Button 
