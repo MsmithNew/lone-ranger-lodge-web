@@ -31,6 +31,12 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+    // Prevent scrolling when menu is open
+    if (!isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   };
 
   return (
@@ -142,79 +148,103 @@ const Navbar = () => {
 
       {/* Mobile Navigation Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 animate-fade-in">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {/* Home (first item) */}
-            <Link
-              key="home"
-              to="/"
-              className={cn(
-                "block px-4 py-2 rounded-md text-sm font-medium truncate whitespace-nowrap",
-                location.pathname === "/"
-                  ? "bg-rvyellow/10 text-rvmaroon"
-                  : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
-              )}
-              onClick={() => setIsOpen(false)}
-            >
-              Home
+        <div className="md:hidden fixed inset-0 bg-white z-40 flex flex-col animate-fade-in">
+          <div className="px-4 py-4 border-b border-gray-200 flex justify-between items-center">
+            <Link to="/" className="flex-shrink-0 flex items-center space-x-2" onClick={() => setIsOpen(false)}>
+              <img
+                src={LOGO_SRC}
+                alt="Lone Ranger RV Park & Lodge Logo"
+                className="block object-contain h-12 w-auto select-none"
+                draggable={false}
+              />
             </Link>
-            
-            {/* Mobile About Dropdown (second item) */}
-            <Collapsible className="w-full">
-              <CollapsibleTrigger className={cn(
-                "w-full flex justify-between items-center px-4 py-2 rounded-md text-sm font-medium",
-                (location.pathname === "/about" || location.pathname === "/rules-faqs")
-                  ? "bg-rvyellow/10 text-rvmaroon"
-                  : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
-              )}>
-                About
-                <ChevronDown className="h-4 w-4" />
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <div className="pl-4 space-y-1">
-                  {aboutSubItems.map((subItem) => (
-                    <Link
-                      key={subItem.name}
-                      to={subItem.path}
-                      className={cn(
-                        "block px-4 py-2 rounded-md text-sm font-medium truncate whitespace-nowrap",
-                        location.pathname === subItem.path
-                          ? "bg-rvyellow/10 text-rvmaroon"
-                          : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
-                      )}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {subItem.name}
-                    </Link>
-                  ))}
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-            
-            {/* Other main nav items (after About) */}
-            {mainNavItems.slice(1).map((item) => (
+            {/* Close Button */}
+            <button
+              onClick={toggleMenu}
+              className="text-gray-600 hover:text-rvmaroon focus:outline-none"
+            >
+              <X size={24} />
+            </button>
+          </div>
+          
+          <div className="flex-1 flex flex-col justify-between overflow-y-auto">
+            {/* Navigation Items */}
+            <div className="px-4 pt-6 pb-8 space-y-6">
+              {/* Home (first item) */}
               <Link
-                key={item.name}
-                to={item.path}
+                key="home"
+                to="/"
                 className={cn(
-                  "block px-4 py-2 rounded-md text-sm font-medium truncate whitespace-nowrap",
-                  location.pathname === item.path
+                  "block px-4 py-3 rounded-md text-lg font-medium truncate whitespace-nowrap",
+                  location.pathname === "/"
                     ? "bg-rvyellow/10 text-rvmaroon"
                     : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
                 )}
                 onClick={() => setIsOpen(false)}
               >
-                {item.name}
+                Home
               </Link>
-            ))}
+              
+              {/* Mobile About Dropdown (second item) */}
+              <Collapsible className="w-full">
+                <CollapsibleTrigger className={cn(
+                  "w-full flex justify-between items-center px-4 py-3 rounded-md text-lg font-medium",
+                  (location.pathname === "/about" || location.pathname === "/rules-faqs")
+                    ? "bg-rvyellow/10 text-rvmaroon"
+                    : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
+                )}>
+                  About
+                  <ChevronDown className="h-5 w-5" />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="pl-4 space-y-4 mt-4">
+                    {aboutSubItems.map((subItem) => (
+                      <Link
+                        key={subItem.name}
+                        to={subItem.path}
+                        className={cn(
+                          "block px-4 py-3 rounded-md text-lg font-medium truncate whitespace-nowrap",
+                          location.pathname === subItem.path
+                            ? "bg-rvyellow/10 text-rvmaroon"
+                            : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
+                        )}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {subItem.name}
+                      </Link>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+              
+              {/* Other main nav items (after About) */}
+              {mainNavItems.slice(1).map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={cn(
+                    "block px-4 py-3 rounded-md text-lg font-medium truncate whitespace-nowrap",
+                    location.pathname === item.path
+                      ? "bg-rvyellow/10 text-rvmaroon"
+                      : "text-gray-700 hover:bg-rvyellow/10 hover:text-rvmaroon"
+                  )}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
             
-            <Link 
-              to="/reservations" 
-              className="block px-4 py-2 mt-4 btn-primary text-center text-sm whitespace-nowrap"
-              onClick={() => setIsOpen(false)}
-            >
-              Book Now
-            </Link>
+            {/* Book Now Button at the Bottom */}
+            <div className="px-4 py-6 border-t border-gray-200">
+              <Link 
+                to="/reservations" 
+                className="block px-4 py-3 btn-primary text-center text-base font-medium whitespace-nowrap"
+                onClick={() => setIsOpen(false)}
+              >
+                Book Now
+              </Link>
+            </div>
           </div>
         </div>
       )}
