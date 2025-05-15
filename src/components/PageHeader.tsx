@@ -22,13 +22,13 @@ const PageHeader = ({
       "relative bg-gradient-to-b from-rvblue/10 to-white py-10 md:py-16",
       className
     )}>
-      <div className="absolute inset-0 z-0 opacity-25">
+      <div className="absolute inset-0 z-0 opacity-50">
         <img 
           src={imageUrl} 
           alt="" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/80 to-white"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white/50 to-white/90"></div>
       </div>
       
       <div className="section-container relative z-10">

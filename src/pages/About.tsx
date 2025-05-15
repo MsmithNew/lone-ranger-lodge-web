@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -129,7 +130,7 @@ const About = () => {
         </div>
       </section>
       
-      <section className="py-16 bg-rvmaroon text-white">
+      <section className="py-16 bg-rvblue text-white">
         <div className="section-container text-center">
           <h2 className="text-3xl md:text-4xl font-display mb-6">Experience Ranger's Vintage Roadside Getaway</h2>
           <p className="text-xl max-w-2xl mx-auto mb-8">
