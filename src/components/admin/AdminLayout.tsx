@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/context/AdminContext";
 import { Button } from "@/components/ui/button";
-import { Home, Image, Settings, LogOut, Edit, FileText } from "lucide-react";
+import { Home, Image, Settings, LogOut, Edit, FileText, Hotel } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface AdminLayoutProps {
@@ -77,6 +77,16 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
               >
                 <FileText className="mr-2 h-4 w-4" />
                 Rules & FAQs
+              </Button>
+            </li>
+            <li>
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start"
+                onClick={() => navigate("/admin/accommodations")}
+              >
+                <Hotel className="mr-2 h-4 w-4" />
+                Accommodations
               </Button>
             </li>
             <li>
