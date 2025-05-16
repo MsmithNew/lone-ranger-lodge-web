@@ -151,11 +151,12 @@ interface AccommodationsContextType {
   handleCTAImageChange: (imageUrl: string) => void;
 }
 
+// Create the context with a proper default value (undefined)
 const AccommodationsContext = createContext<AccommodationsContextType | undefined>(undefined);
 
-// Updated prop type for render props pattern
+// Create provider props interface
 interface AccommodationsProviderProps {
-  children: (context: AccommodationsContextType) => React.ReactElement;
+  children: ReactNode;
 }
 
 export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ children }) => {
@@ -245,16 +246,6 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
       header: {
         ...prev.header,
         [name]: value,
-      },
-    }));
-  };
-
-  const handleHeaderImageChange = (imageUrl: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      header: {
-        ...prev.header,
-        imageUrl,
       },
     }));
   };
@@ -485,8 +476,12 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
     handleCTAImageChange
   };
 
-  // Use the render prop pattern with properly typed context
-  return children(contextValue);
+  // Return the context provider with proper children passing
+  return (
+    <AccommodationsContext.Provider value={contextValue}>
+      {children}
+    </AccommodationsContext.Provider>
+  );
 };
 
 export const useAccommodationsContext = () => {
