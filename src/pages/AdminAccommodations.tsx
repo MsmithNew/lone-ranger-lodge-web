@@ -15,72 +15,37 @@ const AccommodationsContent = () => {
   const [activeTab, setActiveTab] = useState("header");
   const { saveContent, isSaving, refresh } = useAccommodationsContext();
   const [bucketChecked, setBucketChecked] = useState(false);
-  const [bucketCreateAttempts, setBucketCreateAttempts] = useState(0);
 
-  // Check and create storage bucket on component mount with improved retry logic
+  // Simple check for existing content_images bucket without trying to create one
   useEffect(() => {
     const checkBucket = async () => {
-      if (bucketCreateAttempts > 3) {
-        console.error("Exceeded maximum bucket creation attempts");
-        toast({
-          title: "Storage setup issue",
-          description: "Could not create storage bucket after multiple attempts. Some features may not work correctly.",
-          variant: "destructive",
-        });
-        setBucketChecked(true); // Allow user to continue despite the error
-        return;
-      }
-
       try {
-        // Check if bucket exists
-        const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
+        // Check if bucket exists by trying to get file list
+        const { error } = await supabase.storage.from('content_images').list();
         
-        if (bucketsError) {
-          console.error("Error checking buckets:", bucketsError);
-          throw bucketsError;
-        }
-        
-        const bucketExists = buckets?.some(bucket => bucket.name === 'content_images');
-        
-        // If bucket doesn't exist, try to create it
-        if (!bucketExists) {
-          console.log("Content images bucket not found, attempting to create it");
-          const { data, error } = await supabase.storage.createBucket('content_images', {
-            public: true,
-            fileSizeLimit: 5242880 // 5MB limit
+        if (error) {
+          console.error("Error checking content_images bucket:", error);
+          // Even if there's an error, still allow the user to continue
+          // This way they can at least edit and save text content
+          toast({
+            title: "Storage access issue",
+            description: "There may be issues uploading images. You can still edit and save text content.",
+            variant: "warning",
           });
-          
-          if (error) {
-            console.error("Error creating bucket:", error);
-            
-            // Fix: StorageError doesn't have a code property, check the error message instead
-            if (error.message && error.message.includes("already exists")) {
-              console.log("Bucket may already exist despite error, proceeding");
-              setBucketChecked(true);
-              return;
-            }
-            
-            // Otherwise retry after a delay
-            setBucketCreateAttempts(prev => prev + 1);
-            setTimeout(checkBucket, 1000); // Retry after 1 second
-            return;
-          } else {
-            console.log("Created content_images bucket:", data);
-          }
-        } else {
-          console.log("Content images bucket exists");
         }
         
+        // Allow the application to proceed regardless of bucket status
+        console.log("Bucket check completed");
         setBucketChecked(true);
       } catch (err) {
-        console.error("Error checking/creating bucket:", err);
-        setBucketCreateAttempts(prev => prev + 1);
-        setTimeout(checkBucket, 1000); // Retry after 1 second
+        console.error("Error during bucket check:", err);
+        // Allow the application to continue despite errors
+        setBucketChecked(true);
       }
     };
     
     checkBucket();
-  }, [bucketCreateAttempts]);
+  }, []);
 
   // Save the current state when switching tabs to prevent data loss
   const handleTabChange = (newTab: string) => {

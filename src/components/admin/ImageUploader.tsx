@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, Upload, X, Image as ImageIcon, RefreshCcw } from "lucide-react";
+import { Loader2, Upload, X, Image as ImageIcon, RefreshCcw, AlertCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface ImageUploaderProps {
@@ -25,7 +25,7 @@ const ImageUploader = ({
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentImageUrl || null);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [retryCount, setRetryCount] = useState(0);
+  const [bucketError, setBucketError] = useState(false);
   
   // Generate a consistent ID for label association
   const inputId = `upload-${label.replace(/\s+/g, '-').toLowerCase()}`;
@@ -41,6 +41,7 @@ const ImageUploader = ({
     
     setIsUploading(true);
     setUploadError(null);
+    setBucketError(false);
     
     try {
       // Check file size (limit to 5MB)
@@ -51,6 +52,15 @@ const ImageUploader = ({
       const fileExt = file.name.split('.').pop();
       const fileName = `${folder}/${crypto.randomUUID()}.${fileExt}`;
       
+      // First check if bucket exists
+      const { error: checkError } = await supabase.storage.from(bucket).list();
+      if (checkError) {
+        console.error("Error checking bucket:", checkError);
+        setBucketError(true);
+        throw new Error("Storage bucket not accessible. Images can't be uploaded at this time.");
+      }
+      
+      // If bucket exists, try to upload
       const { data, error } = await supabase.storage
         .from(bucket)
         .upload(fileName, file, {
@@ -72,7 +82,6 @@ const ImageUploader = ({
       // Update preview and pass the URL to parent component with the FULL URL
       setPreview(imageUrl);
       onImageUploaded(imageUrl);
-      setRetryCount(0);
       
       toast({
         title: "Image uploaded successfully",
@@ -97,22 +106,6 @@ const ImageUploader = ({
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
     uploadImage(file);
-  };
-  
-  const handleRetry = () => {
-    if (uploadError && retryCount < 3) {
-      const fileInput = document.getElementById(inputId) as HTMLInputElement;
-      if (fileInput && fileInput.files && fileInput.files.length > 0) {
-        setRetryCount(prevCount => prevCount + 1);
-        uploadImage(fileInput.files[0]);
-      } else {
-        toast({
-          title: "Retry failed",
-          description: "Please select a file again",
-          variant: "destructive",
-        });
-      }
-    }
   };
   
   const removeImage = () => {
@@ -153,33 +146,36 @@ const ImageUploader = ({
         <div className="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center">
           <ImageIcon className="h-10 w-10 text-gray-400 mb-2" />
           <p className="text-sm text-gray-500 mb-2">No image selected</p>
-          <label htmlFor={inputId} className="cursor-pointer">
-            <div className="btn-secondary flex items-center">
-              <Upload className="mr-2 h-4 w-4" />
-              Upload Image
+          
+          {bucketError ? (
+            <div className="text-center">
+              <div className="flex items-center justify-center text-amber-600 mb-2">
+                <AlertCircle className="h-5 w-5 mr-1" />
+                <p>Storage unavailable</p>
+              </div>
+              <p className="text-sm text-gray-500">Image uploads are currently unavailable.</p>
+              <p className="text-sm text-gray-500">You can still edit text content.</p>
             </div>
-            <Input 
-              type="file" 
-              id={inputId} 
-              accept="image/*" 
-              onChange={handleFileChange}
-              className="hidden"
-              disabled={isUploading}
-            />
-          </label>
-          {uploadError && (
+          ) : (
+            <label htmlFor={inputId} className="cursor-pointer">
+              <div className="btn-secondary flex items-center">
+                <Upload className="mr-2 h-4 w-4" />
+                Upload Image
+              </div>
+              <Input 
+                type="file" 
+                id={inputId} 
+                accept="image/*" 
+                onChange={handleFileChange}
+                className="hidden"
+                disabled={isUploading}
+              />
+            </label>
+          )}
+          
+          {uploadError && !bucketError && (
             <div className="mt-2 text-red-500 text-sm">
               <p>{uploadError}</p>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="mt-1 flex items-center"
-                onClick={handleRetry}
-                disabled={retryCount >= 3 || isUploading}
-              >
-                <RefreshCcw className="h-3 w-3 mr-1" />
-                Retry Upload
-              </Button>
             </div>
           )}
         </div>
