@@ -1,4 +1,3 @@
-
 import React from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
@@ -114,49 +113,105 @@ const Accommodations = () => {
     return iconMap[iconName] || <ArrowRight className="text-rvblue" size={18} />;
   };
 
-  // Fix for the nested data structure issue
-  // Check if content.accommodations is an object with an accommodations property (nested structure from DB)
-  const getAccommodationsData = () => {
-    if (!content) return defaultContent.accommodations;
+  // Helper function to safely extract data from potentially nested structures
+  const extractData = <T,>(data: any, defaultValue: T): T => {
+    if (!data) return defaultValue;
     
-    // Check for nested structure (content.accommodations.accommodations)
-    if (content.accommodations && typeof content.accommodations === 'object' && 'accommodations' in content.accommodations) {
-      return content.accommodations.accommodations;
+    // Handle case where data might be nested (e.g. data.accommodations.accommodations)
+    if (typeof data === 'object' && Object.keys(data).length === 1) {
+      const key = Object.keys(data)[0];
+      if (data[key] && typeof data[key] === 'object') {
+        return data[key] as T;
+      }
     }
     
-    // Direct structure (content.accommodations is the array)
-    if (Array.isArray(content.accommodations)) {
-      return content.accommodations;
+    return data as T;
+  };
+
+  // Get header data safely
+  const getHeaderData = () => {
+    if (!content || !content.header) return defaultContent.header;
+    
+    return {
+      title: content.header.title || defaultContent.header.title,
+      description: content.header.description || defaultContent.header.description,
+      imageUrl: content.header.imageUrl || defaultContent.header.imageUrl
+    };
+  };
+
+  // Get accommodations data safely
+  const getAccommodationsData = () => {
+    if (!content || !content.accommodations) return defaultContent.accommodations;
+    
+    try {
+      // Extract accommodations from potential nesting
+      const accommodationsData = extractData(content.accommodations, defaultContent.accommodations);
+      
+      // Parse if it's a string
+      if (typeof accommodationsData === 'string') {
+        return JSON.parse(accommodationsData);
+      }
+      
+      // If it's already an array, return it
+      if (Array.isArray(accommodationsData)) {
+        return accommodationsData;
+      }
+    } catch (e) {
+      console.error("Error processing accommodations data:", e);
     }
     
     // Fallback to default
     return defaultContent.accommodations;
   };
 
-  // Helper function to get the CTA banner data, handling nested structure
+  // Get CTA banner data safely
   const getCTABannerData = () => {
-    if (!content) return defaultContent.ctaBanner;
+    if (!content || !content.ctaBanner) return defaultContent.ctaBanner;
     
-    // Check for nested structure (content.ctaBanner.ctaBanner)
-    if (content.ctaBanner && typeof content.ctaBanner === 'object' && 'ctaBanner' in content.ctaBanner) {
-      return content.ctaBanner.ctaBanner;
+    // First check if we have direct CTA banner properties
+    if (content.ctaBanner.title && content.ctaBanner.description) {
+      return {
+        title: content.ctaBanner.title || defaultContent.ctaBanner.title,
+        description: content.ctaBanner.description || defaultContent.ctaBanner.description,
+        imageUrl: content.ctaBanner.imageUrl || defaultContent.ctaBanner.imageUrl,
+        buttonText: content.ctaBanner.buttonText || defaultContent.ctaBanner.buttonText,
+        buttonLink: content.ctaBanner.buttonLink || defaultContent.ctaBanner.buttonLink
+      };
     }
     
-    // Direct structure (content.ctaBanner is the object)
-    if (content.ctaBanner && typeof content.ctaBanner === 'object') {
-      return content.ctaBanner;
+    // Otherwise try to handle older nested format for backward compatibility
+    try {
+      // Check for nested structure
+      const ctaData = extractData(content.ctaBanner, {});
+      
+      if (ctaData.title) {
+        return {
+          ...defaultContent.ctaBanner,
+          ...ctaData
+        };
+      }
+    } catch (e) {
+      console.error("Error processing CTA banner data:", e);
     }
     
     // Fallback to default
     return defaultContent.ctaBanner;
   };
 
-  // Get the accommodations data using the helper function
-  const accommodationsData = getAccommodationsData();
-
-  // Use content from the database or fallback
-  const header = content?.header || defaultContent.header;
+  // Get the data using the helper functions
+  const header = getHeaderData();
+  const accommodations = getAccommodationsData();
   const ctaBanner = getCTABannerData();
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="max-w-6xl mx-auto p-4">
+          <p>Loading accommodations...</p>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -166,7 +221,7 @@ const Accommodations = () => {
         imageUrl={header.imageUrl} 
       />
       
-      {accommodationsData.map((accommodation, index) => (
+      {accommodations.map((accommodation, index) => (
         <React.Fragment key={index}>
           {index > 0 && <SectionDivider />}
           
@@ -199,9 +254,9 @@ const Accommodations = () => {
                       </li>
                     ))}
                   </ul>
-                  <Link to="/reservations" className="mt-6 inline-block">
+                  <Link to={accommodation.buttonLink || "/reservations"} className="mt-6 inline-block">
                     <Button className="bg-rvblue hover:bg-rvblue/90 text-white">
-                      Book {accommodation.title}
+                      {accommodation.buttonText || `Book ${accommodation.title}`}
                     </Button>
                   </Link>
                 </div>

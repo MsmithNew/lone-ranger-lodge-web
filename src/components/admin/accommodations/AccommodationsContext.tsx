@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, useEffect, ReactNode } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { useContent } from "@/hooks/use-content";
@@ -467,7 +468,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
     try {
       console.log("Saving accommodations form data:", formData);
       
-      // Prepare data for saving - directly save the content without nesting
+      // Prepare data for saving - store data directly without nesting to prevent the issue
       const dataToSave = [
         {
           page: "accommodations",
@@ -493,16 +494,51 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
         {
           page: "accommodations",
           section: "accommodations", 
-          content_key: "accommodations", // We'll keep this format but ensure we handle it on load
+          content_key: "accommodations",
           content_value: JSON.stringify(formData.accommodations),
           content_type: "json"
         },
         {
           page: "accommodations",
           section: "ctaBanner",
-          content_key: "ctaBanner", // We'll keep this format but ensure we handle it on load
-          content_value: JSON.stringify(formData.ctaBanner),
-          content_type: "json"
+          content_key: "title",
+          content_value: formData.ctaBanner.title,
+          content_type: "text"
+        },
+        {
+          page: "accommodations",
+          section: "ctaBanner",
+          content_key: "description",
+          content_value: formData.ctaBanner.description,
+          content_type: "text"
+        },
+        {
+          page: "accommodations",
+          section: "ctaBanner",
+          content_key: "imageUrl",
+          content_value: formData.ctaBanner.imageUrl,
+          content_type: "text"
+        },
+        {
+          page: "accommodations",
+          section: "ctaBanner",
+          content_key: "buttonText",
+          content_value: formData.ctaBanner.buttonText,
+          content_type: "text"
+        },
+        {
+          page: "accommodations",
+          section: "ctaBanner",
+          content_key: "buttonLink",
+          content_value: formData.ctaBanner.buttonLink,
+          content_type: "text"
+        },
+        {
+          page: "accommodations",
+          section: "ctaBanner",
+          content_key: "linkType",
+          content_value: formData.ctaBanner.linkType,
+          content_type: "text"
         }
       ];
 

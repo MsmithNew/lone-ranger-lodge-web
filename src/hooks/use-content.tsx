@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -87,8 +88,10 @@ export function useContent<T extends Record<string, any>>({
         
         // Merge with fallback data to ensure all expected fields exist
         setContent({ ...fallbackData, ...transformedData } as T);
+        console.log("Fetched content:", transformedData);
       } else {
         // If no data, use the fallback
+        console.log("No data found, using fallback:", fallbackData);
         setContent(fallbackData as T);
       }
       setError(null);
