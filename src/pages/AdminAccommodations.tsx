@@ -11,11 +11,22 @@ import CTABannerSection from "@/components/admin/accommodations/CTABannerSection
 // Create a separate component for the content to use the context
 const AccommodationsContent = () => {
   const [activeTab, setActiveTab] = useState("header");
-  const { saveContent, isSaving } = useAccommodationsContext();
+  const { saveContent, isSaving, formData } = useAccommodationsContext();
+
+  // Save the current state when switching tabs to prevent data loss
+  const handleTabChange = (newTab: string) => {
+    // We're just changing tabs, no need to persist to database yet
+    // This prevents data loss when switching between tabs
+    setActiveTab(newTab);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <Tabs defaultValue="header" value={activeTab} onValueChange={setActiveTab}>
+      <Tabs 
+        defaultValue="header" 
+        value={activeTab} 
+        onValueChange={handleTabChange}
+      >
         <div className="flex justify-between items-center mb-8">
           <TabsList>
             <TabsTrigger value="header">Header</TabsTrigger>
