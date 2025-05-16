@@ -1,10 +1,10 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, Upload, X, Image as ImageIcon, RefreshCcw, AlertCircle } from "lucide-react";
+import { Loader2, Upload, X, Image as ImageIcon, RefreshCcw, AlertCircle, Wifi, WifiOff } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface ImageUploaderProps {
@@ -25,10 +25,36 @@ const ImageUploader = ({
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentImageUrl || null);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [bucketError, setBucketError] = useState(false);
+  const [networkStatus, setNetworkStatus] = useState<'checking' | 'online' | 'offline'>('checking');
+  const [retryCount, setRetryCount] = useState(0);
   
   // Generate a consistent ID for label association
   const inputId = `upload-${label.replace(/\s+/g, '-').toLowerCase()}`;
+  
+  // Check network connectivity with Supabase
+  useEffect(() => {
+    const checkConnection = async () => {
+      try {
+        setNetworkStatus('checking');
+        // Simple ping to check connection
+        const { error } = await supabase.storage.from(bucket).list('', {
+          limit: 1,
+        });
+        
+        if (error) {
+          console.warn("Storage connection issue:", error);
+          setNetworkStatus('offline');
+        } else {
+          setNetworkStatus('online');
+        }
+      } catch (err) {
+        console.error("Network error during connectivity check:", err);
+        setNetworkStatus('offline');
+      }
+    };
+    
+    checkConnection();
+  }, [bucket, retryCount]);
   
   // Normalize the image URL for display only - not for storage
   const normalizeImageUrl = (url: string): string => {
@@ -41,9 +67,13 @@ const ImageUploader = ({
     
     setIsUploading(true);
     setUploadError(null);
-    setBucketError(false);
     
     try {
+      // Check if we're online first
+      if (networkStatus === 'offline') {
+        throw new Error("You're currently offline. Please check your connection and try again.");
+      }
+      
       // Check file size (limit to 5MB)
       if (file.size > 5 * 1024 * 1024) {
         throw new Error("File size exceeds 5MB limit");
@@ -52,15 +82,14 @@ const ImageUploader = ({
       const fileExt = file.name.split('.').pop();
       const fileName = `${folder}/${crypto.randomUUID()}.${fileExt}`;
       
-      // First check if bucket exists
+      // First check bucket access
       const { error: checkError } = await supabase.storage.from(bucket).list();
       if (checkError) {
         console.error("Error checking bucket:", checkError);
-        setBucketError(true);
-        throw new Error("Storage bucket not accessible. Images can't be uploaded at this time.");
+        throw new Error("Storage access denied. Images can't be uploaded at this time.");
       }
       
-      // If bucket exists, try to upload
+      // If bucket is accessible, try to upload
       const { data, error } = await supabase.storage
         .from(bucket)
         .upload(fileName, file, {
@@ -92,11 +121,20 @@ const ImageUploader = ({
       const errorMessage = error instanceof Error ? error.message : "Network error during upload";
       setUploadError(errorMessage);
       
-      toast({
-        title: "Upload failed",
-        description: errorMessage,
-        variant: "destructive",
-      });
+      // Provide more specific error messages based on what we know
+      if (errorMessage.includes("network") || errorMessage.includes("offline") || errorMessage.includes("Failed to fetch")) {
+        toast({
+          title: "Network connectivity issue",
+          description: "Unable to upload image due to network problems. Please check your connection and try again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Upload failed",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsUploading(false);
     }
@@ -112,6 +150,10 @@ const ImageUploader = ({
     setPreview(null);
     setUploadError(null);
     onImageUploaded('');
+  };
+
+  const handleRetryConnection = () => {
+    setRetryCount(prev => prev + 1);
   };
   
   const normalizedPreview = preview ? normalizeImageUrl(preview) : null;
@@ -144,36 +186,51 @@ const ImageUploader = ({
         </div>
       ) : (
         <div className="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center">
-          <ImageIcon className="h-10 w-10 text-gray-400 mb-2" />
-          <p className="text-sm text-gray-500 mb-2">No image selected</p>
-          
-          {bucketError ? (
+          {networkStatus === 'checking' ? (
+            <div className="text-center">
+              <Loader2 className="h-10 w-10 text-gray-400 animate-spin mb-2 mx-auto" />
+              <p className="text-sm text-gray-500">Checking connection...</p>
+            </div>
+          ) : networkStatus === 'offline' ? (
             <div className="text-center">
               <div className="flex items-center justify-center text-amber-600 mb-2">
-                <AlertCircle className="h-5 w-5 mr-1" />
-                <p>Storage unavailable</p>
+                <WifiOff className="h-10 w-10 mb-2 mx-auto text-red-500" />
               </div>
-              <p className="text-sm text-gray-500">Image uploads are currently unavailable.</p>
-              <p className="text-sm text-gray-500">You can still edit text content.</p>
+              <p className="text-sm text-gray-700 font-medium mb-1">Storage connection unavailable</p>
+              <p className="text-sm text-gray-500 mb-3">Image uploads are currently unavailable due to network issues.</p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex items-center"
+                onClick={handleRetryConnection}
+              >
+                <RefreshCcw className="h-4 w-4 mr-2" />
+                Retry Connection
+              </Button>
             </div>
           ) : (
-            <label htmlFor={inputId} className="cursor-pointer">
-              <div className="btn-secondary flex items-center">
-                <Upload className="mr-2 h-4 w-4" />
-                Upload Image
-              </div>
-              <Input 
-                type="file" 
-                id={inputId} 
-                accept="image/*" 
-                onChange={handleFileChange}
-                className="hidden"
-                disabled={isUploading}
-              />
-            </label>
+            <>
+              <ImageIcon className="h-10 w-10 text-gray-400 mb-2" />
+              <p className="text-sm text-gray-500 mb-2">No image selected</p>
+              
+              <label htmlFor={inputId} className="cursor-pointer">
+                <div className="btn-secondary flex items-center">
+                  <Upload className="mr-2 h-4 w-4" />
+                  Upload Image
+                </div>
+                <Input 
+                  type="file" 
+                  id={inputId} 
+                  accept="image/*" 
+                  onChange={handleFileChange}
+                  className="hidden"
+                  disabled={isUploading || networkStatus !== 'online'}
+                />
+              </label>
+            </>
           )}
           
-          {uploadError && !bucketError && (
+          {uploadError && networkStatus === 'online' && (
             <div className="mt-2 text-red-500 text-sm">
               <p>{uploadError}</p>
             </div>
@@ -182,9 +239,9 @@ const ImageUploader = ({
       )}
       
       {isUploading && (
-        <div className="flex items-center justify-center p-2">
-          <Loader2 className="h-4 w-4 animate-spin mr-2" />
-          <span className="text-sm">Uploading...</span>
+        <div className="flex items-center justify-center p-2 bg-blue-50 rounded-md border border-blue-100">
+          <Loader2 className="h-4 w-4 animate-spin mr-2 text-blue-500" />
+          <span className="text-sm text-blue-700">Uploading...</span>
         </div>
       )}
     </div>
