@@ -133,12 +133,30 @@ const Accommodations = () => {
     return defaultContent.accommodations;
   };
 
+  // Helper function to get the CTA banner data, handling nested structure
+  const getCTABannerData = () => {
+    if (!content) return defaultContent.ctaBanner;
+    
+    // Check for nested structure (content.ctaBanner.ctaBanner)
+    if (content.ctaBanner && typeof content.ctaBanner === 'object' && 'ctaBanner' in content.ctaBanner) {
+      return content.ctaBanner.ctaBanner;
+    }
+    
+    // Direct structure (content.ctaBanner is the object)
+    if (content.ctaBanner && typeof content.ctaBanner === 'object') {
+      return content.ctaBanner;
+    }
+    
+    // Fallback to default
+    return defaultContent.ctaBanner;
+  };
+
   // Get the accommodations data using the helper function
   const accommodationsData = getAccommodationsData();
 
   // Use content from the database or fallback
   const header = content?.header || defaultContent.header;
-  const ctaBanner = content?.ctaBanner || defaultContent.ctaBanner;
+  const ctaBanner = getCTABannerData();
 
   return (
     <Layout>
@@ -214,6 +232,7 @@ const Accommodations = () => {
           <p className="text-xl mb-8">
             {ctaBanner.description}
           </p>
+          
           <Link to={ctaBanner.buttonLink} className="bg-rvyellow text-rvmaroon hover:bg-rvyellow/90 font-semibold py-3 px-8 rounded-md transition-all duration-300 inline-block">
             {ctaBanner.buttonText}
           </Link>

@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect, ReactNode } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { useContent } from "@/hooks/use-content";
@@ -188,6 +187,21 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
     fallbackData: {}, // Empty fallback as we'll construct our own default state
   });
 
+  // Helper function to safely extract data from potentially nested structures
+  const extractData = <T,>(data: any, defaultData: T): T => {
+    if (!data) return defaultData;
+    
+    // Handle case where data might be nested (e.g. data.accommodations.accommodations)
+    if (typeof data === 'object' && Object.keys(data).length === 1) {
+      const key = Object.keys(data)[0];
+      if (data[key] && typeof data[key] === 'object') {
+        return data[key] as T;
+      }
+    }
+    
+    return data as T;
+  };
+
   // Initialize form data from Supabase content or use defaults
   useEffect(() => {
     if (!isLoading && content) {
@@ -204,38 +218,48 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
           };
         }
 
-        // Process accommodations
+        // Process accommodations - handle potential nesting
         if (content.accommodations) {
           try {
-            const parsedAccommodations = typeof content.accommodations === 'string' 
-              ? JSON.parse(content.accommodations) 
-              : content.accommodations;
+            // Extract accommodations from potential nesting
+            const accommodationsData = extractData(content.accommodations, []);
+            
+            // Parse if it's a string
+            const parsedAccommodations = typeof accommodationsData === 'string' 
+              ? JSON.parse(accommodationsData) 
+              : accommodationsData;
             
             // Ensure each accommodation has an ID and properly structured features
-            const accommodationsWithIds = parsedAccommodations.map((accommodation: any) => ({
-              ...accommodation,
-              id: accommodation.id || uuidv4(),
-              linkType: accommodation.linkType || 'internal',
-              buttonText: accommodation.buttonText || 'Book Now',
-              buttonLink: accommodation.buttonLink || '/reservations',
-              features: (accommodation.features || []).map((feature: any) => ({
-                ...feature,
-                id: feature.id || uuidv4()
-              }))
-            }));
-            
-            newFormData.accommodations = accommodationsWithIds;
+            if (Array.isArray(parsedAccommodations)) {
+              const accommodationsWithIds = parsedAccommodations.map((accommodation: any) => ({
+                ...accommodation,
+                id: accommodation.id || uuidv4(),
+                linkType: accommodation.linkType || 'internal',
+                buttonText: accommodation.buttonText || 'Book Now',
+                buttonLink: accommodation.buttonLink || '/reservations',
+                features: (accommodation.features || []).map((feature: any) => ({
+                  ...feature,
+                  id: feature.id || uuidv4()
+                }))
+              }));
+              
+              newFormData.accommodations = accommodationsWithIds;
+            }
           } catch (e) {
-            console.error("Error parsing accommodations:", e);
+            console.error("Error processing accommodations:", e);
           }
         }
 
-        // Process CTA banner
+        // Process CTA banner - handle potential nesting
         if (content.ctaBanner) {
           try {
-            const parsedCTA = typeof content.ctaBanner === 'string'
-              ? JSON.parse(content.ctaBanner)
-              : content.ctaBanner;
+            // Extract CTA banner from potential nesting
+            const ctaBannerData = extractData(content.ctaBanner, defaultContent.ctaBanner);
+            
+            // Parse if it's a string
+            const parsedCTA = typeof ctaBannerData === 'string'
+              ? JSON.parse(ctaBannerData)
+              : ctaBannerData;
             
             newFormData.ctaBanner = {
               ...defaultContent.ctaBanner,
@@ -443,7 +467,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
     try {
       console.log("Saving accommodations form data:", formData);
       
-      // Prepare data for saving - convert complex objects to JSON strings
+      // Prepare data for saving - directly save the content without nesting
       const dataToSave = [
         {
           page: "accommodations",
@@ -468,15 +492,15 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
         },
         {
           page: "accommodations",
-          section: "accommodations",
-          content_key: "accommodations",
+          section: "accommodations", 
+          content_key: "accommodations", // We'll keep this format but ensure we handle it on load
           content_value: JSON.stringify(formData.accommodations),
           content_type: "json"
         },
         {
           page: "accommodations",
           section: "ctaBanner",
-          content_key: "ctaBanner",
+          content_key: "ctaBanner", // We'll keep this format but ensure we handle it on load
           content_value: JSON.stringify(formData.ctaBanner),
           content_type: "json"
         }
