@@ -10,6 +10,11 @@ import TexasCharmSection from "@/components/about/TexasCharmSection";
 import AccommodationsSection from "@/components/about/AccommodationsSection";
 import CTASection from "@/components/about/CTASection";
 
+interface AmenityItem {
+  name: string;
+  icon: React.ReactElement;
+}
+
 const About = () => {
   // Get content data from database with fallback to original data
   const { content: aboutContent, isLoading, error, refresh } = useContent({
@@ -48,7 +53,7 @@ const About = () => {
     "the Palo Pinto Mountains.";
 
   // Parse amenities from JSON if available
-  let amenities = defaultAmenities;
+  let amenities: AmenityItem[] = defaultAmenities;
   try {
     if (aboutContent?.texas_charm?.amenities) {
       let parsedAmenities;
@@ -128,10 +133,11 @@ const About = () => {
       <SectionDivider />
       
       <AccommodationsSection
-        title={accommodationsTitle}
-        description={accommodationsDescription}
-        buttonText={accommodationsButtonText}
-        buttonLink={accommodationsButtonLink}
+        title={aboutContent?.accommodations?.title || "Find Your Perfect Stay"}
+        description={aboutContent?.accommodations?.description || 
+          "Choose from a variety of accommodations designed to suit your travel style"}
+        buttonText={aboutContent?.accommodations?.buttonText || "Book Your Stay Now"}
+        buttonLink={aboutContent?.accommodations?.buttonLink || "/reservations"}
         accommodations={accommodations}
       />
       

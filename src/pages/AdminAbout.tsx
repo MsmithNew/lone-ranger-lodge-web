@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Plus, Trash2, Save, AlertCircle } from "lucide-react";
+import { Plus, Trash2, Save, AlertCircle, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useContent } from "@/hooks/use-content";
 import ImageUploader from "@/components/admin/ImageUploader";

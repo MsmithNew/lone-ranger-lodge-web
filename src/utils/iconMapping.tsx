@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 
 // Map the icon name string to the actual icon component
-export const getIconByName = (iconName: string) => {
-  const iconMap: Record<string, React.ReactNode> = {
+export const getIconByName = (iconName: string): React.ReactElement => {
+  const iconMap: Record<string, React.ReactElement> = {
     Waves: <Waves size={24} className="text-rvblue" />,
     Building: <Building size={24} className="text-rvblue" />,
     Power: <Power size={24} className="text-rvblue" />,

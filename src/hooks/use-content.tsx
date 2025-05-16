@@ -99,12 +99,10 @@ export function useContent<T extends Record<string, any>>({
       
       // Implement retry logic
       if (retryCount < maxRetries) {
-        const timer = setTimeout(() => {
+        setTimeout(() => {
           setRetryCount(prev => prev + 1);
           fetchContent();
         }, retryDelay * (retryCount + 1)); // Exponential backoff
-        
-        return () => clearTimeout(timer);
       } else {
         // After all retries failed, show toast and use fallback data
         toast({

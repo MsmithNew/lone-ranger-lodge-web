@@ -1,10 +1,9 @@
 
 import React from 'react';
-import { Waves, Building, Power, Warehouse, PlayIcon, Dog, Music, Utensils, IceCream, ShowerHead, Sofa, Wifi } from "lucide-react";
 
 interface Amenity {
   name: string;
-  icon: React.ReactNode;
+  icon: React.ReactElement;
 }
 
 interface TexasCharmSectionProps {
