@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import AdminLayout from "@/components/admin/AdminLayout";
@@ -9,7 +9,7 @@ import AccommodationSection from "@/components/admin/accommodations/Accommodatio
 import CTABannerSection from "@/components/admin/accommodations/CTABannerSection";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, RefreshCcw, Wifi, WifiOff } from "lucide-react";
 
 // Create a separate component for the content to use the context
 const AccommodationsContent = () => {
@@ -17,48 +17,76 @@ const AccommodationsContent = () => {
   const { saveContent, isSaving, refresh } = useAccommodationsContext();
   const [isLoading, setIsLoading] = useState(true);
   const [networkError, setNetworkError] = useState(false);
+  const [lastOnlineCheck, setLastOnlineCheck] = useState<Date>(new Date());
+  const [isRetrying, setIsRetrying] = useState(false);
 
-  useEffect(() => {
-    // Check network connectivity with Supabase
-    const checkConnection = async () => {
-      try {
-        setIsLoading(true);
-        // Simple ping to check connection - list storage buckets is lightweight
-        const { error } = await supabase.storage.getBucket('content_images');
-        
-        if (error) {
-          console.error("Storage connection error:", error);
-          setNetworkError(true);
-          
-          toast({
-            title: "Connection issue",
-            description: "There are network connectivity issues with the database. You may not be able to save changes or upload images.",
-            variant: "destructive",
-          });
-        } else {
-          setNetworkError(false);
-        }
-      } catch (err) {
-        console.error("Network error during connectivity check:", err);
+  // Enhanced network connectivity check
+  const checkConnection = useCallback(async () => {
+    try {
+      setIsRetrying(true);
+      console.log("Checking database connection...");
+      
+      // Simple ping to check connection - list storage buckets is lightweight
+      const { error } = await supabase.storage.getBucket('content_images');
+      
+      if (error) {
+        console.error("Storage connection error:", error);
         setNetworkError(true);
         
         toast({
-          title: "Network error",
-          description: "Failed to connect to the database. Please check your internet connection.",
+          title: "Connection issue",
+          description: "There are network connectivity issues with the database. You may not be able to save changes or upload images.",
           variant: "destructive",
         });
-      } finally {
-        setIsLoading(false);
+      } else {
+        if (networkError) {
+          // If we're recovering from an error state, show a success toast
+          toast({
+            title: "Connection restored",
+            description: "Database connection has been restored. You can now save changes.",
+          });
+        }
+        setNetworkError(false);
       }
-    };
-    
+      
+      setLastOnlineCheck(new Date());
+    } catch (err) {
+      console.error("Network error during connectivity check:", err);
+      setNetworkError(true);
+      
+      toast({
+        title: "Network error",
+        description: "Failed to connect to the database. Please check your internet connection.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsRetrying(false);
+      setIsLoading(false);
+    }
+  }, [networkError]);
+  
+  // Check network on component mount and setup periodic checks
+  useEffect(() => {
     checkConnection();
-  }, []);
+    
+    // Set up periodic connection checks (every 30 seconds)
+    const intervalId = setInterval(() => {
+      checkConnection();
+    }, 30000);
+    
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [checkConnection]);
 
   // Save the current state when switching tabs to prevent data loss
   const handleTabChange = (newTab: string) => {
     // We're just changing tabs, no need to persist to database yet
     setActiveTab(newTab);
+  };
+
+  // Handle manual retry
+  const handleRetryConnection = () => {
+    checkConnection();
   };
 
   // Refresh data on component mount
@@ -97,14 +125,40 @@ const AccommodationsContent = () => {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       {networkError && (
-        <div className="mb-6 p-4 border border-red-200 bg-red-50 rounded-md flex items-start">
-          <AlertCircle className="h-5 w-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" />
-          <div>
-            <h3 className="font-medium text-red-800">Network Connectivity Issues</h3>
-            <p className="text-sm text-red-700">
-              There are problems connecting to the database. You can still make changes, but they may not be saved.
-              Try refreshing the page or checking your internet connection.
-            </p>
+        <div className="mb-6 p-4 border border-red-200 bg-red-50 rounded-md">
+          <div className="flex items-start">
+            <AlertCircle className="h-5 w-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" />
+            <div className="flex-1">
+              <h3 className="font-medium text-red-800">Network Connectivity Issues</h3>
+              <p className="text-sm text-red-700 mb-2">
+                There are problems connecting to the database. You can still make changes, but they may not be saved.
+                Try refreshing the page or checking your internet connection.
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="text-xs text-red-600">
+                  Last check: {lastOnlineCheck.toLocaleTimeString()}
+                </div>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="border-red-300 hover:bg-red-100 text-red-700"
+                  onClick={handleRetryConnection}
+                  disabled={isRetrying}
+                >
+                  {isRetrying ? (
+                    <>
+                      <RefreshCcw className="h-3 w-3 mr-2 animate-spin" />
+                      Checking...
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCcw className="h-3 w-3 mr-2" />
+                      Retry Connection
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -121,13 +175,26 @@ const AccommodationsContent = () => {
             <TabsTrigger value="cta">CTA Banner</TabsTrigger>
           </TabsList>
           
-          <Button 
-            onClick={saveContent}
-            className="bg-rvblue hover:bg-rvblue/90 ml-auto"
-            disabled={isSaving || isLoading}
-          >
-            {isSaving ? "Saving..." : "Save Changes"}
-          </Button>
+          <div className="flex items-center space-x-2">
+            {!networkError ? (
+              <div className="text-xs text-green-600 flex items-center mr-2">
+                <Wifi className="h-3 w-3 mr-1" />
+                Connected
+              </div>
+            ) : (
+              <div className="text-xs text-red-600 flex items-center mr-2">
+                <WifiOff className="h-3 w-3 mr-1" />
+                Offline
+              </div>
+            )}
+            <Button 
+              onClick={saveContent}
+              className="bg-rvblue hover:bg-rvblue/90"
+              disabled={isSaving || isLoading}
+            >
+              {isSaving ? "Saving..." : "Save Changes"}
+            </Button>
+          </div>
         </div>
 
         <TabsContent value="header" className="pt-4">
