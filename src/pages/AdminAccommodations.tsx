@@ -54,6 +54,7 @@ const AdminAccommodations = () => {
                       </Button>
                     </div>
 
+                    {/* Make sure tab contents are inside the AccommodationsProvider render prop scope */}
                     <TabsContent value="header" className="pt-4">
                       <HeaderSection />
                     </TabsContent>
