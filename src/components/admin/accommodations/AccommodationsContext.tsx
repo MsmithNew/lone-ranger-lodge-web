@@ -1,5 +1,4 @@
-
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect, ReactNode } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { useContent } from "@/hooks/use-content";
 import { supabase } from "@/integrations/supabase/client";
@@ -154,7 +153,12 @@ interface AccommodationsContextType {
 
 const AccommodationsContext = createContext<AccommodationsContextType | undefined>(undefined);
 
-export const AccommodationsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Updated prop type for render props pattern
+interface AccommodationsProviderProps {
+  children: (context: AccommodationsContextType) => React.ReactElement;
+}
+
+export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ children }) => {
   const [formData, setFormData] = useState<AccommodationsContent>(defaultContent);
   const [isSaving, setIsSaving] = useState(false);
   
@@ -461,29 +465,28 @@ export const AccommodationsProvider: React.FC<{ children: React.ReactNode }> = (
     }
   };
 
-  return (
-    <AccommodationsContext.Provider value={{
-      formData, 
-      setFormData,
-      isLoading,
-      error,
-      isSaving,
-      saveContent,
-      handleHeaderChange,
-      handleHeaderImageChange,
-      addAccommodation,
-      removeAccommodation,
-      handleAccommodationChange,
-      handleAccommodationImageChange,
-      addFeature,
-      removeFeature,
-      handleFeatureChange,
-      handleCTAChange,
-      handleCTAImageChange
-    }}>
-      {children}
-    </AccommodationsContext.Provider>
-  );
+  const contextValue: AccommodationsContextType = {
+    formData, 
+    setFormData,
+    isLoading,
+    error,
+    isSaving,
+    saveContent,
+    handleHeaderChange,
+    handleHeaderImageChange,
+    addAccommodation,
+    removeAccommodation,
+    handleAccommodationChange,
+    handleAccommodationImageChange,
+    addFeature,
+    removeFeature,
+    handleFeatureChange,
+    handleCTAChange,
+    handleCTAImageChange
+  };
+
+  // Use the render prop pattern with properly typed context
+  return children(contextValue);
 };
 
 export const useAccommodationsContext = () => {
