@@ -30,7 +30,7 @@ const AccommodationsContent = () => {
           toast({
             title: "Storage access issue",
             description: "There may be issues uploading images. You can still edit and save text content.",
-            variant: "warning",
+            variant: "destructive", // Changed from "warning" to "destructive" since "warning" is not a supported variant
           });
         }
         
