@@ -1,4 +1,3 @@
-
 import React from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
@@ -187,33 +186,33 @@ const Accommodations = () => {
           imageUrl: normalizeImageUrl(accommodation.imageUrl)
         }));
       }
+      
+      return defaultContent.accommodations;
     } catch (e) {
       console.error("Error processing accommodations data:", e);
+      return defaultContent.accommodations;
     }
-    
-    // Fallback to default
-    return defaultContent.accommodations;
   };
 
   // Get CTA banner data safely
   const getCTABannerData = () => {
     if (!content || !content.ctaBanner) return defaultContent.ctaBanner;
     
-    // First check if we have direct CTA banner properties
-    const ctaBanner = content.ctaBanner as Record<string, any>;
-    
-    if (ctaBanner.title && ctaBanner.description) {
-      return {
-        title: ctaBanner.title || defaultContent.ctaBanner.title,
-        description: ctaBanner.description || defaultContent.ctaBanner.description,
-        imageUrl: normalizeImageUrl(ctaBanner.imageUrl || defaultContent.ctaBanner.imageUrl),
-        buttonText: ctaBanner.buttonText || defaultContent.ctaBanner.buttonText,
-        buttonLink: ctaBanner.buttonLink || defaultContent.ctaBanner.buttonLink
-      };
-    }
-    
-    // Otherwise try to handle older nested format for backward compatibility
     try {
+      // First check if we have direct CTA banner properties
+      const ctaBanner = content.ctaBanner as Record<string, any>;
+      
+      if (ctaBanner.title && ctaBanner.description) {
+        return {
+          title: ctaBanner.title || defaultContent.ctaBanner.title,
+          description: ctaBanner.description || defaultContent.ctaBanner.description,
+          imageUrl: normalizeImageUrl(ctaBanner.imageUrl || defaultContent.ctaBanner.imageUrl),
+          buttonText: ctaBanner.buttonText || defaultContent.ctaBanner.buttonText,
+          buttonLink: ctaBanner.buttonLink || defaultContent.ctaBanner.buttonLink
+        };
+      }
+      
+      // Otherwise try to handle older nested format for backward compatibility
       // Check for nested structure
       const ctaData = extractData(content.ctaBanner, {} as Record<string, any>);
       
@@ -224,12 +223,12 @@ const Accommodations = () => {
           imageUrl: normalizeImageUrl(ctaData.imageUrl || defaultContent.ctaBanner.imageUrl)
         };
       }
+      
+      return defaultContent.ctaBanner;
     } catch (e) {
       console.error("Error processing CTA banner data:", e);
+      return defaultContent.ctaBanner;
     }
-    
-    // Fallback to default
-    return defaultContent.ctaBanner;
   };
 
   // Get the data using the helper functions

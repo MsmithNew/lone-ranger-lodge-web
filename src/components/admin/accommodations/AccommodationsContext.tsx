@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect, ReactNode } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { useContent } from "@/hooks/use-content";
@@ -181,22 +180,21 @@ interface AccommodationsProviderProps {
 
 // Helper function to normalize image URLs
 const normalizeImageUrl = (url: string): string => {
-  // If URL is already a full Supabase URL or external URL, return it as is
+  // If URL is empty or null, return placeholder
+  if (!url) return '/placeholder.svg';
+  
+  // If URL is already a full URL, return it as is
   if (url.startsWith('http')) {
     return url;
   }
   
-  // If it's a relative path but not a placeholder, prepend the Supabase URL
-  if (!url.includes('placeholder.svg') && url.startsWith('/')) {
-    // Make sure we don't duplicate the domain if it's already there
-    const supabaseUrlBase = "https://uktyewnnkbqjopjeoznp.supabase.co";
-    if (!url.includes(supabaseUrlBase)) {
-      return url;
-    }
+  // If it's a relative path but not a placeholder, return as is
+  if (url.startsWith('/') && !url.includes('placeholder.svg')) {
+    return url;
   }
   
-  // Return as is for placeholder images or already properly formatted URLs
-  return url;
+  // Return placeholder for any other case
+  return '/placeholder.svg';
 };
 
 export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ children }) => {
@@ -235,7 +233,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
           newFormData.header = {
             title: content.header.title || defaultContent.header.title,
             description: content.header.description || defaultContent.header.description,
-            imageUrl: content.header.imageUrl ? normalizeImageUrl(content.header.imageUrl) : defaultContent.header.imageUrl
+            imageUrl: normalizeImageUrl(content.header.imageUrl || defaultContent.header.imageUrl)
           };
         }
 
@@ -258,7 +256,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
                 linkType: accommodation.linkType || 'internal',
                 buttonText: accommodation.buttonText || 'Book Now',
                 buttonLink: accommodation.buttonLink || '/reservations',
-                imageUrl: accommodation.imageUrl ? normalizeImageUrl(accommodation.imageUrl) : defaultContent.accommodations[0].imageUrl,
+                imageUrl: normalizeImageUrl(accommodation.imageUrl || defaultContent.accommodations[0].imageUrl),
                 features: (accommodation.features || []).map((feature: any) => ({
                   ...feature,
                   id: feature.id || uuidv4()
@@ -286,7 +284,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
             newFormData.ctaBanner = {
               ...defaultContent.ctaBanner,
               ...parsedCTA,
-              imageUrl: parsedCTA.imageUrl ? normalizeImageUrl(parsedCTA.imageUrl) : defaultContent.ctaBanner.imageUrl,
+              imageUrl: normalizeImageUrl(parsedCTA.imageUrl || defaultContent.ctaBanner.imageUrl),
               linkType: parsedCTA.linkType || 'internal'
             };
           } catch (e) {
@@ -322,6 +320,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
   };
 
   const handleHeaderImageChange = (imageUrl: string) => {
+    // Ensure we're saving the full URL
     setFormData((prev) => ({
       ...prev,
       header: {
@@ -329,6 +328,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
         imageUrl,
       },
     }));
+    console.log(`Header image updated with URL: ${imageUrl}`);
   };
 
   // Handler functions for accommodations
@@ -375,12 +375,12 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
   };
 
   const handleAccommodationImageChange = (accommodationId: string, imageUrl: string) => {
-    // Make sure we save the full URL
+    // Make sure we save the full URL as is, without further processing
     setFormData((prev) => ({
       ...prev,
       accommodations: prev.accommodations.map((accommodation) =>
         accommodation.id === accommodationId
-          ? { ...accommodation, imageUrl: imageUrl }
+          ? { ...accommodation, imageUrl }
           : accommodation
       ),
     }));
@@ -466,6 +466,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
   };
 
   const handleCTAImageChange = (imageUrl: string) => {
+    // Ensure we're saving the full URL
     setFormData((prev) => ({
       ...prev,
       ctaBanner: {
@@ -473,6 +474,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
         imageUrl,
       },
     }));
+    console.log(`CTA Banner image updated with URL: ${imageUrl}`);
   };
 
   // Add new function for CTA link type changes
