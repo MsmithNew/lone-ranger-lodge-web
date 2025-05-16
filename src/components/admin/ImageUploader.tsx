@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, Upload, X, Image as ImageIcon } from "lucide-react";
+import { Loader2, Upload, X, Image as ImageIcon, RefreshCcw } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface ImageUploaderProps {
@@ -24,13 +24,21 @@ const ImageUploader = ({
 }: ImageUploaderProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentImageUrl || null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   
   const uploadImage = async (file: File) => {
     if (!file) return;
     
     setIsUploading(true);
+    setUploadError(null);
     
     try {
+      // Check file size (limit to 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error("File size exceeds 5MB limit");
+      }
+      
       const fileExt = file.name.split('.').pop();
       const fileName = `${folder}/${crypto.randomUUID()}.${fileExt}`;
       
@@ -53,6 +61,7 @@ const ImageUploader = ({
       // Update preview and pass the URL to parent component
       setPreview(imageUrl);
       onImageUploaded(imageUrl);
+      setRetryCount(0);
       
       toast({
         title: "Image uploaded successfully",
@@ -60,9 +69,12 @@ const ImageUploader = ({
       
     } catch (error) {
       console.error("Error uploading image:", error);
+      const errorMessage = error instanceof Error ? error.message : "Network error during upload";
+      setUploadError(errorMessage);
+      
       toast({
         title: "Upload failed",
-        description: "There was a problem uploading your image.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -76,8 +88,25 @@ const ImageUploader = ({
     uploadImage(file);
   };
   
+  const handleRetry = () => {
+    if (uploadError && retryCount < 3) {
+      const fileInput = document.getElementById(`upload-${label}`) as HTMLInputElement;
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        setRetryCount(prevCount => prevCount + 1);
+        uploadImage(fileInput.files[0]);
+      } else {
+        toast({
+          title: "Retry failed",
+          description: "Please select a file again",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+  
   const removeImage = () => {
     setPreview(null);
+    setUploadError(null);
     onImageUploaded('');
   };
   
@@ -91,6 +120,11 @@ const ImageUploader = ({
             src={preview} 
             alt={label} 
             className="w-full h-40 object-cover"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = '/placeholder.svg';
+              setUploadError("Image failed to load");
+            }}
           />
           <Button 
             type="button"
@@ -120,6 +154,21 @@ const ImageUploader = ({
               disabled={isUploading}
             />
           </label>
+          {uploadError && (
+            <div className="mt-2 text-red-500 text-sm">
+              <p>{uploadError}</p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="mt-1 flex items-center"
+                onClick={handleRetry}
+                disabled={retryCount >= 3 || isUploading}
+              >
+                <RefreshCcw className="h-3 w-3 mr-1" />
+                Retry Upload
+              </Button>
+            </div>
+          )}
         </div>
       )}
       

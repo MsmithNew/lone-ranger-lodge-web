@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -9,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Plus, Trash2, Save } from "lucide-react";
+import { Plus, Trash2, Save, AlertCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useContent } from "@/hooks/use-content";
 import ImageUploader from "@/components/admin/ImageUploader";
@@ -44,6 +43,7 @@ const AdminAbout = () => {
   const [accommodationsDescription, setAccommodationsDescription] = useState("");
   const [accommodationItems, setAccommodationItems] = useState<AccommodationItem[]>([]);
   const [isSavingAccommodations, setIsSavingAccommodations] = useState(false);
+  const [accommodationsDataError, setAccommodationsDataError] = useState<string | null>(null);
   
   // New state for Accommodations CTA
   const [accommodationsCtaButtonText, setAccommodationsCtaButtonText] = useState("");
@@ -59,7 +59,7 @@ const AdminAbout = () => {
   const [isSavingCta, setIsSavingCta] = useState(false);
   
   // Fetch current content
-  const { content, isLoading } = useContent<any>({
+  const { content, isLoading, refresh } = useContent<any>({
     page: "about",
     fallbackData: {}
   });
@@ -89,7 +89,9 @@ const AdminAbout = () => {
         try {
           if (content.texas_charm.amenities) {
             const parsedAmenities = JSON.parse(content.texas_charm.amenities);
-            setAmenities(parsedAmenities || []);
+            if (Array.isArray(parsedAmenities)) {
+              setAmenities(parsedAmenities || []);
+            }
           }
         } catch (error) {
           console.error("Error parsing amenities:", error);
@@ -106,7 +108,9 @@ const AdminAbout = () => {
         try {
           if (content.accommodations.items) {
             const parsedItems = JSON.parse(content.accommodations.items);
-            setAccommodationItems(parsedItems || []);
+            if (Array.isArray(parsedItems)) {
+              setAccommodationItems(parsedItems || []);
+            }
           }
         } catch (error) {
           console.error("Error parsing accommodation items:", error);
@@ -130,18 +134,56 @@ const AdminAbout = () => {
     }
   }, [isLoading, content]);
   
+  // Helper function to check JSON size
+  const getJSONSize = (data: any): number => {
+    try {
+      const jsonString = JSON.stringify(data);
+      return new Blob([jsonString]).size;
+    } catch (error) {
+      console.error("Error calculating JSON size:", error);
+      return 0;
+    }
+  };
+
+  // Helper function to save content item with retry logic
+  const saveContentItemWithRetry = async (page: string, section: string, key: string, value: string, type: string = "", maxRetries = 3): Promise<boolean> => {
+    let retries = 0;
+    
+    while (retries < maxRetries) {
+      try {
+        await saveContentItem(page, section, key, value, type);
+        return true; // Success
+      } catch (error) {
+        retries++;
+        console.error(`Error saving content (attempt ${retries}):`, error);
+        
+        if (retries >= maxRetries) {
+          throw error; // Give up after max retries
+        }
+        
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retries - 1)));
+      }
+    }
+    
+    return false; // Should never reach here
+  };
+  
   // Handler for saving header section
   const handleSaveHeader = async () => {
     setIsSavingHeader(true);
     try {
-      await saveContentItem("about", "header", "title", headerTitle);
-      await saveContentItem("about", "header", "description", headerDescription);
-      await saveContentItem("about", "header", "imageUrl", headerImage);
+      await saveContentItemWithRetry("about", "header", "title", headerTitle);
+      await saveContentItemWithRetry("about", "header", "description", headerDescription);
+      await saveContentItemWithRetry("about", "header", "imageUrl", headerImage);
       
       toast({
         title: "Header updated",
         description: "The page header has been updated successfully",
       });
+      
+      // Refresh content
+      await refresh();
     } catch (error) {
       console.error("Error saving header:", error);
       toast({
@@ -158,19 +200,31 @@ const AdminAbout = () => {
   const handleSaveTexasCharm = async () => {
     setIsSavingTexasCharm(true);
     try {
-      await saveContentItem("about", "texas_charm", "title", texasCharmTitle);
-      await saveContentItem("about", "texas_charm", "description", texasCharmDescription);
-      await saveContentItem("about", "texas_charm", "amenities", JSON.stringify(amenities));
+      await saveContentItemWithRetry("about", "texas_charm", "title", texasCharmTitle);
+      await saveContentItemWithRetry("about", "texas_charm", "description", texasCharmDescription);
+      
+      // Check amenities JSON size before saving
+      const amenitiesJson = JSON.stringify(amenities);
+      const amenitiesSize = new Blob([amenitiesJson]).size;
+      
+      if (amenitiesSize > 100000) { // 100KB limit
+        throw new Error("Amenities data exceeds size limit (100KB). Please reduce the number of amenities or content size.");
+      }
+      
+      await saveContentItemWithRetry("about", "texas_charm", "amenities", amenitiesJson);
       
       toast({
         title: "Texas Charm section updated",
         description: "The Texas Charm section has been updated successfully",
       });
+      
+      // Refresh content
+      await refresh();
     } catch (error) {
       console.error("Error saving Texas Charm section:", error);
       toast({
         title: "Error updating Texas Charm section",
-        description: "There was a problem updating the Texas Charm section",
+        description: error instanceof Error ? error.message : "There was a problem updating the Texas Charm section",
         variant: "destructive",
       });
     } finally {
@@ -181,25 +235,40 @@ const AdminAbout = () => {
   // Handler for saving Accommodations section
   const handleSaveAccommodations = async () => {
     setIsSavingAccommodations(true);
+    setAccommodationsDataError(null);
+    
     try {
-      await saveContentItem("about", "accommodations", "title", accommodationsTitle);
-      await saveContentItem("about", "accommodations", "description", accommodationsDescription);
-      await saveContentItem("about", "accommodations", "items", JSON.stringify(accommodationItems));
+      await saveContentItemWithRetry("about", "accommodations", "title", accommodationsTitle);
+      await saveContentItemWithRetry("about", "accommodations", "description", accommodationsDescription);
       
       // Save accommodations CTA button
-      await saveContentItem("about", "accommodations", "buttonText", accommodationsCtaButtonText);
-      await saveContentItem("about", "accommodations", "buttonLink", accommodationsCtaButtonLink);
-      await saveContentItem("about", "accommodations", "buttonLinkType", accommodationsCtaButtonLinkType, "link_type");
+      await saveContentItemWithRetry("about", "accommodations", "buttonText", accommodationsCtaButtonText);
+      await saveContentItemWithRetry("about", "accommodations", "buttonLink", accommodationsCtaButtonLink);
+      await saveContentItemWithRetry("about", "accommodations", "buttonLinkType", accommodationsCtaButtonLinkType, "link_type");
+      
+      // Check accommodation items size before saving
+      const itemsJson = JSON.stringify(accommodationItems);
+      const itemsSize = new Blob([itemsJson]).size;
+      
+      if (itemsSize > 100000) { // 100KB limit
+        setAccommodationsDataError(`Data size (${Math.round(itemsSize/1024)}KB) exceeds limit (100KB). Try reducing the number of accommodations or using smaller images.`);
+        throw new Error("Accommodation data exceeds size limit (100KB). Please reduce the number of accommodations or use smaller images.");
+      }
+      
+      await saveContentItemWithRetry("about", "accommodations", "items", itemsJson);
       
       toast({
         title: "Accommodations section updated",
         description: "The Accommodations section has been updated successfully",
       });
+      
+      // Refresh content
+      await refresh();
     } catch (error) {
       console.error("Error saving Accommodations section:", error);
       toast({
         title: "Error updating Accommodations section",
-        description: "There was a problem updating the Accommodations section",
+        description: error instanceof Error ? error.message : "There was a problem updating the Accommodations section",
         variant: "destructive",
       });
     } finally {
@@ -211,21 +280,24 @@ const AdminAbout = () => {
   const handleSaveCta = async () => {
     setIsSavingCta(true);
     try {
-      await saveContentItem("about", "cta", "title", ctaTitle);
-      await saveContentItem("about", "cta", "description", ctaDescription);
-      await saveContentItem("about", "cta", "buttonText", ctaButtonText);
-      await saveContentItem("about", "cta", "buttonLink", ctaButtonLink);
-      await saveContentItem("about", "cta", "buttonLinkType", ctaButtonLinkType, "link_type");
+      await saveContentItemWithRetry("about", "cta", "title", ctaTitle);
+      await saveContentItemWithRetry("about", "cta", "description", ctaDescription);
+      await saveContentItemWithRetry("about", "cta", "buttonText", ctaButtonText);
+      await saveContentItemWithRetry("about", "cta", "buttonLink", ctaButtonLink);
+      await saveContentItemWithRetry("about", "cta", "buttonLinkType", ctaButtonLinkType, "link_type");
       
       toast({
         title: "CTA section updated",
         description: "The CTA section has been updated successfully",
       });
+      
+      // Refresh content
+      await refresh();
     } catch (error) {
       console.error("Error saving CTA section:", error);
       toast({
         title: "Error updating CTA section",
-        description: "There was a problem updating the CTA section",
+        description: error instanceof Error ? error.message : "There was a problem updating the CTA section",
         variant: "destructive",
       });
     } finally {
@@ -236,13 +308,17 @@ const AdminAbout = () => {
   // Helper function to save content item
   const saveContentItem = async (page: string, section: string, key: string, value: string, type: string = "") => {
     // Check if the content item already exists
-    const { data: existingItem } = await supabase
+    const { data: existingItem, error: queryError } = await supabase
       .from("page_content")
       .select("*")
       .eq("page", page)
       .eq("section", section)
       .eq("content_key", key)
       .maybeSingle();
+    
+    if (queryError) {
+      throw new Error(`Error querying content: ${queryError.message}`);
+    }
     
     if (existingItem) {
       // Update existing item
@@ -255,10 +331,14 @@ const AdminAbout = () => {
         updateData.link_type = value;
       }
       
-      await supabase
+      const { error: updateError } = await supabase
         .from("page_content")
         .update(updateData)
         .eq("id", existingItem.id);
+        
+      if (updateError) {
+        throw new Error(`Error updating content: ${updateError.message}`);
+      }
     } else {
       // Create new item
       const insertData: any = {
@@ -273,9 +353,13 @@ const AdminAbout = () => {
         insertData.link_type = value;
       }
       
-      await supabase
+      const { error: insertError } = await supabase
         .from("page_content")
         .insert(insertData);
+        
+      if (insertError) {
+        throw new Error(`Error inserting content: ${insertError.message}`);
+      }
     }
   };
   
@@ -303,7 +387,20 @@ const AdminAbout = () => {
   
   // Add a new accommodation item
   const addAccommodationItem = () => {
-    setAccommodationItems([...accommodationItems, { title: "", description: "", imageUrl: "" }]);
+    // Check if adding a new item would exceed size limit
+    const newItems = [...accommodationItems, { title: "", description: "", imageUrl: "" }];
+    const newItemsSize = getJSONSize(newItems);
+    
+    if (newItemsSize > 100000) { // 100KB limit
+      toast({
+        title: "Warning",
+        description: "Adding more accommodations may exceed the data size limit. Try using smaller images or shorter descriptions.",
+        variant: "destructive",
+      });
+    }
+    
+    setAccommodationItems(newItems);
+    setAccommodationsDataError(null);
   };
   
   // Remove an accommodation item
@@ -311,6 +408,7 @@ const AdminAbout = () => {
     const updatedItems = [...accommodationItems];
     updatedItems.splice(index, 1);
     setAccommodationItems(updatedItems);
+    setAccommodationsDataError(null);
   };
   
   // Update an accommodation item
@@ -321,6 +419,14 @@ const AdminAbout = () => {
       [field]: value,
     };
     setAccommodationItems(updatedItems);
+    
+    // Check data size when updating
+    const newItemsSize = getJSONSize(updatedItems);
+    if (newItemsSize > 90000) { // 90KB warning threshold
+      setAccommodationsDataError(`Data size (${Math.round(newItemsSize/1024)}KB) approaching limit (100KB). Consider using smaller images.`);
+    } else {
+      setAccommodationsDataError(null);
+    }
   };
   
   return (
@@ -371,9 +477,19 @@ const AdminAbout = () => {
                   <Button 
                     onClick={handleSaveHeader} 
                     disabled={isSavingHeader}
-                    className="mt-4"
+                    className="mt-4 flex items-center"
                   >
-                    {isSavingHeader ? "Saving..." : "Save Changes"}
+                    {isSavingHeader ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" /> 
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4 mr-2" />
+                        Save Changes
+                      </>
+                    )}
                   </Button>
                 </AccordionContent>
               </AccordionItem>
@@ -459,9 +575,19 @@ const AdminAbout = () => {
                   <Button 
                     onClick={handleSaveTexasCharm} 
                     disabled={isSavingTexasCharm}
-                    className="mt-4"
+                    className="mt-4 flex items-center"
                   >
-                    {isSavingTexasCharm ? "Saving..." : "Save Changes"}
+                    {isSavingTexasCharm ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" /> 
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4 mr-2" />
+                        Save Changes
+                      </>
+                    )}
                   </Button>
                 </AccordionContent>
               </AccordionItem>
@@ -526,6 +652,13 @@ const AdminAbout = () => {
                       </Button>
                     </div>
                     
+                    {accommodationsDataError && (
+                      <div className="p-3 bg-amber-50 border-amber-200 border rounded flex items-start space-x-2 text-amber-800 mb-2">
+                        <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                        <p className="text-sm">{accommodationsDataError}</p>
+                      </div>
+                    )}
+                    
                     <div className="space-y-4 max-h-96 overflow-y-auto p-2">
                       {accommodationItems.map((item, index) => (
                         <div key={index} className="p-4 border rounded-md">
@@ -578,9 +711,19 @@ const AdminAbout = () => {
                   <Button 
                     onClick={handleSaveAccommodations} 
                     disabled={isSavingAccommodations}
-                    className="mt-4"
+                    className="mt-4 flex items-center"
                   >
-                    {isSavingAccommodations ? "Saving..." : "Save Changes"}
+                    {isSavingAccommodations ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" /> 
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4 mr-2" />
+                        Save Changes
+                      </>
+                    )}
                   </Button>
                 </AccordionContent>
               </AccordionItem>
@@ -630,9 +773,19 @@ const AdminAbout = () => {
                   <Button 
                     onClick={handleSaveCta} 
                     disabled={isSavingCta}
-                    className="mt-4"
+                    className="mt-4 flex items-center"
                   >
-                    {isSavingCta ? "Saving..." : "Save Changes"}
+                    {isSavingCta ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" /> 
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4 mr-2" />
+                        Save Changes
+                      </>
+                    )}
                   </Button>
                 </AccordionContent>
               </AccordionItem>

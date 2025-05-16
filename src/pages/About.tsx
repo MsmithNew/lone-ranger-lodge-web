@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
@@ -20,10 +20,11 @@ import {
   Wifi
 } from "lucide-react";
 import { useContent } from "@/hooks/use-content";
+import { toast } from "@/hooks/use-toast";
 
 const About = () => {
   // Get content data from database with fallback to original data
-  const { content: aboutContent, isLoading } = useContent({
+  const { content: aboutContent, isLoading, error, refresh } = useContent({
     page: "about",
     fallbackData: {}
   });
@@ -68,6 +69,25 @@ const About = () => {
     }
   ];
 
+  // If there's an error loading content, show a toast and try to refresh
+  useEffect(() => {
+    if (error) {
+      console.error("Error loading content:", error);
+      toast({
+        title: "Content loading issue",
+        description: "Some content may not display correctly. Trying to reload.",
+        variant: "destructive",
+      });
+      
+      // Try to refresh the content after a short delay
+      const timer = setTimeout(() => {
+        refresh();
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [error, refresh]);
+
   // Prepare content data with fallbacks
   const headerTitle = aboutContent?.header?.title || "Discover a One-of-a-Kind RV Destination in Ranger, TX";
   const headerDescription = aboutContent?.header?.description || "Where vintage charm meets modern comfort in the heart of Texas";
@@ -83,7 +103,15 @@ const About = () => {
   let amenities = defaultAmenities;
   try {
     if (aboutContent?.texas_charm?.amenities) {
-      const parsedAmenities = JSON.parse(aboutContent.texas_charm.amenities);
+      let parsedAmenities;
+      
+      // Handle both string and already parsed object
+      if (typeof aboutContent.texas_charm.amenities === 'string') {
+        parsedAmenities = JSON.parse(aboutContent.texas_charm.amenities);
+      } else {
+        parsedAmenities = aboutContent.texas_charm.amenities;
+      }
+      
       if (Array.isArray(parsedAmenities) && parsedAmenities.length > 0) {
         amenities = parsedAmenities.map((item) => {
           // Map the icon name string to the actual icon component
@@ -123,7 +151,15 @@ const About = () => {
   let accommodations = defaultAccommodations;
   try {
     if (aboutContent?.accommodations?.items) {
-      const parsedItems = JSON.parse(aboutContent.accommodations.items);
+      let parsedItems;
+      
+      // Handle both string and already parsed object
+      if (typeof aboutContent.accommodations.items === 'string') {
+        parsedItems = JSON.parse(aboutContent.accommodations.items);
+      } else {
+        parsedItems = aboutContent.accommodations.items;
+      }
+      
       if (Array.isArray(parsedItems) && parsedItems.length > 0) {
         accommodations = parsedItems;
       }
@@ -190,9 +226,13 @@ const About = () => {
             <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <div className="relative h-48 overflow-hidden">
                 <img 
-                  src={accommodation.imageUrl} 
+                  src={accommodation.imageUrl || "/placeholder.svg"} 
                   alt={accommodation.title}
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/placeholder.svg';
+                  }}
                 />
               </div>
               <CardContent className="p-6">
