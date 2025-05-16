@@ -20,7 +20,13 @@ const Amenities = () => {
       <RecreationSection />
       <SectionDivider />
       <SpecialFeaturesSection />
-      <CTABanner />
+      <CTABanner 
+        title="Ready to experience our amenities?"
+        description="Book your stay at Lone Ranger RV Park & Lodge and enjoy all the amenities and features we have to offer."
+        buttonText="Book Now"
+        buttonLink="/reservations"
+        linkType="internal"
+      />
     </Layout>
   );
 };
