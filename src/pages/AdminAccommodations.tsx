@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -52,8 +53,8 @@ const AccommodationsContent = () => {
           if (error) {
             console.error("Error creating bucket:", error);
             
-            // If we get a 409 error, the bucket might already exist despite listBuckets not showing it
-            if (error.code === '409') {
+            // Fix: StorageError doesn't have a code property, check the error message instead
+            if (error.message && error.message.includes("already exists")) {
               console.log("Bucket may already exist despite error, proceeding");
               setBucketChecked(true);
               return;
