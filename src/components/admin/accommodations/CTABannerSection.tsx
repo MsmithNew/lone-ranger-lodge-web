@@ -5,12 +5,14 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import ImageUploader from "@/components/admin/ImageUploader";
+import LinkSelector from "@/components/admin/LinkSelector";
 
 const CTABannerSection: React.FC = () => {
   const { 
     formData, 
     handleCTAChange, 
-    handleCTAImageChange 
+    handleCTAImageChange,
+    handleCTALinkTypeChange
   } = useAccommodationsContext();
   
   const ctaBanner = formData.ctaBanner;
@@ -48,15 +50,13 @@ const CTABannerSection: React.FC = () => {
         />
       </div>
       
-      <div>
-        <Label htmlFor="cta-button-link">Button Link</Label>
-        <Input
-          id="cta-button-link"
-          value={ctaBanner.buttonLink}
-          onChange={(e) => handleCTAChange('buttonLink', e.target.value)}
-          className="mt-1"
-        />
-      </div>
+      <LinkSelector
+        value={ctaBanner.buttonLink}
+        linkType={ctaBanner.linkType}
+        onValueChange={(value) => handleCTAChange('buttonLink', value)}
+        onLinkTypeChange={handleCTALinkTypeChange}
+        label="CTA Button"
+      />
 
       <ImageUploader
         currentImageUrl={ctaBanner.imageUrl}

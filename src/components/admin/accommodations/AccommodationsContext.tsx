@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, useEffect, ReactNode } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { useContent } from "@/hooks/use-content";
@@ -17,6 +18,9 @@ export interface Accommodation {
   description: string;
   imageUrl: string;
   features: Feature[];
+  buttonText: string;
+  buttonLink: string;
+  linkType: 'internal' | 'external';
 }
 
 export interface CTABanner {
@@ -25,6 +29,7 @@ export interface CTABanner {
   imageUrl: string;
   buttonText: string;
   buttonLink: string;
+  linkType: 'internal' | 'external';
 }
 
 export interface AccommodationsContent {
@@ -50,6 +55,9 @@ export const defaultContent: AccommodationsContent = {
       title: "RV Sites",
       description: "Pull into one of our 18 RV sites designed for ease, shade, and a scenic stay.",
       imageUrl: "/lovable-uploads/a89b6df4-23bf-4df4-8dd5-dbb71fdce29c.jpg",
+      buttonText: "Book Now",
+      buttonLink: "/reservations",
+      linkType: "internal",
       features: [
         { id: uuidv4(), text: "Full hookups (water, electric, sewer)", icon: "Droplets" },
         { id: uuidv4(), text: "Pull-through and back-in options", icon: "ParkingCircle" },
@@ -65,6 +73,9 @@ export const defaultContent: AccommodationsContent = {
       title: "Horse Hotel",
       description: "Bringing your horse along? Our Horse Hotel sites offer a unique stay with comfort for you and your companion.",
       imageUrl: "/lovable-uploads/70c77f4c-97e1-4667-9419-667b0d4d854e.jpg",
+      buttonText: "Learn More",
+      buttonLink: "/accommodations",
+      linkType: "internal",
       features: [
         { id: uuidv4(), text: "Full RV hookups", icon: "Droplets" },
         { id: uuidv4(), text: "Individual shaded horse stalls", icon: "Warehouse" },
@@ -80,6 +91,9 @@ export const defaultContent: AccommodationsContent = {
       title: "Lodges",
       description: "Stay in one of our four fully renovated 1930s lodges, where vintage charm meets modern comfort.",
       imageUrl: "/lovable-uploads/a32be049-78e9-4081-a5b7-86add61a2bb1.jpg",
+      buttonText: "View Details",
+      buttonLink: "/lodges",
+      linkType: "internal",
       features: [
         { id: uuidv4(), text: "Queen bed and private bathroom", icon: "Bed" },
         { id: uuidv4(), text: "Air conditioning and heating", icon: "Thermometer" },
@@ -94,6 +108,9 @@ export const defaultContent: AccommodationsContent = {
       title: "Tent Sites",
       description: "Enjoy a more primitive camping experience surrounded by nature. Our tent sites are perfect for guests seeking a simple, no-fuss stay with access to essential comforts.",
       imageUrl: "/placeholder.svg",
+      buttonText: "See Availability",
+      buttonLink: "/reservations",
+      linkType: "internal",
       features: [
         { id: uuidv4(), text: "Shaded open areas for tents", icon: "Tent" },
         { id: uuidv4(), text: "Access to restrooms and showers", icon: "ShowerHead" },
@@ -109,7 +126,8 @@ export const defaultContent: AccommodationsContent = {
     description: "Just minutes from Palo Pinto Mountains State Park and packed with character, Lone Ranger RV Park is more than a place to sleep. It's a place to experience.",
     imageUrl: "/placeholder.svg",
     buttonText: "Book Now",
-    buttonLink: "/reservations"
+    buttonLink: "/reservations",
+    linkType: "internal"
   }
 };
 
@@ -135,6 +153,7 @@ interface AccommodationsContextType {
     value: string
   ) => void;
   handleAccommodationImageChange: (accommodationId: string, imageUrl: string) => void;
+  handleAccommodationLinkTypeChange: (accommodationId: string, linkType: 'internal' | 'external') => void;
   
   // Feature operations
   addFeature: (accommodationId: string) => void;
@@ -149,6 +168,7 @@ interface AccommodationsContextType {
   // CTA Banner operations
   handleCTAChange: (field: keyof CTABanner, value: string) => void;
   handleCTAImageChange: (imageUrl: string) => void;
+  handleCTALinkTypeChange: (linkType: 'internal' | 'external') => void;
 }
 
 // Create the context with a proper default value (undefined)
@@ -195,6 +215,9 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
             const accommodationsWithIds = parsedAccommodations.map((accommodation: any) => ({
               ...accommodation,
               id: accommodation.id || uuidv4(),
+              linkType: accommodation.linkType || 'internal',
+              buttonText: accommodation.buttonText || 'Book Now',
+              buttonLink: accommodation.buttonLink || '/reservations',
               features: (accommodation.features || []).map((feature: any) => ({
                 ...feature,
                 id: feature.id || uuidv4()
@@ -216,7 +239,8 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
             
             newFormData.ctaBanner = {
               ...defaultContent.ctaBanner,
-              ...parsedCTA
+              ...parsedCTA,
+              linkType: parsedCTA.linkType || 'internal'
             };
           } catch (e) {
             console.error("Error parsing CTA banner:", e);
@@ -250,7 +274,6 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
     }));
   };
 
-  // Add the missing handleHeaderImageChange function
   const handleHeaderImageChange = (imageUrl: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -268,6 +291,9 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
       title: "New Accommodation Type",
       description: "Enter a description for this accommodation type.",
       imageUrl: "/placeholder.svg",
+      buttonText: "Book Now",
+      buttonLink: "/reservations",
+      linkType: "internal",
       features: [
         { id: uuidv4(), text: "New feature", icon: "Plus" }
       ]
@@ -307,6 +333,18 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
       accommodations: prev.accommodations.map((accommodation) =>
         accommodation.id === accommodationId
           ? { ...accommodation, imageUrl }
+          : accommodation
+      ),
+    }));
+  };
+
+  // Add this new function for handling accommodation link type change
+  const handleAccommodationLinkTypeChange = (accommodationId: string, linkType: 'internal' | 'external') => {
+    setFormData((prev) => ({
+      ...prev,
+      accommodations: prev.accommodations.map((accommodation) =>
+        accommodation.id === accommodationId
+          ? { ...accommodation, linkType }
           : accommodation
       ),
     }));
@@ -388,6 +426,17 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
     }));
   };
 
+  // Add new function for CTA link type changes
+  const handleCTALinkTypeChange = (linkType: 'internal' | 'external') => {
+    setFormData((prev) => ({
+      ...prev,
+      ctaBanner: {
+        ...prev.ctaBanner,
+        linkType,
+      },
+    }));
+  };
+
   // Save content to Supabase
   const saveContent = async () => {
     setIsSaving(true);
@@ -436,17 +485,27 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
       console.log("Accommodations data being saved to database:", dataToSave);
 
       // First, delete existing content for this page
-      await supabase
+      const { error: deleteError } = await supabase
         .from("page_content")
         .delete()
         .match({ page: "accommodations" });
+
+      if (deleteError) {
+        console.error("Error deleting existing content:", deleteError);
+        throw deleteError;
+      }
 
       // Then insert the new content
       const { error } = await supabase
         .from("page_content")
         .insert(dataToSave);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error inserting new content:", error);
+        throw error;
+      }
+
+      console.log("Content saved successfully!");
 
       toast({
         title: "Content saved",
@@ -480,11 +539,13 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
     removeAccommodation,
     handleAccommodationChange,
     handleAccommodationImageChange,
+    handleAccommodationLinkTypeChange,
     addFeature,
     removeFeature,
     handleFeatureChange,
     handleCTAChange,
-    handleCTAImageChange
+    handleCTAImageChange,
+    handleCTALinkTypeChange
   };
 
   // Return the context provider with proper children passing

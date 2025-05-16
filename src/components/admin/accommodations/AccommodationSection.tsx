@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Trash2, Edit } from "lucide-react";
 import ImageUploader from "@/components/admin/ImageUploader";
 import FeaturesList from "./FeaturesList";
+import LinkSelector from "@/components/admin/LinkSelector";
 
 const AccommodationSection: React.FC = () => {
   const { 
@@ -16,7 +17,8 @@ const AccommodationSection: React.FC = () => {
     addAccommodation, 
     removeAccommodation, 
     handleAccommodationChange,
-    handleAccommodationImageChange
+    handleAccommodationImageChange,
+    handleAccommodationLinkTypeChange
   } = useAccommodationsContext();
   
   return (
@@ -65,6 +67,24 @@ const AccommodationSection: React.FC = () => {
                     rows={3}
                   />
                 </div>
+
+                <div>
+                  <Label htmlFor={`button-text-${accommodation.id}`}>Button Text</Label>
+                  <Input
+                    id={`button-text-${accommodation.id}`}
+                    value={accommodation.buttonText}
+                    onChange={(e) => handleAccommodationChange(accommodation.id, 'buttonText', e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+
+                <LinkSelector
+                  value={accommodation.buttonLink}
+                  linkType={accommodation.linkType}
+                  onValueChange={(value) => handleAccommodationChange(accommodation.id, 'buttonLink', value)}
+                  onLinkTypeChange={(type) => handleAccommodationLinkTypeChange(accommodation.id, type as 'internal' | 'external')}
+                  label={`${accommodation.title} Button`}
+                />
 
                 <ImageUploader
                   currentImageUrl={accommodation.imageUrl}
