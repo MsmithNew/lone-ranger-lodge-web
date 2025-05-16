@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useContent } from "@/hooks/use-content";
 import Layout from "@/components/Layout";
@@ -12,21 +11,30 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+// Define interfaces for content data types
 interface ParkRule {
-  id: string;
   rule: string;
 }
 
 interface RuleCategory {
-  id: string;
   category: string;
-  rules: ParkRule[];
+  rules: string[];
 }
 
 interface FAQ {
-  id: string;
   question: string;
   answer: string;
+}
+
+interface RulesFAQsContentData {
+  header: {
+    title: string;
+    description: string;
+    imageUrl: string;
+  };
+  parkRules: RuleCategory[];
+  faqs: FAQ[];
+  importantNote: string;
 }
 
 // Default content for fallback
@@ -128,86 +136,110 @@ const defaultFaqs = [
   }
 ];
 
-const RulesFAQs = () => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+// Default content object
+const defaultContent: RulesFAQsContentData = {
+  header: {
+    title: "Rules & FAQs",
+    description: "Our park guidelines and answers to commonly asked questions to help you plan your stay.",
+    imageUrl: "/placeholder.svg"
+  },
+  parkRules: defaultRules,
+  faqs: defaultFaqs,
+  importantNote: "These rules are in place to ensure the safety and enjoyment of all our guests. Failure to comply may result in being asked to leave without refund. We appreciate your cooperation and hope you have a wonderful stay!"
+};
+
+/**
+ * Helper function to safely extract content value
+ */
+const extractContentValue = (content: any, key: string, defaultValue: any): any => {
+  if (!content || !content[key]) {
+    return defaultValue;
+  }
   
+  // Handle the case when content[key] is an object with content_value
+  if (typeof content[key] === 'object' && content[key].content_value) {
+    return content[key].content_value;
+  }
+  
+  // Handle case when content[key] is a direct string or other value
+  return content[key];
+};
+
+/**
+ * Parse rules from database format or use defaults
+ */
+const parseRules = (rulesData: any): RuleCategory[] => {
+  if (!rulesData) return defaultRules;
+  
+  try {
+    const parsed = typeof rulesData === 'string' ? JSON.parse(rulesData) : rulesData;
+    
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed.map(category => ({
+        category: category.category,
+        rules: Array.isArray(category.rules) 
+          ? category.rules.map((rule: any) => typeof rule === 'object' ? rule.rule : rule)
+          : []
+      }));
+    }
+  } catch (e) {
+    console.error("Error parsing park rules:", e);
+  }
+  
+  return defaultRules;
+};
+
+/**
+ * Parse FAQs from database format or use defaults
+ */
+const parseFAQs = (faqsData: any): FAQ[] => {
+  if (!faqsData) return defaultFaqs;
+  
+  try {
+    const parsed = typeof faqsData === 'string' ? JSON.parse(faqsData) : faqsData;
+    
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed.map(faq => ({
+        question: faq.question,
+        answer: faq.answer
+      }));
+    }
+  } catch (e) {
+    console.error("Error parsing FAQs:", e);
+  }
+  
+  return defaultFaqs;
+};
+
+const RulesFAQs = () => {
   // Fetch content from Supabase
   const { content, isLoading } = useContent<{ [key: string]: any }>({
     page: "rules-faqs",
-    fallbackData: {
-      header: {
-        title: "Rules & FAQs",
-        description: "Our park guidelines and answers to commonly asked questions to help you plan your stay.", 
-        imageUrl: "/placeholder.svg"
-      },
-      importantNote: "These rules are in place to ensure the safety and enjoyment of all our guests. Failure to comply may result in being asked to leave without refund. We appreciate your cooperation and hope you have a wonderful stay!"
-    },
+    fallbackData: defaultContent,
   });
   
-  console.log("Rules & FAQs content:", content); // Debug log to see the structure
+  // Parse and extract content safely
+  const pageHeader = {
+    title: extractContentValue(content?.header, 'title', defaultContent.header.title),
+    description: extractContentValue(content?.header, 'description', defaultContent.header.description),
+    imageUrl: extractContentValue(content?.header, 'imageUrl', defaultContent.header.imageUrl)
+  };
   
-  // Process park rules from database or use defaults
-  let parkRules = defaultRules;
-  if (content?.parkRules) {
-    try {
-      const parsedRules = typeof content.parkRules === 'string' 
-        ? JSON.parse(content.parkRules) 
-        : content.parkRules;
-      
-      if (Array.isArray(parsedRules) && parsedRules.length > 0) {
-        parkRules = parsedRules.map(category => ({
-          category: category.category,
-          rules: category.rules.map((rule: ParkRule) => rule.rule)
-        }));
-      }
-    } catch (e) {
-      console.error("Error parsing park rules:", e);
-    }
-  }
+  // Process park rules safely
+  const parkRules = parseRules(content?.parkRules);
   
-  // Process FAQs from database or use defaults
-  let faqs = defaultFaqs;
-  if (content?.faqs) {
-    try {
-      const parsedFaqs = typeof content.faqs === 'string'
-        ? JSON.parse(content.faqs)
-        : content.faqs;
-      
-      if (Array.isArray(parsedFaqs) && parsedFaqs.length > 0) {
-        faqs = parsedFaqs.map(faq => ({
-          question: faq.question,
-          answer: faq.answer
-        }));
-      }
-    } catch (e) {
-      console.error("Error parsing FAQs:", e);
-    }
-  }
+  // Process FAQs safely
+  const faqs = parseFAQs(content?.faqs);
   
-  // Get header content
-  const pageTitle = content?.header?.title || "Rules & FAQs";
-  const pageDescription = content?.header?.description || 
-    "Our park guidelines and answers to commonly asked questions to help you plan your stay.";
-  const headerImage = content?.header?.imageUrl || "/placeholder.svg";
-  
-  // Extract important note - fix for object vs string issue
-  let importantNote = "These rules are in place to ensure the safety and enjoyment of all our guests. Failure to comply may result in being asked to leave without refund. We appreciate your cooperation and hope you have a wonderful stay!";
-  
-  if (content?.importantNote) {
-    // Check if importantNote is an object (from database) or string (from fallback)
-    if (typeof content.importantNote === 'object' && content.importantNote.content_value) {
-      importantNote = content.importantNote.content_value;
-    } else if (typeof content.importantNote === 'string') {
-      importantNote = content.importantNote;
-    }
-  }
+  // Extract important note safely
+  const importantNote = extractContentValue(content, 'importantNote', defaultContent.importantNote);
 
   return (
     <Layout>
       <PageHeader
-        title={pageTitle}
-        description={pageDescription}
-        imageUrl={headerImage}
+        title={pageHeader.title}
+        description={pageHeader.description}
+        imageUrl={pageHeader.imageUrl}
       />
       
       {/* Park Rules */}
