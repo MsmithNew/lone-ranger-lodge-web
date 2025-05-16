@@ -22,6 +22,7 @@ import AdminAttractions from "./pages/AdminAttractions";
 import AdminSettings from "./pages/AdminSettings";
 import AdminContent from "./pages/AdminContent";
 import AdminAbout from "./pages/AdminAbout";
+import AdminRulesFAQs from "./pages/AdminRulesFAQs";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/content" element={<AdminContent />} />
             <Route path="/admin/about" element={<AdminAbout />} />
+            <Route path="/admin/rules-faqs" element={<AdminRulesFAQs />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

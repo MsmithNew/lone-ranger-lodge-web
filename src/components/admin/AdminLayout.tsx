@@ -73,6 +73,16 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
               <Button 
                 variant="ghost" 
                 className="w-full justify-start"
+                onClick={() => navigate("/admin/rules-faqs")}
+              >
+                <FileText className="mr-2 h-4 w-4" />
+                Rules & FAQs
+              </Button>
+            </li>
+            <li>
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start"
                 onClick={() => navigate("/admin/attractions")}
               >
                 <Image className="mr-2 h-4 w-4" />
