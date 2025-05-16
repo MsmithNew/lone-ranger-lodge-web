@@ -138,6 +138,7 @@ interface AccommodationsContextType {
   error: Error | null;
   isSaving: boolean;
   saveContent: () => Promise<void>;
+  refresh: () => Promise<void>; // Add the refresh function to the interface
   
   // Header operations
   handleHeaderChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
@@ -613,6 +614,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
     error,
     isSaving,
     saveContent,
+    refresh,
     handleHeaderChange,
     handleHeaderImageChange,
     addAccommodation,
