@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { useContent } from "@/hooks/use-content";
@@ -162,6 +163,7 @@ export const RulesFAQsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   useEffect(() => {
     if (!isLoading && content) {
       try {
+        console.log("Raw content from database:", content);
         let newFormData = { ...defaultContent };
 
         // Process header data
@@ -215,11 +217,29 @@ export const RulesFAQsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           }
         }
 
-        // Process important note
+        // Process important note - Fixed to handle different data structures
+        console.log("Important Note from DB:", content.importantNote);
+        
+        let importantNoteValue = defaultContent.importantNote;
+        
         if (content.importantNote) {
-          newFormData.importantNote = content.importantNote;
+          // Check if it's an object with importantNote property
+          if (typeof content.importantNote === 'object' && content.importantNote.importantNote) {
+            importantNoteValue = content.importantNote.importantNote;
+          }
+          // Check if it's an object with content_value property
+          else if (typeof content.importantNote === 'object' && content.importantNote.content_value) {
+            importantNoteValue = content.importantNote.content_value;
+          }
+          // Check if it's a string directly
+          else if (typeof content.importantNote === 'string') {
+            importantNoteValue = content.importantNote;
+          }
+          
+          newFormData.importantNote = importantNoteValue;
         }
 
+        console.log("Processed form data:", newFormData);
         setFormData(newFormData);
       } catch (e) {
         console.error("Error loading content:", e);
@@ -405,6 +425,8 @@ export const RulesFAQsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const saveContent = async () => {
     setIsSaving(true);
     try {
+      console.log("Saving form data:", formData);
+      
       // Prepare data for saving - convert complex objects to JSON strings
       const dataToSave = [
         {
@@ -446,10 +468,12 @@ export const RulesFAQsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           page: "rules-faqs",
           section: "importantNote",
           content_key: "importantNote",
-          content_value: formData.importantNote,
+          content_value: formData.importantNote, // Ensure this is a simple string value
           content_type: "text"
         }
       ];
+
+      console.log("Data being saved to database:", dataToSave);
 
       // First, delete existing content for this page
       await supabase
