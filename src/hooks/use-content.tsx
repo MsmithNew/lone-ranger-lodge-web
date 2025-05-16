@@ -1,6 +1,6 @@
 
 import { useEffect, useState, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, checkSupabaseConnection } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 interface ContentOptions {
@@ -15,24 +15,41 @@ export function useContent<T extends Record<string, any>>({
   page,
   section,
   fallbackData = {},
-  maxRetries = 3,
-  retryDelay = 1000,
+  maxRetries = 5,
+  retryDelay = 2000,
 }: ContentOptions): {
   content: T;
   isLoading: boolean;
   error: Error | null;
   refresh: () => Promise<void>;
+  isOnline: boolean;
 } {
   const [content, setContent] = useState<T>(fallbackData as T);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [isOnline, setIsOnline] = useState<boolean>(true);
 
   // Make fetchContent a useCallback so we can use it in the refresh function
-  const fetchContent = useCallback(async () => {
+  const fetchContent = useCallback(async (forceRetry = false) => {
+    if (retryCount >= maxRetries && !forceRetry) {
+      console.log(`Max retries (${maxRetries}) reached, using fallback data`);
+      setContent(fallbackData as T);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     try {
-      console.log(`Fetching content for page: ${page}, section: ${section || 'all'}`);
+      console.log(`Fetching content for page: ${page}, section: ${section || 'all'} (attempt ${retryCount + 1})`);
+      
+      // First check connection
+      const isConnected = await checkSupabaseConnection();
+      setIsOnline(isConnected);
+      
+      if (!isConnected) {
+        throw new Error("Connection to database unavailable");
+      }
       
       let query = supabase
         .from('page_content')
@@ -102,17 +119,14 @@ export function useContent<T extends Record<string, any>>({
       }
       setError(null);
       setRetryCount(0); // Reset retry count on success
+      setIsOnline(true);
     } catch (err) {
       console.error("Error fetching content:", err);
       setError(err instanceof Error ? err : new Error(String(err)));
+      setIsOnline(false);
       
-      // Implement retry logic
-      if (retryCount < maxRetries) {
-        setTimeout(() => {
-          setRetryCount(prev => prev + 1);
-          fetchContent();
-        }, retryDelay * (retryCount + 1)); // Exponential backoff
-      } else {
+      // Only show toast on the final retry
+      if (retryCount === maxRetries - 1) {
         // After all retries failed, show toast and use fallback data
         toast({
           title: "Content loading issue",
@@ -122,6 +136,12 @@ export function useContent<T extends Record<string, any>>({
         
         // Still use fallback data after all retries
         setContent(fallbackData as T);
+      } else {
+        // Implement exponential backoff retry logic
+        setTimeout(() => {
+          setRetryCount(prev => prev + 1);
+          fetchContent();
+        }, retryDelay * Math.pow(2, retryCount)); // Exponential backoff
       }
     } finally {
       setIsLoading(false);
@@ -130,7 +150,27 @@ export function useContent<T extends Record<string, any>>({
 
   useEffect(() => {
     fetchContent();
-  }, [fetchContent]);
+    
+    // Set up a network status listener
+    const handleNetworkChange = () => {
+      const isOnline = navigator.onLine;
+      setIsOnline(isOnline);
+      
+      if (isOnline && error) {
+        // If we're back online and had an error, try to fetch again
+        setRetryCount(0);
+        fetchContent(true);
+      }
+    };
+    
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+    
+    return () => {
+      window.removeEventListener('online', handleNetworkChange);
+      window.removeEventListener('offline', handleNetworkChange);
+    };
+  }, [fetchContent, error]);
 
   // Reset retry count when page or section changes
   useEffect(() => {
@@ -140,8 +180,9 @@ export function useContent<T extends Record<string, any>>({
   // Add a refresh function that can be called explicitly to force a content refresh
   const refresh = useCallback(async () => {
     console.log("Manually refreshing content");
-    await fetchContent();
+    setRetryCount(0);
+    await fetchContent(true);
   }, [fetchContent]);
 
-  return { content, isLoading, error, refresh };
+  return { content, isLoading, error, refresh, isOnline };
 }
