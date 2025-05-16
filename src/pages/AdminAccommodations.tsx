@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { AccommodationsProvider } from "@/components/admin/accommodations/AccommodationsContext";
 import HeaderSection from "@/components/admin/accommodations/HeaderSection";

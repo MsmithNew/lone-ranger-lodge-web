@@ -250,6 +250,17 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
     }));
   };
 
+  // Add the missing handleHeaderImageChange function
+  const handleHeaderImageChange = (imageUrl: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      header: {
+        ...prev.header,
+        imageUrl,
+      },
+    }));
+  };
+
   // Handler functions for accommodations
   const addAccommodation = () => {
     const newAccommodation: Accommodation = {
