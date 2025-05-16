@@ -114,9 +114,30 @@ const Accommodations = () => {
     return iconMap[iconName] || <ArrowRight className="text-rvblue" size={18} />;
   };
 
+  // Fix for the nested data structure issue
+  // Check if content.accommodations is an object with an accommodations property (nested structure from DB)
+  const getAccommodationsData = () => {
+    if (!content) return defaultContent.accommodations;
+    
+    // Check for nested structure (content.accommodations.accommodations)
+    if (content.accommodations && typeof content.accommodations === 'object' && 'accommodations' in content.accommodations) {
+      return content.accommodations.accommodations;
+    }
+    
+    // Direct structure (content.accommodations is the array)
+    if (Array.isArray(content.accommodations)) {
+      return content.accommodations;
+    }
+    
+    // Fallback to default
+    return defaultContent.accommodations;
+  };
+
+  // Get the accommodations data using the helper function
+  const accommodationsData = getAccommodationsData();
+
   // Use content from the database or fallback
   const header = content?.header || defaultContent.header;
-  const accommodations = content?.accommodations || defaultContent.accommodations;
   const ctaBanner = content?.ctaBanner || defaultContent.ctaBanner;
 
   return (
@@ -127,7 +148,7 @@ const Accommodations = () => {
         imageUrl={header.imageUrl} 
       />
       
-      {(accommodations || defaultContent.accommodations).map((accommodation, index) => (
+      {accommodationsData.map((accommodation, index) => (
         <React.Fragment key={index}>
           {index > 0 && <SectionDivider />}
           
