@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -13,19 +12,31 @@ import { toast } from "@/hooks/use-toast";
 // Create a separate component for the content to use the context
 const AccommodationsContent = () => {
   const [activeTab, setActiveTab] = useState("header");
-  const { saveContent, isSaving, formData, refresh } = useAccommodationsContext();
+  const { saveContent, isSaving, refresh } = useAccommodationsContext();
   const [bucketChecked, setBucketChecked] = useState(false);
+  const [bucketCreateAttempts, setBucketCreateAttempts] = useState(0);
 
-  // Check and create storage bucket on component mount
+  // Check and create storage bucket on component mount with improved retry logic
   useEffect(() => {
     const checkBucket = async () => {
+      if (bucketCreateAttempts > 3) {
+        console.error("Exceeded maximum bucket creation attempts");
+        toast({
+          title: "Storage setup issue",
+          description: "Could not create storage bucket after multiple attempts. Some features may not work correctly.",
+          variant: "destructive",
+        });
+        setBucketChecked(true); // Allow user to continue despite the error
+        return;
+      }
+
       try {
         // Check if bucket exists
         const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
         
         if (bucketsError) {
           console.error("Error checking buckets:", bucketsError);
-          return;
+          throw bucketsError;
         }
         
         const bucketExists = buckets?.some(bucket => bucket.name === 'content_images');
@@ -34,16 +45,24 @@ const AccommodationsContent = () => {
         if (!bucketExists) {
           console.log("Content images bucket not found, attempting to create it");
           const { data, error } = await supabase.storage.createBucket('content_images', {
-            public: true
+            public: true,
+            fileSizeLimit: 5242880 // 5MB limit
           });
           
           if (error) {
             console.error("Error creating bucket:", error);
-            toast({
-              title: "Storage setup error",
-              description: "Could not create storage bucket for images. Some features may not work correctly.",
-              variant: "destructive",
-            });
+            
+            // If we get a 409 error, the bucket might already exist despite listBuckets not showing it
+            if (error.code === '409') {
+              console.log("Bucket may already exist despite error, proceeding");
+              setBucketChecked(true);
+              return;
+            }
+            
+            // Otherwise retry after a delay
+            setBucketCreateAttempts(prev => prev + 1);
+            setTimeout(checkBucket, 1000); // Retry after 1 second
+            return;
           } else {
             console.log("Created content_images bucket:", data);
           }
@@ -54,11 +73,13 @@ const AccommodationsContent = () => {
         setBucketChecked(true);
       } catch (err) {
         console.error("Error checking/creating bucket:", err);
+        setBucketCreateAttempts(prev => prev + 1);
+        setTimeout(checkBucket, 1000); // Retry after 1 second
       }
     };
     
     checkBucket();
-  }, []);
+  }, [bucketCreateAttempts]);
 
   // Save the current state when switching tabs to prevent data loss
   const handleTabChange = (newTab: string) => {

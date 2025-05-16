@@ -27,6 +27,9 @@ const ImageUploader = ({
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
   
+  // Generate a consistent ID for label association
+  const inputId = `upload-${label.replace(/\s+/g, '-').toLowerCase()}`;
+  
   // Normalize the image URL for display only - not for storage
   const normalizeImageUrl = (url: string): string => {
     if (!url) return '';
@@ -98,7 +101,7 @@ const ImageUploader = ({
   
   const handleRetry = () => {
     if (uploadError && retryCount < 3) {
-      const fileInput = document.getElementById(`upload-${label}`) as HTMLInputElement;
+      const fileInput = document.getElementById(inputId) as HTMLInputElement;
       if (fileInput && fileInput.files && fileInput.files.length > 0) {
         setRetryCount(prevCount => prevCount + 1);
         uploadImage(fileInput.files[0]);
@@ -122,7 +125,7 @@ const ImageUploader = ({
   
   return (
     <div className="space-y-2">
-      <Label htmlFor={`upload-${label}`}>{label}</Label>
+      <Label htmlFor={inputId}>{label}</Label>
       
       {normalizedPreview ? (
         <div className="relative border rounded-md overflow-hidden">
@@ -150,14 +153,14 @@ const ImageUploader = ({
         <div className="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center">
           <ImageIcon className="h-10 w-10 text-gray-400 mb-2" />
           <p className="text-sm text-gray-500 mb-2">No image selected</p>
-          <label htmlFor={`upload-${label}`} className="cursor-pointer">
+          <label htmlFor={inputId} className="cursor-pointer">
             <div className="btn-secondary flex items-center">
               <Upload className="mr-2 h-4 w-4" />
               Upload Image
             </div>
             <Input 
               type="file" 
-              id={`upload-${label}`} 
+              id={inputId} 
               accept="image/*" 
               onChange={handleFileChange}
               className="hidden"

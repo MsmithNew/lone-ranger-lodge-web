@@ -39,12 +39,12 @@ const ContactForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <Label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+        <Label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-1">
           Name*
         </Label>
         <Input
           type="text"
-          id="name"
+          id="contact-name"
           name="name"
           value={formData.name}
           onChange={handleChange}
@@ -54,12 +54,12 @@ const ContactForm = () => {
       </div>
       
       <div>
-        <Label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+        <Label htmlFor="contact-email" className="block text-sm font-medium text-gray-700 mb-1">
           Email*
         </Label>
         <Input
           type="email"
-          id="email"
+          id="contact-email"
           name="email"
           value={formData.email}
           onChange={handleChange}
@@ -69,12 +69,12 @@ const ContactForm = () => {
       </div>
       
       <div>
-        <Label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+        <Label htmlFor="contact-phone" className="block text-sm font-medium text-gray-700 mb-1">
           Phone*
         </Label>
         <Input
           type="tel"
-          id="phone"
+          id="contact-phone"
           name="phone"
           value={formData.phone}
           onChange={handleChange}
@@ -84,11 +84,11 @@ const ContactForm = () => {
       </div>
       
       <div>
-        <Label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+        <Label htmlFor="contact-message" className="block text-sm font-medium text-gray-700 mb-1">
           Message*
         </Label>
         <Textarea
-          id="message"
+          id="contact-message"
           name="message"
           value={formData.message}
           onChange={handleChange}
