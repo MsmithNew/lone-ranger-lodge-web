@@ -1,3 +1,4 @@
+
 import React from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
@@ -132,10 +133,13 @@ const Accommodations = () => {
   const getHeaderData = () => {
     if (!content || !content.header) return defaultContent.header;
     
+    // Add a type guard to ensure we have the required properties
+    const header = content.header as Record<string, any>;
+    
     return {
-      title: content.header.title || defaultContent.header.title,
-      description: content.header.description || defaultContent.header.description,
-      imageUrl: content.header.imageUrl || defaultContent.header.imageUrl
+      title: header.title || defaultContent.header.title,
+      description: header.description || defaultContent.header.description,
+      imageUrl: header.imageUrl || defaultContent.header.imageUrl
     };
   };
 
@@ -169,22 +173,24 @@ const Accommodations = () => {
     if (!content || !content.ctaBanner) return defaultContent.ctaBanner;
     
     // First check if we have direct CTA banner properties
-    if (content.ctaBanner.title && content.ctaBanner.description) {
+    const ctaBanner = content.ctaBanner as Record<string, any>;
+    
+    if (ctaBanner.title && ctaBanner.description) {
       return {
-        title: content.ctaBanner.title || defaultContent.ctaBanner.title,
-        description: content.ctaBanner.description || defaultContent.ctaBanner.description,
-        imageUrl: content.ctaBanner.imageUrl || defaultContent.ctaBanner.imageUrl,
-        buttonText: content.ctaBanner.buttonText || defaultContent.ctaBanner.buttonText,
-        buttonLink: content.ctaBanner.buttonLink || defaultContent.ctaBanner.buttonLink
+        title: ctaBanner.title || defaultContent.ctaBanner.title,
+        description: ctaBanner.description || defaultContent.ctaBanner.description,
+        imageUrl: ctaBanner.imageUrl || defaultContent.ctaBanner.imageUrl,
+        buttonText: ctaBanner.buttonText || defaultContent.ctaBanner.buttonText,
+        buttonLink: ctaBanner.buttonLink || defaultContent.ctaBanner.buttonLink
       };
     }
     
     // Otherwise try to handle older nested format for backward compatibility
     try {
       // Check for nested structure
-      const ctaData = extractData(content.ctaBanner, {});
+      const ctaData = extractData(content.ctaBanner, {} as Record<string, any>);
       
-      if (ctaData.title) {
+      if (ctaData && typeof ctaData === 'object' && 'title' in ctaData) {
         return {
           ...defaultContent.ctaBanner,
           ...ctaData
