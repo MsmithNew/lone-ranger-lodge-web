@@ -3,6 +3,7 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
+import { AdminProvider } from "@/context/AdminContext";
 import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Accommodations from "@/pages/Accommodations";
@@ -27,29 +28,31 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/accommodations" element={<Accommodations />} />
-          <Route path="/amenities" element={<Amenities />} />
-          <Route path="/activities" element={<Activities />} />
-          <Route path="/rules-faqs" element={<RulesFAQs />} />
-          <Route path="/reservations" element={<Reservations />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/content" element={<AdminContent />} />
-          <Route path="/admin/about" element={<AdminAbout />} />
-          <Route path="/admin/rules-faqs" element={<AdminRulesFAQs />} />
-          <Route path="/admin/accommodations" element={<AdminAccommodations />} />
-          <Route path="/admin/attractions" element={<AdminAttractions />} />
-          <Route path="/admin/settings" element={<AdminSettings />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
+      <AdminProvider>
+        <Toaster />
+        <Router>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/accommodations" element={<Accommodations />} />
+            <Route path="/amenities" element={<Amenities />} />
+            <Route path="/activities" element={<Activities />} />
+            <Route path="/rules-faqs" element={<RulesFAQs />} />
+            <Route path="/reservations" element={<Reservations />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/content" element={<AdminContent />} />
+            <Route path="/admin/about" element={<AdminAbout />} />
+            <Route path="/admin/rules-faqs" element={<AdminRulesFAQs />} />
+            <Route path="/admin/accommodations" element={<AdminAccommodations />} />
+            <Route path="/admin/attractions" element={<AdminAttractions />} />
+            <Route path="/admin/settings" element={<AdminSettings />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </AdminProvider>
     </QueryClientProvider>
   );
 }
