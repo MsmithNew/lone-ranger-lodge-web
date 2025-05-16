@@ -19,40 +19,33 @@ const AccommodationsContent = () => {
   const [connectionError, setConnectionError] = useState<string | null>(null);
   const [isRetrying, setIsRetrying] = useState(false);
 
-  // Simplified connection check
+  // Basic connection check - simplified
   const checkConnection = useCallback(async () => {
     try {
       setIsRetrying(true);
-      console.log("Checking database connection...");
       
       const isConnected = await checkSupabaseConnection();
       
       if (!isConnected) {
-        setConnectionError("Database connection unavailable. Please check your internet connection.");
+        setConnectionError("Network connectivity issues detected. Please check your internet connection.");
         
         toast({
           title: "Connection issue",
-          description: "There are network connectivity issues with the database. You may not be able to save changes or upload images.",
+          description: "There are network connectivity issues. Some features may not work correctly.",
           variant: "destructive",
         });
       } else {
         if (connectionError) {
           toast({
             title: "Connection restored",
-            description: "Database connection has been restored. You can now save changes.",
+            description: "Network connection has been restored.",
           });
         }
         setConnectionError(null);
       }
     } catch (err) {
       console.error("Error checking connection:", err);
-      setConnectionError("Network error occurred while checking connection.");
-      
-      toast({
-        title: "Network error",
-        description: "Failed to connect to the database. Please check your internet connection.",
-        variant: "destructive",
-      });
+      setConnectionError("Network error occurred.");
     } finally {
       setIsRetrying(false);
       setIsLoading(false);
@@ -79,10 +72,9 @@ const AccommodationsContent = () => {
     const refreshData = async () => {
       try {
         await refresh();
-        console.log("Refreshed accommodation data");
       } catch (err) {
         console.error("Error refreshing data:", err);
-        setConnectionError("Failed to refresh data from database.");
+        setConnectionError("Failed to load data. Please check your connection.");
       }
     };
     

@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useCallback } from "react";
 import { supabase, checkSupabaseConnection } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";

@@ -6,7 +6,60 @@ import type { Database } from './types';
 const SUPABASE_URL = "https://uktyewnnkbqjopjeoznp.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrdHlld25ua2Jxam9wamVvem5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0Njc0NzcsImV4cCI6MjA2MjA0MzQ3N30.SyK_AgPVgbyex-s2u4AQG_gAN59AGg7PIw6TseA0GpY";
 
-// Create client with increased timeouts and auto-retries
+// Maximum number of retries for failed requests
+const MAX_RETRIES = 3;
+// Base delay between retries in milliseconds (will be multiplied by retry attempt)
+const RETRY_DELAY = 1000;
+// Connection timeout in milliseconds
+const CONNECTION_TIMEOUT = 10000;
+
+/**
+ * Custom fetch implementation with retry logic for intermittent connectivity issues
+ */
+const customFetch = async (url: string, options: RequestInit & { method?: string }) => {
+  let attempts = 0;
+  
+  while (attempts <= MAX_RETRIES) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), CONNECTION_TIMEOUT);
+      
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+      
+      clearTimeout(timeoutId);
+      
+      // If we get a 503 error (service unavailable), retry
+      if (response.status === 503) {
+        attempts++;
+        if (attempts <= MAX_RETRIES) {
+          // Wait with exponential backoff
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * attempts));
+          continue;
+        }
+      }
+      
+      return response;
+    } catch (error) {
+      attempts++;
+      console.error(`Fetch attempt ${attempts}/${MAX_RETRIES + 1} failed:`, error);
+      
+      // If we've reached the max retries, throw the error
+      if (attempts > MAX_RETRIES) {
+        throw error;
+      }
+      
+      // Wait with exponential backoff
+      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * attempts));
+    }
+  }
+  
+  throw new Error(`Request failed after ${MAX_RETRIES + 1} attempts`);
+};
+
+// Create client with custom fetch implementation
 export const supabase = createClient<Database>(
   SUPABASE_URL, 
   SUPABASE_PUBLISHABLE_KEY,
@@ -19,32 +72,24 @@ export const supabase = createClient<Database>(
       headers: {
         'x-application-name': 'lov-rv-park',
       },
-      // Increase timeouts to handle potential network issues
-      fetch: (url, options) => {
-        return fetch(url, {
-          ...options,
-          // Increase timeout to 30 seconds
-          signal: AbortSignal.timeout(30000),
-        }).catch(error => {
-          console.error("Fetch error:", error);
-          // Re-throw for client handling
-          throw error;
-        });
-      },
+      fetch: customFetch,
     },
   }
 );
 
-// Add a helper to check connectivity
+// Simplified connection check that handles timeouts and retries
 export const checkSupabaseConnection = async (): Promise<boolean> => {
   try {
+    // Set a short timeout for the connection check
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    
     // Try a minimal request to check connectivity
-    const start = Date.now();
-    const { error } = await supabase.from('page_content').select('count', { count: 'exact', head: true });
-    const end = Date.now();
+    const { error } = await supabase.from('page_content')
+      .select('count', { count: 'exact', head: true })
+      .abortSignal(controller.signal);
     
-    console.log(`Supabase connection check: ${end - start}ms, error: ${error ? 'Yes' : 'No'}`);
-    
+    clearTimeout(timeoutId);
     return !error;
   } catch (error) {
     console.error("Supabase connection check failed:", error);
