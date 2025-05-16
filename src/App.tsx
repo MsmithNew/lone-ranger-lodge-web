@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+
+import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
-import Index from "@/pages/Index";
+import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Accommodations from "@/pages/Accommodations";
 import Amenities from "@/pages/Amenities";
@@ -24,32 +25,13 @@ import AdminAccommodations from "@/pages/AdminAccommodations";
 const queryClient = new QueryClient();
 
 function App() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionResult, setSubmissionResult] = useState<
-    "success" | "error" | null
-  >(null);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmissionResult(null);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setSubmissionResult("success");
-    } catch (error) {
-      setSubmissionResult("error");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/accommodations" element={<Accommodations />} />
           <Route path="/amenities" element={<Amenities />} />
