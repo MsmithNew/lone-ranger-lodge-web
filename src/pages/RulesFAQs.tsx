@@ -144,6 +144,8 @@ const RulesFAQs = () => {
     },
   });
   
+  console.log("Rules & FAQs content:", content); // Debug log to see the structure
+  
   // Process park rules from database or use defaults
   let parkRules = defaultRules;
   if (content?.parkRules) {
@@ -187,8 +189,18 @@ const RulesFAQs = () => {
   const pageDescription = content?.header?.description || 
     "Our park guidelines and answers to commonly asked questions to help you plan your stay.";
   const headerImage = content?.header?.imageUrl || "/placeholder.svg";
-  const importantNote = content?.importantNote || 
-    "These rules are in place to ensure the safety and enjoyment of all our guests. Failure to comply may result in being asked to leave without refund. We appreciate your cooperation and hope you have a wonderful stay!";
+  
+  // Extract important note - fix for object vs string issue
+  let importantNote = "These rules are in place to ensure the safety and enjoyment of all our guests. Failure to comply may result in being asked to leave without refund. We appreciate your cooperation and hope you have a wonderful stay!";
+  
+  if (content?.importantNote) {
+    // Check if importantNote is an object (from database) or string (from fallback)
+    if (typeof content.importantNote === 'object' && content.importantNote.content_value) {
+      importantNote = content.importantNote.content_value;
+    } else if (typeof content.importantNote === 'string') {
+      importantNote = content.importantNote;
+    }
+  }
 
   return (
     <Layout>
