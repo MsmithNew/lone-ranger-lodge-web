@@ -128,6 +128,22 @@ const Accommodations = () => {
     
     return data as T;
   };
+  
+  // Helper function to normalize image URLs
+  const normalizeImageUrl = (url: string): string => {
+    if (!url) return '/placeholder.svg';
+    
+    // If it's already a valid URL, return it
+    if (url.startsWith('http')) return url;
+    
+    // If it's a relative path and not a placeholder, we assume it's valid
+    if (url.startsWith('/') && !url.includes('placeholder.svg')) {
+      return url;
+    }
+    
+    // Default to placeholder
+    return '/placeholder.svg';
+  };
 
   // Get header data safely
   const getHeaderData = () => {
@@ -139,7 +155,7 @@ const Accommodations = () => {
     return {
       title: header.title || defaultContent.header.title,
       description: header.description || defaultContent.header.description,
-      imageUrl: header.imageUrl || defaultContent.header.imageUrl
+      imageUrl: normalizeImageUrl(header.imageUrl || defaultContent.header.imageUrl)
     };
   };
 
@@ -152,13 +168,24 @@ const Accommodations = () => {
       const accommodationsData = extractData(content.accommodations, defaultContent.accommodations);
       
       // Parse if it's a string
+      let parsedAccommodations;
       if (typeof accommodationsData === 'string') {
-        return JSON.parse(accommodationsData);
+        try {
+          parsedAccommodations = JSON.parse(accommodationsData);
+        } catch (e) {
+          console.error("Failed to parse accommodations JSON:", e);
+          return defaultContent.accommodations;
+        }
+      } else {
+        parsedAccommodations = accommodationsData;
       }
       
-      // If it's already an array, return it
-      if (Array.isArray(accommodationsData)) {
-        return accommodationsData;
+      // If it's already an array, normalize the image URLs and return
+      if (Array.isArray(parsedAccommodations)) {
+        return parsedAccommodations.map(accommodation => ({
+          ...accommodation,
+          imageUrl: normalizeImageUrl(accommodation.imageUrl)
+        }));
       }
     } catch (e) {
       console.error("Error processing accommodations data:", e);
@@ -179,7 +206,7 @@ const Accommodations = () => {
       return {
         title: ctaBanner.title || defaultContent.ctaBanner.title,
         description: ctaBanner.description || defaultContent.ctaBanner.description,
-        imageUrl: ctaBanner.imageUrl || defaultContent.ctaBanner.imageUrl,
+        imageUrl: normalizeImageUrl(ctaBanner.imageUrl || defaultContent.ctaBanner.imageUrl),
         buttonText: ctaBanner.buttonText || defaultContent.ctaBanner.buttonText,
         buttonLink: ctaBanner.buttonLink || defaultContent.ctaBanner.buttonLink
       };
@@ -193,7 +220,8 @@ const Accommodations = () => {
       if (ctaData && typeof ctaData === 'object' && 'title' in ctaData) {
         return {
           ...defaultContent.ctaBanner,
-          ...ctaData
+          ...ctaData,
+          imageUrl: normalizeImageUrl(ctaData.imageUrl || defaultContent.ctaBanner.imageUrl)
         };
       }
     } catch (e) {
@@ -208,6 +236,10 @@ const Accommodations = () => {
   const header = getHeaderData();
   const accommodations = getAccommodationsData();
   const ctaBanner = getCTABannerData();
+
+  console.log("Loaded header data:", header);
+  console.log("Loaded accommodations data:", accommodations);
+  console.log("Loaded CTA banner data:", ctaBanner);
 
   if (isLoading) {
     return (
@@ -240,10 +272,11 @@ const Accommodations = () => {
                     <img 
                       alt={`${accommodation.title} at Lone Ranger RV Park`} 
                       className="w-full h-64 object-cover" 
-                      src={accommodation.imageUrl || "/placeholder.svg"}
+                      src={accommodation.imageUrl}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = '/placeholder.svg';
+                        console.error("Failed to load image:", accommodation.imageUrl);
                       }}
                     />
                   </div>
@@ -277,12 +310,13 @@ const Accommodations = () => {
       <section className="relative py-16">
         <div className="absolute inset-0 bg-gradient-to-r from-rvmaroon to-rvblue opacity-90">
           <img 
-            src={ctaBanner.imageUrl || "/placeholder.svg"} 
+            src={ctaBanner.imageUrl} 
             alt="Scenic view of Lone Ranger RV Park" 
             className="w-full h-full object-cover mix-blend-overlay"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.src = '/placeholder.svg';
+              console.error("Failed to load CTA banner image:", ctaBanner.imageUrl);
             }}
           />
         </div>

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -26,6 +25,15 @@ const ImageUploader = ({
   const [preview, setPreview] = useState<string | null>(currentImageUrl || null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  
+  // Normalize the image URL for display
+  const normalizeImageUrl = (url: string): string => {
+    if (!url) return '';
+    // If it's already a full URL, return it
+    if (url.startsWith('http')) return url;
+    // If it's a relative path, keep it as is
+    return url;
+  };
   
   const uploadImage = async (file: File) => {
     if (!file) return;
@@ -57,6 +65,8 @@ const ImageUploader = ({
         .getPublicUrl(data.path);
       
       const imageUrl = publicUrlData.publicUrl;
+      
+      console.log("Image uploaded successfully. URL:", imageUrl);
       
       // Update preview and pass the URL to parent component
       setPreview(imageUrl);
@@ -110,14 +120,16 @@ const ImageUploader = ({
     onImageUploaded('');
   };
   
+  const normalizedPreview = preview ? normalizeImageUrl(preview) : null;
+  
   return (
     <div className="space-y-2">
       <Label htmlFor={`upload-${label}`}>{label}</Label>
       
-      {preview ? (
+      {normalizedPreview ? (
         <div className="relative border rounded-md overflow-hidden">
           <img 
-            src={preview} 
+            src={normalizedPreview} 
             alt={label} 
             className="w-full h-40 object-cover"
             onError={(e) => {
