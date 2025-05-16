@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
@@ -28,9 +28,12 @@ export function useContent<T extends Record<string, any>>({
   const [error, setError] = useState<Error | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
-  const fetchContent = async () => {
+  // Make fetchContent a useCallback so we can use it in the refresh function
+  const fetchContent = useCallback(async () => {
     setIsLoading(true);
     try {
+      console.log(`Fetching content for page: ${page}, section: ${section || 'all'}`);
+      
       let query = supabase
         .from('page_content')
         .select('*')
@@ -43,6 +46,8 @@ export function useContent<T extends Record<string, any>>({
       const { data, error } = await query.order('display_order', { ascending: true });
 
       if (error) throw new Error(error.message);
+
+      console.log(`Raw data from content fetch:`, data);
 
       if (data && data.length > 0) {
         // Transform the data into a usable object structure
@@ -87,8 +92,9 @@ export function useContent<T extends Record<string, any>>({
         });
         
         // Merge with fallback data to ensure all expected fields exist
-        setContent({ ...fallbackData, ...transformedData } as T);
-        console.log("Fetched content:", transformedData);
+        const finalContent = { ...fallbackData, ...transformedData } as T;
+        console.log("Fetched content:", finalContent);
+        setContent(finalContent);
       } else {
         // If no data, use the fallback
         console.log("No data found, using fallback:", fallbackData);
@@ -120,17 +126,22 @@ export function useContent<T extends Record<string, any>>({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [page, section, fallbackData, maxRetries, retryDelay, retryCount]);
 
   useEffect(() => {
     fetchContent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, section]);
+  }, [fetchContent]);
 
   // Reset retry count when page or section changes
   useEffect(() => {
     setRetryCount(0);
   }, [page, section]);
 
-  return { content, isLoading, error, refresh: fetchContent };
+  // Add a refresh function that can be called explicitly to force a content refresh
+  const refresh = useCallback(async () => {
+    console.log("Manually refreshing content");
+    await fetchContent();
+  }, [fetchContent]);
+
+  return { content, isLoading, error, refresh };
 }

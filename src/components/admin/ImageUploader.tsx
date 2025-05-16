@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -26,12 +27,9 @@ const ImageUploader = ({
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
   
-  // Normalize the image URL for display
+  // Normalize the image URL for display only - not for storage
   const normalizeImageUrl = (url: string): string => {
     if (!url) return '';
-    // If it's already a full URL, return it
-    if (url.startsWith('http')) return url;
-    // If it's a relative path, keep it as is
     return url;
   };
   
@@ -68,7 +66,7 @@ const ImageUploader = ({
       
       console.log("Image uploaded successfully. URL:", imageUrl);
       
-      // Update preview and pass the URL to parent component
+      // Update preview and pass the URL to parent component with the FULL URL
       setPreview(imageUrl);
       onImageUploaded(imageUrl);
       setRetryCount(0);

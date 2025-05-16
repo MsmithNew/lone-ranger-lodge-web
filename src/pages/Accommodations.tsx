@@ -85,10 +85,15 @@ const defaultContent = {
 
 const Accommodations = () => {
   // Fetch content from Supabase
-  const { content, isLoading } = useContent({
+  const { content, isLoading, error, refresh } = useContent({
     page: "accommodations",
     fallbackData: defaultContent
   });
+
+  // Refresh content on component mount to ensure we have the latest data
+  React.useEffect(() => {
+    refresh();
+  }, [refresh]);
 
   // Icon mapping
   const getIconComponent = (iconName: string) => {
@@ -132,7 +137,7 @@ const Accommodations = () => {
   const normalizeImageUrl = (url: string): string => {
     if (!url) return '/placeholder.svg';
     
-    // If it's already a valid URL, return it
+    // If it's already a valid URL (Supabase or external), return it
     if (url.startsWith('http')) return url;
     
     // If it's a relative path and not a placeholder, we assume it's valid
@@ -160,17 +165,22 @@ const Accommodations = () => {
 
   // Get accommodations data safely
   const getAccommodationsData = () => {
-    if (!content || !content.accommodations) return defaultContent.accommodations;
+    if (!content || !content.accommodations) {
+      console.log("No accommodations data found, using defaults");
+      return defaultContent.accommodations;
+    }
     
     try {
       // Extract accommodations from potential nesting
       const accommodationsData = extractData(content.accommodations, defaultContent.accommodations);
+      console.log("Raw accommodations data:", accommodationsData);
       
       // Parse if it's a string
       let parsedAccommodations;
       if (typeof accommodationsData === 'string') {
         try {
           parsedAccommodations = JSON.parse(accommodationsData);
+          console.log("Parsed accommodations JSON:", parsedAccommodations);
         } catch (e) {
           console.error("Failed to parse accommodations JSON:", e);
           return defaultContent.accommodations;
@@ -181,12 +191,16 @@ const Accommodations = () => {
       
       // If it's already an array, normalize the image URLs and return
       if (Array.isArray(parsedAccommodations)) {
-        return parsedAccommodations.map(accommodation => ({
-          ...accommodation,
-          imageUrl: normalizeImageUrl(accommodation.imageUrl)
-        }));
+        return parsedAccommodations.map(accommodation => {
+          console.log(`Processing accommodation: ${accommodation.title}, imageUrl: ${accommodation.imageUrl}`);
+          return {
+            ...accommodation,
+            imageUrl: normalizeImageUrl(accommodation.imageUrl)
+          };
+        });
       }
       
+      console.log("No valid accommodations array found, using defaults");
       return defaultContent.accommodations;
     } catch (e) {
       console.error("Error processing accommodations data:", e);
@@ -250,6 +264,9 @@ const Accommodations = () => {
     );
   }
 
+  // Debug current content to help diagnose issues
+  console.log("Current content structure:", content);
+
   return (
     <Layout>
       <PageHeader 
@@ -273,9 +290,9 @@ const Accommodations = () => {
                       className="w-full h-64 object-cover" 
                       src={accommodation.imageUrl}
                       onError={(e) => {
+                        console.error(`Failed to load image for ${accommodation.title}:`, accommodation.imageUrl);
                         const target = e.target as HTMLImageElement;
                         target.src = '/placeholder.svg';
-                        console.error("Failed to load image:", accommodation.imageUrl);
                       }}
                     />
                   </div>

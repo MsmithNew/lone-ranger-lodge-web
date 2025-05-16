@@ -183,18 +183,8 @@ const normalizeImageUrl = (url: string): string => {
   // If URL is empty or null, return placeholder
   if (!url) return '/placeholder.svg';
   
-  // If URL is already a full URL, return it as is
-  if (url.startsWith('http')) {
-    return url;
-  }
-  
-  // If it's a relative path but not a placeholder, return as is
-  if (url.startsWith('/') && !url.includes('placeholder.svg')) {
-    return url;
-  }
-  
-  // Return placeholder for any other case
-  return '/placeholder.svg';
+  // For all URLs (whether Supabase or local), return them as is
+  return url;
 };
 
 export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ children }) => {
@@ -233,7 +223,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
           newFormData.header = {
             title: content.header.title || defaultContent.header.title,
             description: content.header.description || defaultContent.header.description,
-            imageUrl: normalizeImageUrl(content.header.imageUrl || defaultContent.header.imageUrl)
+            imageUrl: content.header.imageUrl || defaultContent.header.imageUrl
           };
         }
 
@@ -256,7 +246,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
                 linkType: accommodation.linkType || 'internal',
                 buttonText: accommodation.buttonText || 'Book Now',
                 buttonLink: accommodation.buttonLink || '/reservations',
-                imageUrl: normalizeImageUrl(accommodation.imageUrl || defaultContent.accommodations[0].imageUrl),
+                imageUrl: accommodation.imageUrl,
                 features: (accommodation.features || []).map((feature: any) => ({
                   ...feature,
                   id: feature.id || uuidv4()
@@ -284,7 +274,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
             newFormData.ctaBanner = {
               ...defaultContent.ctaBanner,
               ...parsedCTA,
-              imageUrl: normalizeImageUrl(parsedCTA.imageUrl || defaultContent.ctaBanner.imageUrl),
+              imageUrl: parsedCTA.imageUrl || defaultContent.ctaBanner.imageUrl,
               linkType: parsedCTA.linkType || 'internal'
             };
           } catch (e) {
@@ -320,7 +310,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
   };
 
   const handleHeaderImageChange = (imageUrl: string) => {
-    // Ensure we're saving the full URL
+    // Store the full image URL as provided by the ImageUploader component
     setFormData((prev) => ({
       ...prev,
       header: {
@@ -375,7 +365,10 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
   };
 
   const handleAccommodationImageChange = (accommodationId: string, imageUrl: string) => {
-    // Make sure we save the full URL as is, without further processing
+    // Store the full URL as provided by the ImageUploader component without normalization
+    console.log(`Accommodation image before update for ${accommodationId}: `, 
+      formData.accommodations.find(acc => acc.id === accommodationId)?.imageUrl);
+    
     setFormData((prev) => ({
       ...prev,
       accommodations: prev.accommodations.map((accommodation) =>
@@ -384,6 +377,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
           : accommodation
       ),
     }));
+    
     console.log(`Accommodation image updated for ${accommodationId} with URL: ${imageUrl}`);
   };
 
@@ -466,7 +460,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
   };
 
   const handleCTAImageChange = (imageUrl: string) => {
-    // Ensure we're saving the full URL
+    // Store the full URL as provided by the ImageUploader component
     setFormData((prev) => ({
       ...prev,
       ctaBanner: {
@@ -598,7 +592,7 @@ export const AccommodationsProvider: React.FC<AccommodationsProviderProps> = ({ 
         description: "The Accommodations content has been updated.",
       });
 
-      // Refresh content data
+      // Refresh content data to ensure we're displaying the latest
       refresh();
     } catch (error: any) {
       console.error("Error saving accommodations content:", error);
