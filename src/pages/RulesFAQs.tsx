@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useContent } from "@/hooks/use-content";
 import Layout from "@/components/Layout";
@@ -218,6 +219,8 @@ const RulesFAQs = () => {
     fallbackData: defaultContent,
   });
   
+  console.log('Content structure:', content); // Debug log
+  
   // Parse and extract content safely
   const pageHeader = {
     title: extractContentValue(content?.header, 'title', defaultContent.header.title),
@@ -231,8 +234,24 @@ const RulesFAQs = () => {
   // Process FAQs safely
   const faqs = parseFAQs(content?.faqs);
   
-  // Extract important note safely
-  const importantNote = extractContentValue(content, 'importantNote', defaultContent.importantNote);
+  // Extract important note safely - fixed to handle the nested content structure
+  let importantNote = defaultContent.importantNote;
+  
+  // First approach: check if content.importantNote is an object with an importantNote property
+  if (content?.importantNote?.importantNote) {
+    importantNote = content.importantNote.importantNote;
+  }
+  // Second approach: check if content.importantNote has content_value directly
+  else if (content?.importantNote?.content_value) {
+    importantNote = content.importantNote.content_value;
+  }
+  // Third approach: if importantNote is a string directly
+  else if (typeof content?.importantNote === 'string') {
+    importantNote = content.importantNote;
+  }
+  
+  console.log('Important Note value:', importantNote); // Debug log
+  console.log('Important Note type:', typeof importantNote); // Debug log
 
   return (
     <Layout>

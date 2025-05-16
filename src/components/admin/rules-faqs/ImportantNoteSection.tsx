@@ -9,14 +9,18 @@ const ImportantNoteSection: React.FC = () => {
   
   return (
     <div>
-      <Label htmlFor="importantNote">Note Text</Label>
+      <Label htmlFor="importantNote" className="mb-2 block">Important Note</Label>
       <Textarea
         id="importantNote"
         value={formData.importantNote}
         onChange={handleNoteChange}
         className="mt-1"
         rows={4}
+        placeholder="Enter an important note for visitors"
       />
+      <p className="text-sm text-muted-foreground mt-2">
+        This note will appear prominently at the bottom of the rules section.
+      </p>
     </div>
   );
 };
