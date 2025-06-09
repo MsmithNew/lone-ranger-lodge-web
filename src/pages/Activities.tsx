@@ -1,12 +1,10 @@
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SectionDivider from "@/components/SectionDivider";
 import ClickableAttractionSection from "@/components/attractions/ClickableAttractionSection";
 import FrontDeskRecommendations from "@/components/activities/FrontDeskRecommendations";
-import { toast } from "@/hooks/use-toast";
 
 // Default placeholder image
 const defaultImage = "https://images.unsplash.com/photo-1433086966358-54859d0ed716";
@@ -22,68 +20,57 @@ interface Attraction {
   display_order: number | null;
 }
 
+// Static attractions data since we removed Supabase
+const staticAttractions: Attraction[] = [
+  {
+    id: 1,
+    key: "hiking-trail",
+    image_url: "https://images.unsplash.com/photo-1551632811-561732d1e306",
+    title: "Hiking Trail",
+    description: "Explore scenic hiking trails with beautiful mountain views",
+    learnMore: "https://example.com/hiking",
+    category: "outdoor",
+    display_order: 1
+  },
+  {
+    id: 2,
+    key: "fishing-spot",
+    image_url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5",
+    title: "Fishing Spot",
+    description: "Enjoy peaceful fishing at our nearby lake",
+    learnMore: "https://example.com/fishing",
+    category: "outdoor",
+    display_order: 2
+  },
+  {
+    id: 3,
+    key: "playground",
+    image_url: "https://images.unsplash.com/photo-1560743173-567a3b5658b1",
+    title: "Playground",
+    description: "Fun playground area for kids of all ages",
+    learnMore: "https://example.com/playground",
+    category: "family",
+    display_order: 1
+  },
+  {
+    id: 4,
+    key: "art-gallery",
+    image_url: "https://images.unsplash.com/photo-1544967919-6eb31962dac3",
+    title: "Local Art Gallery",
+    description: "Visit the local art gallery featuring regional artists",
+    learnMore: "https://example.com/gallery",
+    category: "culture",
+    display_order: 1
+  }
+];
+
 const Activities = () => {
-  const [attractions, setAttractions] = useState<Attraction[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [headerImage, setHeaderImage] = useState<string>(defaultImage);
-
-  // Fetch images from Supabase
-  useEffect(() => {
-    const fetchAttractions = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('activity_images')
-          .select('*')
-          .order('display_order', { ascending: true });
-
-        if (error) throw error;
-
-        if (data && data.length > 0) {
-          // Set header image to the first outdoor activity image
-          const outdoorImages = data.filter(item => item.category === 'outdoor');
-          if (outdoorImages.length > 0) {
-            setHeaderImage(outdoorImages[0].image_url);
-          }
-          
-          // Process attractions data
-          const processedData = data.map(item => ({
-            ...item,
-            title: item.title || extractTitleFromKey(item.key),
-            description: item.description || "",
-            learnMore: item.learnMore || ""
-          }));
-          
-          setAttractions(processedData);
-        }
-      } catch (error) {
-        console.error("Error fetching attractions:", error);
-        toast({
-          title: "Failed to load attractions",
-          description: "Using default images instead. Please refresh to try again.",
-          variant: "destructive"
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAttractions();
-  }, []);
-
-  const extractTitleFromKey = (key: string) => {
-    // Convert key like "hiking-trail" to "Hiking Trail"
-    return key
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
+  const [attractions] = useState<Attraction[]>(staticAttractions);
+  const [headerImage] = useState<string>(defaultImage);
 
   const handleImageUpdate = (key: string, newUrl: string) => {
-    setAttractions(prev => 
-      prev.map(item => 
-        item.key === key ? { ...item, image_url: newUrl } : item
-      )
-    );
+    // Since we're using static data, this is a no-op
+    console.log(`Image update requested for ${key}: ${newUrl}`);
   };
 
   // Filter attractions by category
@@ -91,16 +78,6 @@ const Activities = () => {
   const familyFun = attractions.filter(a => a.category === 'family');
   const artsCulture = attractions.filter(a => a.category === 'culture');
   const recommendations = attractions.filter(a => a.category === 'recommendations');
-
-  if (isLoading) {
-    return (
-      <Layout>
-        <div className="container py-16 text-center">
-          <p>Loading activities...</p>
-        </div>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>

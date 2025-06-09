@@ -1,9 +1,8 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { supabase } from "@/integrations/supabase/client";
 
 interface Page {
   id: string;
@@ -19,6 +18,18 @@ interface LinkSelectorProps {
   label: string;
 }
 
+// Static pages data since we removed Supabase
+const staticPages: Page[] = [
+  { id: "1", name: "Home", path: "/" },
+  { id: "2", name: "About", path: "/about" },
+  { id: "3", name: "Accommodations", path: "/accommodations" },
+  { id: "4", name: "Amenities", path: "/amenities" },
+  { id: "5", name: "Activities", path: "/activities" },
+  { id: "6", name: "Rules & FAQs", path: "/rules-faqs" },
+  { id: "7", name: "Reservations", path: "/reservations" },
+  { id: "8", name: "Contact", path: "/contact" },
+];
+
 const LinkSelector = ({ 
   value, 
   linkType, 
@@ -26,30 +37,7 @@ const LinkSelector = ({
   onLinkTypeChange,
   label 
 }: LinkSelectorProps) => {
-  const [pages, setPages] = useState<Page[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  
-  useEffect(() => {
-    const fetchPages = async () => {
-      try {
-        setIsLoading(true);
-        const { data, error } = await supabase
-          .from('site_pages')
-          .select('*')
-          .order('name');
-          
-        if (error) throw error;
-        
-        setPages(data || []);
-      } catch (error) {
-        console.error("Error fetching pages:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    fetchPages();
-  }, []);
+  const [pages] = useState<Page[]>(staticPages);
   
   const handleTypeChange = (newType: string) => {
     onLinkTypeChange(newType);
@@ -89,10 +77,9 @@ const LinkSelector = ({
           <Select
             value={value}
             onValueChange={onValueChange}
-            disabled={isLoading}
           >
             <SelectTrigger id={`page-select-${label}`}>
-              <SelectValue placeholder={isLoading ? "Loading pages..." : "Select a page"} />
+              <SelectValue placeholder="Select a page" />
             </SelectTrigger>
             <SelectContent>
               {pages.map((page) => (

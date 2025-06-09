@@ -21,7 +21,6 @@ import AdminAbout from "@/pages/AdminAbout";
 import AdminRulesFAQs from "@/pages/AdminRulesFAQs";
 import AdminAttractions from "@/pages/AdminAttractions";
 import AdminSettings from "@/pages/AdminSettings";
-import AdminAccommodations from "@/pages/AdminAccommodations";
 
 const queryClient = new QueryClient();
 
@@ -46,7 +45,6 @@ function App() {
             <Route path="/admin/content" element={<AdminContent />} />
             <Route path="/admin/about" element={<AdminAbout />} />
             <Route path="/admin/rules-faqs" element={<AdminRulesFAQs />} />
-            <Route path="/admin/accommodations" element={<AdminAccommodations />} />
             <Route path="/admin/attractions" element={<AdminAttractions />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="*" element={<NotFound />} />
