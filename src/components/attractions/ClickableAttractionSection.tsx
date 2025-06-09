@@ -18,7 +18,7 @@ interface ClickableAttractionSectionProps {
   activities: Attraction[];
   color?: string;
   columns?: string;
-  onImageUpdate: (key: string, newUrl: string) => void;
+  onImageUpdate?: (key: string, newUrl: string) => void;
 }
 
 const ClickableAttractionSection = ({
@@ -26,7 +26,7 @@ const ClickableAttractionSection = ({
   activities,
   color,
   columns = "grid-cols-1 md:grid-cols-3 lg:grid-cols-3",
-  onImageUpdate
+  onImageUpdate = () => {}
 }: ClickableAttractionSectionProps) => {
   return (
     <section>

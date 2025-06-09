@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -8,13 +9,12 @@ import { Waves, House, Activity, Power, Building, Home as HomeIcon, Utensils, Ma
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useContent } from "@/hooks/use-content";
 
 const Home = () => {
   const isMobile = useIsMobile();
 
-  // Original data to use as fallback
-  const originalGalleryImages = [{
+  // Static data - no more database fetching
+  const galleryImages = [{
     src: "/lovable-uploads/96ae0ec8-856a-412c-a730-a2f6d51df53f.png",
     alt: "Resort-Style Swimming Pool"
   }, {
@@ -34,7 +34,7 @@ const Home = () => {
     alt: "Palo Pinto Mountains"
   }];
 
-  const originalFeaturedAmenities = [{
+  const featuredAmenities = [{
     title: "Resort-Style Pool",
     description: "Our vintage-inspired pool offers the perfect place to cool off and relax with plenty of lounge seating and mountain views.",
     image: "/placeholder.svg",
@@ -66,7 +66,7 @@ const Home = () => {
     icon: <HomeIcon size={24} />
   }];
 
-  const originalThingsToDo = [{
+  const thingsToDo = [{
     activity: "Take a refreshing dip in our resort-style swimming pool",
     icon: <Waves size={24} className="text-rvblue" />
   }, {
@@ -89,7 +89,7 @@ const Home = () => {
     icon: <Car size={24} className="text-rvblue" />
   }];
 
-  const originalLocalAttractions = [{
+  const localAttractions = [{
     name: "Palo Pinto Mountains State Park",
     description: "Texas' newest state park with hiking, wildlife, and scenic views.",
     distance: "15 min",
@@ -121,144 +121,71 @@ const Home = () => {
     icon: <Utensils size={20} />
   }];
 
-  // Fetch content from the database with fallback to original data
-  const { content: homeContent, isLoading } = useContent({
-    page: 'home',
-    fallbackData: {}
-  });
-
-  // Prepare the content with fallback to original data
+  // Static content
+  const heroHeadline = "Where the Spirit of the Road Lives On";
+  const heroSubtitle = "Just off Loop 254 in Ranger, Texas — minutes from Palo Pinto Mountains";
+  const heroImage = "/placeholder.svg";
+  const heroCta = "Book Your Stay Now";
   
-  // Hero section content
-  const heroContent = homeContent.hero || {};
-  const heroHeadline = heroContent.headline || "Where the Spirit of the Road Lives On";
-  const heroSubtitle = heroContent.subtitle || "Just off Loop 254 in Ranger, Texas — minutes from Palo Pinto Mountains";
-  const heroImage = heroContent.image_url || "/placeholder.svg";
-  const heroCta = heroContent.cta_text || "Book Your Stay Now";
-  
-  // Parse features list from string if it exists
-  const heroFeatures = heroContent.features 
-    ? heroContent.features.split(',').map(item => item.trim())
-    : [
-        "Resort-Style Pool",
-        "Historic Lodges",
-        "Full Hookups",
-        "Horse Hotel",
-        "Gulf Burgers Restaurant",
-        "Pickleball Court",
-        "Candy & Ice Cream Shop",
-        "Free Wi-Fi"
-      ];
+  const heroFeatures = [
+    "Resort-Style Pool",
+    "Historic Lodges",
+    "Full Hookups",
+    "Horse Hotel",
+    "Gulf Burgers Restaurant",
+    "Pickleball Court",
+    "Candy & Ice Cream Shop",
+    "Free Wi-Fi"
+  ];
 
-  // Welcome section content
-  const welcomeContent = homeContent.welcome || {};
-  const welcomeTitle = welcomeContent.title || "Where History Meets Hospitality";
-  const welcomeDescription = welcomeContent.description || 
-    "Step back in time at Lone Ranger RV Park, where vintage neon signs illuminate your path and the spirit of classic Americana lives on. Nestled among scenic views of the Palo Pinto Mountains, our family-friendly park blends historic charm with modern amenities. Whether you're parking your RV, pitching a tent, or staying in one of our restored 1930s lodges, you'll experience Texas hospitality at its finest.";
-  const welcomeImage = welcomeContent.image_url || "/lovable-uploads/44b44f22-8a5d-4c95-83e8-8d02128280e4.png";
-  const welcomeCta = welcomeContent.cta_text || "Book Now";
+  const welcomeTitle = "Where History Meets Hospitality";
+  const welcomeDescription = "Step back in time at Lone Ranger RV Park, where vintage neon signs illuminate your path and the spirit of classic Americana lives on. Nestled among scenic views of the Palo Pinto Mountains, our family-friendly park blends historic charm with modern amenities. Whether you're parking your RV, pitching a tent, or staying in one of our restored 1930s lodges, you'll experience Texas hospitality at its finest.";
+  const welcomeImage = "/lovable-uploads/44b44f22-8a5d-4c95-83e8-8d02128280e4.png";
+  const welcomeCta = "Book Now";
 
-  // Gallery section content
-  const galleryContent = homeContent.gallery || {};
-  const galleryTitle = galleryContent.title || "Capture the Experience";
-  const galleryDescription = galleryContent.description || 
-    "Vintage neon, scenic mountain views, and modern comfort come together to create an unforgettable stay.";
+  const galleryTitle = "Capture the Experience";
+  const galleryDescription = "Vintage neon, scenic mountain views, and modern comfort come together to create an unforgettable stay.";
   
-  // Create gallery images from content or fall back to original
-  const galleryImages = originalGalleryImages.map((original, index) => {
-    const imageNumber = index + 1;
-    return {
-      src: galleryContent[`image${imageNumber}_url`] || original.src,
-      alt: galleryContent[`image${imageNumber}_alt`] || original.alt
-    };
-  });
-
-  // Things to do section content
-  const thingsToDoContent = homeContent.thingsToDo || {};
-  const thingsToDoTitle = thingsToDoContent.title || "Things to Do";
-  const thingsToDoDescription = thingsToDoContent.description || 
-    "Your adventure doesn't end when you park. Here's what awaits at Lone Ranger RV Park:";
-  const thingsToDoImage = thingsToDoContent.image_url || "/lovable-uploads/acc82a50-acaf-43f9-b4d0-a05f64415827.jpg";
+  const thingsToDoTitle = "Things to Do";
+  const thingsToDoDescription = "Your adventure doesn't end when you park. Here's what awaits at Lone Ranger RV Park:";
+  const thingsToDoImage = "/lovable-uploads/acc82a50-acaf-43f9-b4d0-a05f64415827.jpg";
   
-  // Create things to do list from content or fall back to original
-  const thingsToDo = originalThingsToDo.map((original, index) => {
-    return {
-      activity: thingsToDoContent[`activity${index+1}`] || original.activity,
-      icon: original.icon // Keep the original icon
-    };
-  });
-
-  // Featured Amenities content
-  const amenitiesContent = homeContent.featuredAmenities || {};
-  const amenitiesTitle = amenitiesContent.title || "What Awaits You";
-  const amenitiesDescription = amenitiesContent.description || 
-    "Discover the unique features that make Lone Ranger RV Park a one-of-a-kind destination";
+  const amenitiesTitle = "What Awaits You";
+  const amenitiesDescription = "Discover the unique features that make Lone Ranger RV Park a one-of-a-kind destination";
   
-  // Create amenities list from content or fall back to original
-  const featuredAmenities = originalFeaturedAmenities.map((original, index) => {
-    const amenityNumber = index + 1;
-    return {
-      title: amenitiesContent[`amenity${amenityNumber}_title`] || original.title,
-      description: amenitiesContent[`amenity${amenityNumber}_description`] || original.description,
-      image: amenitiesContent[`amenity${amenityNumber}_image`] || original.image,
-      icon: original.icon // Keep the original icon
-    };
-  });
-
-  // Rules section content
-  const rulesContent = homeContent.rules || {};
-  const rulesTitle = rulesContent.title || "RV Rules & Regulations";
-  const rulesDescription = rulesContent.description || 
-    "To ensure everyone enjoys their stay, we maintain the following policies:";
-  const rulesImage = rulesContent.image_url || "/lovable-uploads/b4ad59a6-723e-4fc0-b4fd-72c2109b8867.jpg";
+  const rulesTitle = "RV Rules & Regulations";
+  const rulesDescription = "To ensure everyone enjoys their stay, we maintain the following policies:";
+  const rulesImage = "/lovable-uploads/b4ad59a6-723e-4fc0-b4fd-72c2109b8867.jpg";
   
-  // Rules items with fallbacks
   const ruleItems = [
     {
-      title: rulesContent.rule1_title || "Check-in/out times:",
-      text: rulesContent.rule1_text || "Check-in is at 2:00 PM, and check-out is at 11:00 AM."
+      title: "Check-in/out times:",
+      text: "Check-in is at 2:00 PM, and check-out is at 11:00 AM."
     },
     {
-      title: rulesContent.rule2_title || "Quiet hours:",
-      text: rulesContent.rule2_text || "10:00 PM to 7:00 AM to ensure everyone gets their rest."
+      title: "Quiet hours:",
+      text: "10:00 PM to 7:00 AM to ensure everyone gets their rest."
     },
     {
-      title: rulesContent.rule3_title || "Campfire policy:",
-      text: rulesContent.rule3_text || "Fires allowed in designated fire rings only. No fires during burn bans."
+      title: "Campfire policy:",
+      text: "Fires allowed in designated fire rings only. No fires during burn bans."
     },
     {
-      title: rulesContent.rule4_title || "Pets:",
-      text: rulesContent.rule4_text || "Welcome but must be leashed at all times. Please clean up after your pets."
+      title: "Pets:",
+      text: "Welcome but must be leashed at all times. Please clean up after your pets."
     },
     {
-      title: rulesContent.rule5_title || "Wi-Fi:",
-      text: rulesContent.rule5_text || "Complimentary high-speed connection available throughout the property."
+      title: "Wi-Fi:",
+      text: "Complimentary high-speed connection available throughout the property."
     }
   ];
 
-  // CTA section content
-  const ctaContent = homeContent.cta || {};
-  const ctaTitle = ctaContent.title || "Rest Your Wheels Where History Feels Alive";
-  const ctaDescription = ctaContent.description || 
-    "Experience the perfect blend of vintage charm and modern comfort at Lone Ranger RV Park.";
-  const ctaButtonText = ctaContent.button_text || "Book Your Getaway";
+  const ctaTitle = "Rest Your Wheels Where History Feels Alive";
+  const ctaDescription = "Experience the perfect blend of vintage charm and modern comfort at Lone Ranger RV Park.";
+  const ctaButtonText = "Book Your Getaway";
 
-  // Attractions section content
-  const attractionsContent = homeContent.attractions || {};
-  const attractionsTitle = attractionsContent.title || "Explore the Area";
-  const attractionsDescription = attractionsContent.description || 
-    "Perfectly situated to experience the best of Texas";
-  
-  // Create attractions list from content or fall back to original
-  const localAttractions = originalLocalAttractions.map((original, index) => {
-    const attractionNumber = index + 1;
-    return {
-      name: attractionsContent[`attraction${attractionNumber}_name`] || original.name,
-      description: attractionsContent[`attraction${attractionNumber}_description`] || original.description,
-      distance: attractionsContent[`attraction${attractionNumber}_distance`] || original.distance,
-      icon: original.icon // Keep the original icon
-    };
-  });
+  const attractionsTitle = "Explore the Area";
+  const attractionsDescription = "Perfectly situated to experience the best of Texas";
 
   return (
     <Layout>
